@@ -1,0 +1,101 @@
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+enum Role {
+    DIRECTIVE
+    ADMIN
+    TEACHER
+    STUDENT
+}
+
+enum DayEnum {
+    MONDAY
+    TUESDAY
+    WEDNESDAY
+    THURSDAY
+    FRIDAY
+    SATURDAY
+    SUNDAY
+    NONE
+}
+
+enum StatusEnum {
+    ATTENDED
+    ATTENDED_EXCUSED
+    NOT_ATTENDED
+    NOT_DETERMINED
+}
+
+model User {
+    id               String @id @default(uuid())
+    name             String
+    lastName         String
+    email            String @unique
+    documentIdentity String
+    role             Role
+    description      String
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    workshops Workshops[]
+}
+
+model Students {
+    id               String   @id @default(uuid())
+    name             String
+    lastName         String
+    email            String   @unique
+    studyYear        Int
+    institute        String
+    documentIdentity String
+    dateOfBirth      DateTime
+    photo            String
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    workshops   Workshops[]
+    assistences Assistences[]
+}
+
+model Workshops {
+    id          String   @id @default(uuid())
+    name        String
+    day         String[]
+    description String
+    photo       String
+
+    teacherId String
+    studentId String
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    teacher     User          @relation(fields: [teacherId], references: [id])
+    student     Students      @relation(fields: [studentId], references: [id])
+    assistences Assistences[]
+}
+
+model Assistences {
+    id         String @id @default(uuid())
+    studentId  String
+    workshopId String
+
+    asistanceDate DateTime
+    status        StatusEnum
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    student  Students  @relation(fields: [studentId], references: [id])
+    workshop Workshops @relation(fields: [workshopId], references: [id])
+
+    @@index([studentId, workshopId])
+}
