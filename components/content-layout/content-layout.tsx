@@ -17,6 +17,7 @@ import { ContentLayoutProps } from '@/components/content-layout/content-layout.t
 import { PAGE_NAME } from '@/constants/index'
 import { dashboardHomeImage } from '@/assets/images'
 import { cn } from '@/lib/utils'
+import { ModeToggle } from '../mode-toggle'
 
 export function ContentLayout(props: ContentLayoutProps) {
   const { title, children, showHeaderAndFooter = true } = props
@@ -33,33 +34,32 @@ export function ContentLayout(props: ContentLayoutProps) {
       )}
     >
       {showHeaderAndFooter && (
-        <header className='flex flex-1 z-50 items-center sticky top-0 border-b py-5 px-5 bg-background/70 backdrop-blur-2xl'>
-          <SidebarTrigger />
-          <Separator
-            orientation='vertical'
-            className='mx-2 h-4'
-          />
-          <Breadcrumb>
-            <BreadcrumbList>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbPage>{title}</BreadcrumbPage>
-              </BreadcrumbItem>
-            </BreadcrumbList>
-          </Breadcrumb>
+        <header className='flex flex-1 z-50 items-center justify-between sticky top-0 border-b py-5 px-5 bg-background/70 backdrop-blur-2xl'>
+          <div className='flex items-center'>
+            <SidebarTrigger className='w-9 h-9' />
+
+            <Separator
+              orientation='vertical'
+              className='mx-2 h-4'
+            />
+
+            <h2 className='text-sm font-bold'>{title}</h2>
+          </div>
+
+          <ModeToggle />
         </header>
       )}
 
-      <Background>
-        <div
-          className={cn(
-            'relative p-8 md:container mx-auto space-y-5',
-            showHeaderAndFooter ? 'min-h-[calc(100dvh_-_8rem)] ' : 'min-h-dvh'
-          )}
-        >
-          {children}
-        </div>
-      </Background>
+      {!showHeaderAndFooter && <Background />}
+
+      <div
+        className={cn(
+          'relative p-8 w-[1240px] max-w-full mx-auto space-y-5',
+          showHeaderAndFooter ? 'min-h-[calc(100dvh_-_8.5rem)] ' : 'min-h-dvh'
+        )}
+      >
+        {children}
+      </div>
 
       {showHeaderAndFooter && (
         <footer className='flex flex-1 border-t bg-background/70 backdrop-blur-2xl'>
@@ -74,9 +74,10 @@ export function ContentLayout(props: ContentLayoutProps) {
   )
 }
 
-function Background({ children }: { children: React.ReactNode }) {
+function Background() {
   return (
     <div
+      className='absolute inset-0'
       style={{
         backgroundImage: `url(${dashboardHomeImage.src})`,
         backgroundSize: 'cover',
@@ -85,8 +86,6 @@ function Background({ children }: { children: React.ReactNode }) {
         backgroundBlendMode: 'overlay',
         backgroundColor: 'rgba(0, 0, 0, 0.2)',
       }}
-    >
-      {children}
-    </div>
+    ></div>
   )
 }
