@@ -11,7 +11,7 @@ export const SIDEBAR_ITEMS = {
   sidebarItems: [
     {
       name: 'Inicio',
-      url: '/',
+      url: '/dashboard',
       icon: Home,
     },
     {
