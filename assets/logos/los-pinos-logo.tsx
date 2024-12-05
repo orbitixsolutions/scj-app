@@ -1,8 +1,4 @@
-export function LosPinosLogo({
-  props,
-}: {
-  props?: React.SVGProps<SVGSVGElement>
-}) {
+export function LosPinosLogo(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}
