@@ -16,27 +16,27 @@ export const SIDEBAR_ITEMS = {
     },
     {
       name: 'Crear usuario',
-      url: '/create-user',
+      url: '/dashboard/create-user',
       icon: User2,
     },
     {
       name: 'Alumnos',
-      url: '/students',
+      url: '/dashboard/students',
       icon: UsersIcon,
     },
     {
       name: 'Talleres',
-      url: '/workshops',
+      url: '/dashboard/workshops',
       icon: BookOpenIcon,
     },
     {
       name: 'Lista inicial',
-      url: '/list-initial',
+      url: '/dashboard/list-initial',
       icon: Check,
     },
     {
       name: 'Asistencias',
-      url: '/assistences',
+      url: '/dashboard/assistences',
       icon: CheckCircle2,
     },
   ],
