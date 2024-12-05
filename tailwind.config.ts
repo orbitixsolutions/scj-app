@@ -9,6 +9,9 @@ const config: Config = {
     './app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
+    fontFamily: {
+      mermaid: ['Mermaid Swash Caps'],
+    },
     extend: {
       colors: {
         background: 'hsl(var(--background))',
