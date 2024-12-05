@@ -5,19 +5,12 @@ import {
   SidebarTrigger,
   useSidebar,
 } from '@/components/ui/sidebar'
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb'
 import { Separator } from '@/components/ui/separator'
 import { ContentLayoutProps } from '@/components/content-layout/content-layout.type'
 import { PAGE_NAME } from '@/constants/index'
 import { dashboardHomeImage } from '@/assets/images'
 import { cn } from '@/lib/utils'
-import { ModeToggle } from '../mode-toggle'
+import { ModeToggle } from '@/components/mode-toggle'
 
 export function ContentLayout(props: ContentLayoutProps) {
   const { title, children, showHeaderAndFooter = true } = props
