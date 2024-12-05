@@ -12,6 +12,7 @@ enum Role {
     ADMIN
     TEACHER
     STUDENT
+    DEVELOPER
 }
 
 enum DayEnum {
@@ -36,6 +37,7 @@ model User {
     id               String @id @default(uuid())
     name             String
     lastName         String
+    password         String
     email            String @unique
     documentIdentity String
     role             Role
