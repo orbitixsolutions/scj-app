@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils'
 import React from 'react'
 
 const squareBoxVariants = cva(
-  'bg-accent rounded-lg p-0.5 relative overflow-hidden',
+  'rounded-lg p-0.5 relative overflow-hidden',
   {
     variants: {
       size: {
