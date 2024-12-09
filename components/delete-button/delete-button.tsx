@@ -12,12 +12,6 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
 import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/components/ui/tooltip'
-import {
   DeleteButtonProps,
   UseDeleteProps,
 } from '@/components/delete-button/delete-button.type'
@@ -73,45 +67,36 @@ export function DeleteButton(props: DeleteButtonProps) {
   })
 
   return (
-    <TooltipProvider>
-      <Tooltip>
-        <AlertDialog>
-          <AlertDialogTrigger asChild>
-            <TooltipTrigger asChild>
-              <Button
-                disabled={isPending || disabled}
-                size='icon'
-                className={cn(className, 'p-1 z-40')}
-              >
-                {children}
-              </Button>
-            </TooltipTrigger>
-          </AlertDialogTrigger>
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>¿Estás seguro?</AlertDialogTitle>
-              <AlertDialogDescription>
-                Esta acción no se puede deshacer. Si estas seguro, presiona el
-                botón de eliminar.
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel disabled={isPending || disabled}>
-                Cancelar
-              </AlertDialogCancel>
-              <AlertDialogAction
-                onClick={onDeleteItem}
-                disabled={isPending || disabled}
-              >
-                Eliminar
-              </AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
-        <TooltipContent side='bottom'>
-          <p>Eliminar</p>
-        </TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
+    <AlertDialog>
+      <AlertDialogTrigger asChild>
+        <Button
+          disabled={isPending || disabled}
+          size='icon'
+          className={cn(className, 'p-1 z-40')}
+        >
+          {children}
+        </Button>
+      </AlertDialogTrigger>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>¿Estás seguro?</AlertDialogTitle>
+          <AlertDialogDescription>
+            Esta acción no se puede deshacer. Si estas seguro, presiona el botón
+            de eliminar.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel disabled={isPending || disabled}>
+            Cancelar
+          </AlertDialogCancel>
+          <AlertDialogAction
+            onClick={onDeleteItem}
+            disabled={isPending || disabled}
+          >
+            Eliminar
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   )
 }
