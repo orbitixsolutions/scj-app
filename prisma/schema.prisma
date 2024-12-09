@@ -50,15 +50,14 @@ model User {
 }
 
 model Students {
-    id               String   @id @default(uuid())
+    id               String @unique @id @default(uuid())
     name             String
     lastName         String
-    email            String   @unique
     studyYear        Int
     institute        String
     documentIdentity String
     dateOfBirth      DateTime
-    photo            String
+    photo            String?
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
@@ -72,7 +71,7 @@ model Workshops {
     name        String
     day         String[]
     description String
-    photo       String
+    photo       String?
 
     teacherId String
     studentId String
