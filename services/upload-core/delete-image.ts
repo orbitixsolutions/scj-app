@@ -24,11 +24,13 @@ export const deleteImage = async (props: DeleteAvatarProps) => {
     return { message: 'No tienes permisos.', status: 403 }
 
   try {
-    cloudinary.uploader.destroy(`/scj-app/${folder}/${path}-${itemId}`, {
+     cloudinary.uploader.destroy(`scj-app/${folder}/${path}-${itemId}`, {
       invalidate: true,
     })
 
-    await updateImage({ itemId, path, secure_url: 'NO_IMAGE' })
+    await updateImage({ itemId, path, secure_url: null })
+
+    console.log('asd')
 
     return { message: 'Imagen eliminada.', status: 201 }
   } catch {

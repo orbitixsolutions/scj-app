@@ -35,7 +35,7 @@ export async function cloudinaryUpload(props: CloudinaryUploadProps) {
       cloudinary.uploader
         .upload_stream(
           {
-            folder: `${'/scj-app/'}${folder}`,
+            folder: `/${'scj-app'}/${folder}`,
             public_id: `${path}-${itemId}`,
           },
           function (error, result) {

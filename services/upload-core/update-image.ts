@@ -5,7 +5,7 @@ import db from '@/lib/db'
 type UpdateImageProps = {
   path: string
   itemId: string | undefined
-  secure_url: string
+  secure_url: string | null
 }
 
 export async function updateImage(props: UpdateImageProps) {
@@ -14,6 +14,14 @@ export async function updateImage(props: UpdateImageProps) {
   switch (path) {
     case 'workshop':
       await db.workshops.update({
+        where: { id: itemId },
+        data: {
+          photo: secure_url,
+        },
+      })
+      return { status: 201, message: 'Imagen subida correctamente.' }
+    case 'student':
+      await db.students.update({
         where: { id: itemId },
         data: {
           photo: secure_url,
