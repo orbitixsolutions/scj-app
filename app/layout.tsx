@@ -3,6 +3,7 @@ import localFont from 'next/font/local'
 import './globals.css'
 import { Toaster } from '@/components/ui/sonner'
 import { Providers } from '@/providers'
+import { DEV_MODE } from '@/constants'
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -32,6 +33,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='es'>
+      {DEV_MODE && (
+        <head>
+          <script
+            src='https://unpkg.com/react-scan/dist/auto.global.js'
+            async
+          />
+        </head>
+      )}
+
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${mermaid.variable} antialiased`}
       >
