@@ -73,7 +73,6 @@ export function CreateUserForm(props: CreateUserFormProps) {
         form.setValue('name', DATA.name)
         form.setValue('lastName', DATA.lastName)
         form.setValue('email', DATA.email)
-        form.setValue('password', DATA.password)
         form.setValue('documentIdentity', DATA.documentIdentity)
         form.setValue('role', DATA.role)
         form.setValue('description', DATA.description)
@@ -167,7 +166,7 @@ export function CreateUserForm(props: CreateUserFormProps) {
             control={form.control}
             name='email'
             render={({ field }) => (
-              <FormItem className='col-span-2'>
+              <FormItem>
                 <FormLabel>Correo Electrónico</FormLabel>
                 <FormControl>
                   <Input
@@ -181,25 +180,25 @@ export function CreateUserForm(props: CreateUserFormProps) {
             )}
           />
 
-          {!IS_EDITING && (
-            <FormField
-              control={form.control}
-              name='password'
-              render={({ field }) => (
-                <FormItem className='col-span-2'>
-                  <FormLabel>Contraseña</FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      placeholder='********'
-                      disabled={isPending}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          )}
+          <FormField
+            control={form.control}
+            name='password'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>
+                  {IS_EDITING ? 'Nueva Contraseña (Opcional)' : 'Contraseña'}
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    {...field}
+                    placeholder='********'
+                    disabled={isPending}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
           <FormField
             control={form.control}

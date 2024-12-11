@@ -31,7 +31,7 @@ export function CreateStudentForm(props: CreateStudentFormProps) {
 
   const [isPending, startTransition] = useTransition()
   const { handleUpload } = useUploadImageToCloud()
-  
+
   const [isOpen, setIsOpen] = useState(false)
   const { refresh } = useRouter()
 
@@ -59,7 +59,7 @@ export function CreateStudentForm(props: CreateStudentFormProps) {
 
         form.setValue('name', DATA.name)
         form.setValue('lastName', DATA.lastName)
-        form.setValue('studyYear', DATA.studyYear.toString())
+        form.setValue('studyYear', DATA.studyYear)
         form.setValue('institute', DATA.institute)
         form.setValue('documentIdentity', DATA.documentIdentity)
         form.setValue('dateOfBirth', getStringDate(DATA.dateOfBirth))
@@ -69,7 +69,6 @@ export function CreateStudentForm(props: CreateStudentFormProps) {
 
   const onSubmit = form.handleSubmit((values) => {
     startTransition(async () => {
-
       if (IS_EDITING) {
         const { status, message } = await updateStudent(values, id)
 
@@ -162,8 +161,7 @@ export function CreateStudentForm(props: CreateStudentFormProps) {
                 <FormControl>
                   <Input
                     {...field}
-                    type='number'
-                    placeholder='2004'
+                    placeholder='Primaria'
                     disabled={isPending}
                   />
                 </FormControl>

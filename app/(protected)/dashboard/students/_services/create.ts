@@ -33,7 +33,7 @@ export async function createStudent(data: z.infer<typeof StudentSchema>, student
         id: studentId,
         name,
         lastName,
-        studyYear: parseInt(studyYear),
+        studyYear,
         institute,
         documentIdentity,
         dateOfBirth: new Date(dateOfBirth),

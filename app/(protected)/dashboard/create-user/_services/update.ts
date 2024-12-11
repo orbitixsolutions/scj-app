@@ -3,6 +3,7 @@
 import { z } from 'zod'
 import { currentRole } from '@/lib/auth'
 import { UserSchema } from '@/schemas'
+import bcrypt from 'bcryptjs'
 import db from '@/lib/db'
 
 export async function updateUser(
@@ -31,6 +32,8 @@ export async function updateUser(
     description,
   } = VALIDATION.data
 
+  const HASH_PASSWORD = await bcrypt.hash(password, 10)
+
   try {
     await db.user.update({
       where: { id: userId },
@@ -38,7 +41,7 @@ export async function updateUser(
         name,
         lastName,
         email,
-        password,
+        password: HASH_PASSWORD,
         documentIdentity,
         role,
         description,
