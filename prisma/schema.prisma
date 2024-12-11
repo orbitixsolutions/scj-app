@@ -53,7 +53,7 @@ model Students {
     id               String @unique @id @default(uuid())
     name             String
     lastName         String
-    studyYear        Int
+    studyYear        String
     institute        String
     documentIdentity String
     dateOfBirth      DateTime
