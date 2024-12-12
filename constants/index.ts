@@ -24,3 +24,14 @@ export const SELECT_ROLES = [
     label: 'Desarrollador',
   },
 ]
+
+export const SELECT_DAYS = [
+  'MONDAY',
+  'TUESDAY',
+  'WEDNESDAY',
+  'THURSDAY',
+  'FRIDAY',
+  'SATURDAY',
+  'SUNDAY',
+  'NONE',
+]
