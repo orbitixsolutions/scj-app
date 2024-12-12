@@ -28,6 +28,14 @@ export async function updateImage(props: UpdateImageProps) {
         },
       })
       return { status: 201, message: 'Imagen subida correctamente.' }
+    case 'workshop':
+      await db.workshops.update({
+        where: { id: itemId },
+        data: {
+          photo: secure_url,
+        },
+      })
+      return { status: 201, message: 'Imagen subida correctamente.' }
     default:
       return { status: 403, message: 'No se pudo actualizar la imagen.' }
   }
