@@ -27,7 +27,6 @@ import { Input } from '@/components/ui/input'
 import { SELECT_ROLES } from '@/constants'
 import { UserSchema } from '@/schemas'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Role } from '@prisma/client'
 import { CheckCheck, ChevronsUpDown } from 'lucide-react'
 import { useEffect, useState, useTransition } from 'react'
 import { useForm } from 'react-hook-form'
@@ -258,7 +257,7 @@ export function CreateUserForm(props: CreateUserFormProps) {
                               value={rol.label}
                               key={rol.value}
                               onSelect={() => {
-                                form.setValue('role', rol.value as Role)
+                                form.setValue('role', rol.value)
                               }}
                             >
                               {rol.label}

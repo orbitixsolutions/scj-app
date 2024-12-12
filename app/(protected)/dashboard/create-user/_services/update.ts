@@ -3,8 +3,8 @@
 import { z } from 'zod'
 import { currentRole } from '@/lib/auth'
 import { UserSchema } from '@/schemas'
-import bcrypt from 'bcryptjs'
 import db from '@/lib/db'
+import bcrypt from 'bcryptjs'
 
 export async function updateUser(
   values: z.infer<typeof UserSchema>,

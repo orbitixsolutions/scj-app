@@ -1,11 +1,10 @@
 import { currentRole, currentUser } from '@/lib/auth'
 import { UserActionProps } from '@/app/(protected)/dashboard/create-user/_types'
-import { Role } from '@prisma/client'
 import db from '@/lib/db'
 
 export async function fetchUser(props: UserActionProps) {
   const { name, role } = props
-  const ROLES = role?.toUpperCase() as Role
+  const ROLES = role?.toUpperCase()
 
   const USER = await currentUser()
   const USER_ID = USER?.id
@@ -17,14 +16,22 @@ export async function fetchUser(props: UserActionProps) {
   }
 
   try {
-    const USERS = await db.user.findMany({
-      where: {
-        id: {
-          not: USER_ID,
+    if (name || role) {
+      const USERS = await db.user.findMany({
+        where: {
+          id: {
+            not: USER_ID,
+          },
+          ...(name && { name: { contains: name } }),
+          ...(role && { role: { equals: ROLES } }),
         },
-        ...(name && { name: { contains: name, mode: 'insensitive' } }),
-        ...(role && { role: { equals: ROLES } }),
-      },
+        orderBy: [{ createdAt: 'asc' }, { name: 'asc' }],
+      })
+
+      return USERS
+    }
+
+    const USERS = await db.user.findMany({
       orderBy: [{ createdAt: 'asc' }, { name: 'asc' }],
     })
 

@@ -36,7 +36,7 @@ export async function updateStudent(
       data: {
         name,
         lastName,
-        studyYear: parseInt(studyYear),
+        studyYear,
         institute,
         documentIdentity,
         dateOfBirth: new Date(dateOfBirth),
