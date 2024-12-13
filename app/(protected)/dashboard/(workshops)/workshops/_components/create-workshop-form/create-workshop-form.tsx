@@ -42,7 +42,7 @@ export function CreateWorkshopForm(props: CreateWorkshopFormProps) {
     resolver: zodResolver(WorkshopSchema),
     defaultValues: {
       name: '',
-      day: [],
+      days: [],
       description: '',
       teacherId: '',
     },
@@ -57,10 +57,7 @@ export function CreateWorkshopForm(props: CreateWorkshopFormProps) {
         if (DATA.ok) return
 
         form.setValue('name', DATA.name)
-        form.setValue(
-          'day',
-          DATA.day.map((item: Record<string, string>) => item.day)
-        )
+        form.setValue('days', DATA.days)
         form.setValue('description', DATA.description)
         form.setValue('teacherId', DATA.teacherId)
       })
@@ -159,7 +156,7 @@ export function CreateWorkshopForm(props: CreateWorkshopFormProps) {
 
           <FormField
             control={form.control}
-            name='day'
+            name='days'
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Jornada</FormLabel>

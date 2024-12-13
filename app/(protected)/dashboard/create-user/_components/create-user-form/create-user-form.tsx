@@ -38,6 +38,7 @@ import { CreateUserFormProps } from '@/app/(protected)/dashboard/create-user/_co
 import { updateUser } from '@/app/(protected)/dashboard/create-user/_services/update'
 import { cn } from '@/lib/utils'
 import { z } from 'zod'
+import { RolesEnum } from '@prisma/client'
 
 export function CreateUserForm(props: CreateUserFormProps) {
   const { id } = props
@@ -257,7 +258,7 @@ export function CreateUserForm(props: CreateUserFormProps) {
                               value={rol.label}
                               key={rol.value}
                               onSelect={() => {
-                                form.setValue('role', rol.value)
+                                form.setValue('role', rol.value as RolesEnum)
                               }}
                             >
                               {rol.label}

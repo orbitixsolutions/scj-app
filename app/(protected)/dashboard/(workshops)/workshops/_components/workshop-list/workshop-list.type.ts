@@ -4,7 +4,7 @@ export type WorkshopListProps = {
   data: Array<
     Prisma.WorkshopsGetPayload<{
       include: {
-        day: true
+        days: true
         teacher: true
         students: true
       }

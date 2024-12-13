@@ -4,7 +4,7 @@ import { WorkshopListProps } from '@/app/(protected)/dashboard/(workshops)/works
 export function WorkshopList(props: WorkshopListProps) {
   const { data: WORKSHOPS } = props
 
-  const MAPPED_WORKSHOPS = WORKSHOPS.map((workshop) => (
+  const MAPPED_WORKSHOPS = WORKSHOPS?.map((workshop) => (
     <li
       key={workshop.id}
       className='relative hover:scale-105 duration-300 ease-in-out transition-all'
@@ -14,7 +14,7 @@ export function WorkshopList(props: WorkshopListProps) {
     </li>
   ))
 
-  if (!WORKSHOPS.length) {
+  if (!WORKSHOPS?.length) {
     return (
       <div className='flex h-full min-h-[calc(100svh_-_20rem)] w-full flex-col items-center justify-center'>
         <p className='text-center font-bold text-6xl opacity-60'>

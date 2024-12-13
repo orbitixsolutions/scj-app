@@ -11,7 +11,7 @@ export async function fetchUser(props: UserActionProps) {
 
   const ROLE = await currentRole()
 
-  if (ROLE === 'STUDENT') {
+  if (ROLE === 'STUDENT' || ROLE === 'TEACHER') {
     return { status: 401, message: 'No tienes permisos.' }
   }
 
@@ -19,9 +19,7 @@ export async function fetchUser(props: UserActionProps) {
     if (name || role) {
       const USERS = await db.user.findMany({
         where: {
-          id: {
-            not: USER_ID,
-          },
+          id: { not: USER_ID },
           ...(name && { name: { contains: name } }),
           ...(role && { role: { equals: ROLES } }),
         },
@@ -32,6 +30,7 @@ export async function fetchUser(props: UserActionProps) {
     }
 
     const USERS = await db.user.findMany({
+      where: { id: { not: USER_ID } },
       orderBy: [{ createdAt: 'asc' }, { name: 'asc' }],
     })
 

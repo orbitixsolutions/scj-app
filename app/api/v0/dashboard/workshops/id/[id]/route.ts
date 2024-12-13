@@ -21,13 +21,6 @@ export async function GET(
       where: {
         id: WORKSHOP_ID,
       },
-      include: {
-        day: {
-          select: {
-            day: true,
-          },
-        },
-      },
     })
 
     return NextResponse.json(WORKSHOP, { status: 201 })

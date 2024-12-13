@@ -3,7 +3,7 @@ import { WorkshopActionProps } from '@/app/(protected)/dashboard/(workshops)/wor
 import db from '@/lib/db'
 
 export async function getWorkshops(props: WorkshopActionProps) {
-  const { workshop_name } = props
+  const { workshop_name, teacher_id } = props
 
   const ROLE = await currentRole()
 
@@ -12,12 +12,10 @@ export async function getWorkshops(props: WorkshopActionProps) {
   }
 
   try {
-    if (workshop_name) {
+    if (workshop_name || teacher_id) {
       const WORKSHOPS = await db.workshops.findMany({
-        where: { name: { contains: workshop_name } },
         include: {
           students: true,
-          day: true,
           teacher: {
             select: {
               name: true,
@@ -35,13 +33,18 @@ export async function getWorkshops(props: WorkshopActionProps) {
         orderBy: [{ createdAt: 'desc' }, { name: 'asc' }],
       })
 
-      return WORKSHOPS
+      const FILTERED_WORKSHOPS = WORKSHOPS.filter(
+        (w) =>
+          w.teacherId.includes(teacher_id) ||
+          w.name.toLowerCase().includes(workshop_name.toLowerCase())
+      )
+
+      return FILTERED_WORKSHOPS
     }
 
     const WORKSHOPS = await db.workshops.findMany({
       include: {
         students: true,
-        day: true,
         teacher: {
           select: {
             name: true,

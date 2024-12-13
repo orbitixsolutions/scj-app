@@ -21,29 +21,22 @@ export async function createWorkshop(
     return { status: 401, message: 'Campos inválidos.' }
   }
 
-  const { name, day, description, teacherId } = VALIDATION.data
+  const { name, days, description, teacherId } = VALIDATION.data
 
   try {
-    day.forEach(async (item) => {
-      await db.workshopDays.create({
-        data: {
-          day: item,
-          workshopId: workshopId,
-        },
-      })
-    })
-
     await db.workshops.create({
       data: {
         id: workshopId,
         name,
         description,
         teacherId,
+        days,
       },
     })
 
     return { status: 201, message: 'Taller creado correctamente.' }
-  } catch {
+  } catch (error) {
+    console.log(error)
     return { status: 400, message: 'Ha ocurrido un error.' }
   }
 }

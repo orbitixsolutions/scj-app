@@ -21,24 +21,16 @@ export async function updateWorkshop(
     return { status: 401, message: 'Campos inválidos.' }
   }
 
-  const { name, day, description, teacherId } = VALIDATION.data
+  const { name, days, description, teacherId } = VALIDATION.data
 
   try {
-    day.forEach(async (item) => {
-      await db.workshopDays.updateMany({
-        where: { day: item, workshopId },
-        data: {
-          day: item,
-        },
-      })
-    })
-
     await db.workshops.update({
       where: { id: workshopId },
       data: {
         name,
         description,
         teacherId,
+        days,
       },
     })
 
