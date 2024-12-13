@@ -14,7 +14,6 @@ export default async function WorkshopPage(props: WorkshopPageProps) {
       include: {
         teacher: true
         students: true
-        days: true
       }
     }>
   >

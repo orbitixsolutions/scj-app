@@ -4,6 +4,5 @@ export type WorkshopItemProps = Prisma.WorkshopsGetPayload<{
   include: {
     teacher: true
     students: true
-    day: true
   }
 }>

@@ -50,7 +50,8 @@ model User {
 }
 
 model Students {
-    id               String   @id @unique @default(uuid())
+    id String @id @default(uuid())
+
     name             String
     lastName         String
     studyYear        String
@@ -62,10 +63,7 @@ model Students {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    workshopsId String?
-    workshops   Workshops? @relation(fields: [workshopsId], references: [id], onDelete: Cascade)
-
-    Assistences Assistences[]
+    workshops StudentsToWorkshop[]
 }
 
 model Workshops {
@@ -81,23 +79,18 @@ model Workshops {
     teacher   User   @relation(fields: [teacherId], references: [id], onDelete: Cascade)
     teacherId String
 
-    students    Students[]
-    assistences Assistences[]
+    students StudentsToWorkshop[]
 }
 
-model Assistences {
-    id         String @id @default(uuid())
-    studentId  String
-    workshopId String
+model StudentsToWorkshop {
+    id String @id @default(uuid())
 
-    asistanceDate DateTime
-    status        StatusEnum @default(NOT_ATTENDED)
+    students  Students @relation(fields: [studentId], references: [id])
+    studentId String
+
+    workshops  Workshops @relation(fields: [workshopId], references: [id])
+    workshopId String
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
-
-    student  Students  @relation(fields: [studentId], references: [id], onDelete: Cascade)
-    workshop Workshops @relation(fields: [workshopId], references: [id], onDelete: Cascade)
-
-    @@index([studentId, workshopId])
 }

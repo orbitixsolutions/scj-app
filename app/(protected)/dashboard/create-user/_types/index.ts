@@ -1,13 +1,13 @@
-import { Role } from "@prisma/client"
+import { RolesEnum } from "@prisma/client"
 
 export type PageProps = {
   searchParams: {
     name: string
-    role: Role
+    role: RolesEnum
   }
 }
 
 export type UserActionProps = {
   name: string
-  role: Role
+  role: RolesEnum
 }

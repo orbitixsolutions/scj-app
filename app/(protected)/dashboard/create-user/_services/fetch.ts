@@ -1,10 +1,11 @@
 import { currentRole, currentUser } from '@/lib/auth'
 import { UserActionProps } from '@/app/(protected)/dashboard/create-user/_types'
+import { RolesEnum } from '@prisma/client'
 import db from '@/lib/db'
 
 export async function fetchUser(props: UserActionProps) {
   const { name, role } = props
-  const ROLES = role?.toUpperCase()
+  const ROLES = role?.toUpperCase() as RolesEnum
 
   const USER = await currentUser()
   const USER_ID = USER?.id

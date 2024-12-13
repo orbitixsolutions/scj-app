@@ -15,7 +15,7 @@ import {
 import { useFetch } from '@/hooks/use-fetch'
 import { Button } from '@/components/ui/button'
 import { User } from '@prisma/client'
-import { Check, ChevronsUpDown } from 'lucide-react'
+import { Check, ChevronsUpDown, Plus } from 'lucide-react'
 import { TeacherSelectorProps } from '@/components/teacher-selector/teacher-selector.type'
 import { cn } from '@/lib/utils'
 import { useMemo } from 'react'
@@ -94,6 +94,21 @@ export function TeacherSelector(props: TeacherSelectorProps) {
                 </CommandItem>
               ))}
             </CommandGroup>
+            <div className='p-1'>
+              <Button
+                asChild
+                variant='outline'
+                size='full'
+              >
+                <Link
+                  href={'/dashboard/create-user'}
+                  className='flex items-center justify-between space-x-2'
+                >
+                  <span>Agregar profesor</span>
+                  <Plus />
+                </Link>
+              </Button>
+            </div>
           </CommandList>
         </Command>
       </PopoverContent>
