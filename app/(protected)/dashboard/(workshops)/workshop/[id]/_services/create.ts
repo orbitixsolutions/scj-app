@@ -26,7 +26,7 @@ export async function addStudentToWorkshop(props: WorkshopStudent) {
       },
     })
 
-    return { status: 201, message: 'Estudiante agregado correctamente.' }
+    return { status: 201, message: 'Alumno agregado correctamente.' }
   } catch (error) {
     console.error(error)
     return { status: 400, message: 'Ha ocurrido un error.' }

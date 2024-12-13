@@ -70,7 +70,7 @@ export function WorkshopAsigmentStudentsItem(
           <AlertDialogContent className='max-w-[320px]'>
             <AlertDialogHeader>
               <AlertDialogTitle className='text-center'>
-                ¿Estás seguro de quitar a este estudiante de este taller?
+                ¿Estás seguro de remover a este alumno de este taller?
               </AlertDialogTitle>
             </AlertDialogHeader>
             <AlertDialogFooter className='grid grid-cols-2 gap-2'>
@@ -79,7 +79,7 @@ export function WorkshopAsigmentStudentsItem(
                 disabled={isPending}
                 onClick={() => handleRemoveStudent(id)}
               >
-                Quitar
+                Remover
               </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>

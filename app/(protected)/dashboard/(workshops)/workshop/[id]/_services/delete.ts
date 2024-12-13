@@ -17,7 +17,7 @@ export async function removeStudentFromWorkshop(id: string) {
       },
     })
 
-    return { status: 201, message: 'Estudiante removido correctamente.' }
+    return { status: 201, message: 'Alumno removido correctamente.' }
   } catch {
     return { status: 400, message: 'Ha ocurrido un error.' }
   }

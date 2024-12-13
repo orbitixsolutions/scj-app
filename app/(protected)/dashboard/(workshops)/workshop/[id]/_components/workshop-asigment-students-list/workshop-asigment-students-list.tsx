@@ -24,7 +24,7 @@ export function WorkshopAsigmentStudentsList(
     <Card>
       <CardHeader>
         <CardTitle className='text-center text-2xl'>
-          Estudiantes asignados
+          Alumnos asignados
         </CardTitle>
       </CardHeader>
       <CardContent>
