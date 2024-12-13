@@ -4,13 +4,15 @@ import { StudentList } from '@/app/(protected)/dashboard/students/_components/st
 import { getStudents } from '@/app/(protected)/dashboard/students/_services/fetch'
 import { PageProps } from '@/app/(protected)/dashboard/students/_types'
 import { StudentFilter } from '@/app/(protected)/dashboard/students/_components/student-filter'
-import { Students } from '@prisma/client'
+import { Prisma } from '@prisma/client'
 import { StudentBatchDelete } from '@/app/(protected)/dashboard/students/_components/student-batch-delete'
 import { StudentBatchProvider } from '@/providers/student-batch-provider'
 
 export default async function StudentsPage(props: PageProps) {
   const { searchParams: PARAMS } = props
-  const STUDENTS = (await getStudents(PARAMS)) as Array<Students>
+  const STUDENTS = (await getStudents(PARAMS)) as Array<
+    Prisma.StudentsGetPayload<{ include: { workshops: true } }>
+  >
 
   return (
     <ContentLayout title='Alumnos'>

@@ -1,5 +1,7 @@
-import { Students } from '@prisma/client'
+import { Prisma } from '@prisma/client'
 
 export type StudentListProps = {
-  data: Array<Students>
+  data: Array<
+      Prisma.StudentsGetPayload<{ include: { workshops: true } }>
+    >
 }

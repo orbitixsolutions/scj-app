@@ -16,6 +16,9 @@ export async function getStudents(props: StudentActionProps) {
       where: {
         ...(name && { name: { contains: name } }),
       },
+      include: {
+        workshops: true,
+      },
       orderBy: [{ createdAt: 'desc' }, { name: 'asc' }],
     })
 
@@ -24,6 +27,9 @@ export async function getStudents(props: StudentActionProps) {
 
   try {
     const STUDENTS = await db.students.findMany({
+      include: {
+        workshops: true,
+      },
       orderBy: [{ createdAt: 'desc' }, { name: 'asc' }],
     })
 

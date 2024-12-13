@@ -8,14 +8,14 @@ import Image from 'next/image'
 
 export function StudentItem(props: StudentItemProps) {
   const {
-    student: { name, lastName, photo, id },
+    student: { name, lastName, photo, id, workshops },
   } = props
+
   const IS_PHOTO = !!photo ? photo : studentPlaceholder.src
+  const WORKSHOP_COUNT = workshops?.length
 
   return (
-    <Card
-      className='w-full min-h-64 h-full flex flex-col justify-between items-center gap-4 relative overflow-hidden select-none'
-    >
+    <Card className='w-full min-h-64 h-full flex flex-col justify-between items-center gap-4 relative overflow-hidden select-none'>
       <div className='space-y-4 px-6 pt-6'>
         <SquareBox
           size='xl'
@@ -35,8 +35,18 @@ export function StudentItem(props: StudentItemProps) {
           </h3>
         </div>
       </div>
+
       <div className='bg-secondary p-4 w-full rounded text-sm'>
-        <p className='text-center font-light'>Sin talleres asignados</p>
+        <p className='text-center font-light'>
+          {!!WORKSHOP_COUNT ? (
+            <span>
+              Talleres asignados{' '}
+              <span className='text-primary'>({WORKSHOP_COUNT})</span>
+            </span>
+          ) : (
+            'Sin talleres asignados'
+          )}
+        </p>
       </div>
 
       <StudentActions id={id} />

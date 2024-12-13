@@ -1,5 +1,5 @@
-import { Students } from '@prisma/client'
+import { Prisma } from '@prisma/client'
 
 export type StudentItemProps = {
-  student: Students
+  student: Prisma.StudentsGetPayload<{ include: { workshops: true } }>
 }
