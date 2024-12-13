@@ -22,7 +22,7 @@ import { useMemo } from 'react'
 import Link from 'next/link'
 
 export function TeacherSelector(props: TeacherSelectorProps) {
-  const { value, disabled, onChange } = props
+  const { value, disabled, className, onChange } = props
 
   const TEACHER_END_POINT = '/api/v0/dashboard/teachers'
   const { data } = useFetch<User[]>(TEACHER_END_POINT)
@@ -45,7 +45,8 @@ export function TeacherSelector(props: TeacherSelectorProps) {
           role='combobox'
           className={cn(
             'w-full justify-between',
-            !value && 'text-muted-foreground'
+            !value && 'text-muted-foreground',
+            className
           )}
         >
           {value

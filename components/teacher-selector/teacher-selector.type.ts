@@ -1,5 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 export type TeacherSelectorProps = {
-  value: string
-  onChange: (...value: unknown[]) => void
+  value: string | undefined
+  onChange: (...value: any[]) => void
   disabled?: boolean
+  className?: string
 }
