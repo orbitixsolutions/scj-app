@@ -1,21 +1,46 @@
 generator client {
-    provider        = "prisma-client-js"
-    previewFeatures = ["driverAdapters"]
+    provider = "prisma-client-js"
 }
 
 datasource db {
-    provider = "sqlite"
+    provider = "postgresql"
     url      = env("DATABASE_URL")
 }
 
+enum RolesEnum {
+    DIRECTIVE
+    ADMIN
+    TEACHER
+    STUDENT
+    DEVELOPER
+}
+
+enum DayEnum {
+    MONDAY
+    TUESDAY
+    WEDNESDAY
+    THURSDAY
+    FRIDAY
+    SATURDAY
+    SUNDAY
+    NONE
+}
+
+enum StatusEnum {
+    ATTENDED
+    ATTENDED_EXCUSED
+    NOT_ATTENDED
+    NOT_DETERMINED
+}
+
 model User {
-    id               String @id @default(uuid())
+    id               String    @id @default(uuid())
     name             String
     lastName         String
     password         String
-    email            String @unique
+    email            String    @unique
     documentIdentity String
-    role             String @default("STUDENT")
+    role             RolesEnum
     description      String
 
     createdAt DateTime @default(now())
@@ -44,9 +69,9 @@ model Students {
 }
 
 model Workshops {
-    id          String         @id @default(uuid())
+    id          String   @id @default(uuid())
     name        String
-    day         WorkshopDays[]
+    days        String[]
     description String
     photo       String?
 
@@ -60,24 +85,13 @@ model Workshops {
     assistences Assistences[]
 }
 
-model WorkshopDays {
-    id         String @id @default(uuid())
-    day        String
-    workshopId String
-
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-
-    Workshops Workshops @relation(fields: [workshopId], references: [id], onDelete: Cascade)
-}
-
 model Assistences {
     id         String @id @default(uuid())
     studentId  String
     workshopId String
 
     asistanceDate DateTime
-    status        String   @default("PENDING")
+    status        StatusEnum @default(NOT_ATTENDED)
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt

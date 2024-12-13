@@ -25,7 +25,7 @@ export const UserSchema = z.object({
   documentIdentity: z.string().min(2, {
     message: 'La identidad es inválida',
   }),
-  role: z.string().min(2, {
+  role: z.enum(['DIRECTIVE', 'ADMIN', 'TEACHER', 'STUDENT', 'DEVELOPER'], {
     message: 'El rol es inválido',
   }),
   description: z.string().min(2, {
@@ -58,7 +58,7 @@ export const WorkshopSchema = z.object({
   name: z.string().min(2, {
     message: 'El nombre es inválido',
   }),
-  day: z.array(z.string()).min(1, {
+  days: z.array(z.string()).min(1, {
     message: 'Agrega al menos un día',
   }),
   description: z.string().min(2, {
