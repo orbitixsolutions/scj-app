@@ -1,6 +1,13 @@
 'use client'
 
 import {
+  Select,
+  SelectContent,
+  SelectTrigger,
+  SelectValue,
+  SelectItem,
+} from '@/components/ui/select'
+import {
   Form,
   FormControl,
   FormField,
@@ -25,7 +32,7 @@ import { useUploadImageToCloud } from '@/services/upload-core/use-upload-to-clou
 import { InputDate } from '@/components/ui/input-date'
 import { getCurrentDate, getStringDate } from '@/helpers/get-current-date'
 import { toast } from 'sonner'
-
+import { SELECT_INSTITUTES } from '@/constants'
 export function CreateStudentForm(props: CreateStudentFormProps) {
   const { id } = props
 
@@ -177,11 +184,27 @@ export function CreateStudentForm(props: CreateStudentFormProps) {
               <FormItem>
                 <FormLabel>Institución</FormLabel>
                 <FormControl>
-                  <Input
-                    {...field}
-                    placeholder='Universidad de los Andes'
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
                     disabled={isPending}
-                  />
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder='Seleccionar institución' />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {SELECT_INSTITUTES.map((institute) => (
+                        <SelectItem
+                          key={institute.value}
+                          value={institute.value}
+                        >
+                          {institute.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </FormControl>
                 <FormMessage />
               </FormItem>

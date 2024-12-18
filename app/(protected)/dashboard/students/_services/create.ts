@@ -5,7 +5,10 @@ import { currentRole } from '@/lib/auth'
 import { StudentSchema } from '@/schemas'
 import db from '@/lib/db'
 
-export async function createStudent(data: z.infer<typeof StudentSchema>, studentId: string) {
+export async function createStudent(
+  data: z.infer<typeof StudentSchema>,
+  studentId: string
+) {
   const ROLE = await currentRole()
 
   if (ROLE === 'STUDENT' || ROLE === 'TEACHER') {
@@ -37,6 +40,13 @@ export async function createStudent(data: z.infer<typeof StudentSchema>, student
         institute,
         documentIdentity,
         dateOfBirth: new Date(dateOfBirth),
+      },
+    })
+
+    await db.initialAssistances.create({
+      data: {
+        student_id: studentId,
+        status: 'NOT_DETERMINED',
       },
     })
 
