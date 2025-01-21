@@ -6,11 +6,14 @@ import { SearchBarProps } from '@/components/search-bar/search-bar.type'
 import { cn } from '@/lib/utils'
 import { Search } from 'lucide-react'
 import { useDebouncedCallback } from 'use-debounce'
+import { useId } from 'react'
 
 const DEBOUNCE_TIME = 500
 
 export function SearchBar(props: SearchBarProps) {
   const { queryParam, placeholder, className } = props
+
+  const inputId = useId()
 
   const { replace } = useRouter()
   const pathname = usePathname()
@@ -30,7 +33,7 @@ export function SearchBar(props: SearchBarProps) {
   return (
     <div className='relative'>
       <Input
-        id='input-26'
+        id={inputId}
         className={cn('peer pe-9 ps-9 w-[320px] max-w-full', className)}
         placeholder={placeholder}
         defaultValue={searchParams.get(queryParam)?.toString()}

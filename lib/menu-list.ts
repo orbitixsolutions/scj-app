@@ -31,7 +31,7 @@ export const SIDEBAR_ITEMS = {
     },
     {
       name: 'Lista inicial',
-      url: '/dashboard/list-initial',
+      url: '/dashboard/initial-list',
       icon: Check,
     },
     {

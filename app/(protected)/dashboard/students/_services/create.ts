@@ -45,7 +45,7 @@ export async function createStudent(
 
     await db.initialAssistances.create({
       data: {
-        student_id: studentId,
+        studentId: studentId,
         status: 'NOT_DETERMINED',
       },
     })

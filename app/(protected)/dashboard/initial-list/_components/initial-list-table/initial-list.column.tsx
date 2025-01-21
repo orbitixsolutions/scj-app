@@ -16,7 +16,7 @@ export const StudentColumns: ColumnDef<Students>[] = [
       const { name, lastName } = row.original
 
       return (
-        <h2 className='text-xl line-clamp-1'>
+        <h2 className='text-sm line-clamp-1'>
           {name} {lastName}
         </h2>
       )
