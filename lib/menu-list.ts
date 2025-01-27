@@ -5,9 +5,10 @@ import {
   CheckCircle2,
   User2,
   UsersIcon,
+  AlertCircle,
 } from 'lucide-react'
 
-export const SIDEBAR_ITEMS = {
+export const SIDEBAR_DIRECTIVE_ITEMS = {
   sidebarItems: [
     {
       name: 'Inicio',
@@ -30,9 +31,29 @@ export const SIDEBAR_ITEMS = {
       icon: BookOpenIcon,
     },
     {
+      name: 'Asistencias',
+      url: '/dashboard/assistences',
+      icon: CheckCircle2,
+    },
+    {
       name: 'Lista inicial',
       url: '/dashboard/initial-list',
       icon: Check,
+    },
+    {
+      name: 'Ausencias',
+      url: '/dashboard/absents',
+      icon: AlertCircle,
+    },
+  ],
+}
+
+export const SIDEBAR_TEACHER_ITEMS = {
+  sidebarItems: [
+    {
+      name: 'Inicio',
+      url: '/dashboard',
+      icon: Home,
     },
     {
       name: 'Asistencias',
