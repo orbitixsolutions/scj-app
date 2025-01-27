@@ -9,10 +9,8 @@ import { Button } from '@/components/ui/button'
 import { TablePaginationProps } from '@/components/table-pagination/table-pagination.type'
 import { Input } from '@/components/ui/input'
 
-const ITEMS_PER_PAGE = [5, 10]
-
 export function TablePagination<TData>(props: TablePaginationProps<TData>) {
-  const { table, title } = props
+  const { table, title, pages = [5, 10] } = props
 
   return (
     <div className='flex items-center justify-between w-full space-x-4 py-2'>
@@ -27,7 +25,7 @@ export function TablePagination<TData>(props: TablePaginationProps<TData>) {
             <SelectValue placeholder='10' />
           </SelectTrigger>
           <SelectContent>
-            {ITEMS_PER_PAGE.map((pageSize) => (
+            {pages.map((pageSize) => (
               <SelectItem
                 key={pageSize}
                 value={pageSize.toString()}
