@@ -72,8 +72,8 @@ model InitialAssistances {
     id String @id @default(uuid())
 
     studentId String     @unique
-    student    Students   @relation(fields: [studentId], references: [id], onDelete: Cascade)
-    status     StatusEnum @default(NOT_DETERMINED)
+    student   Students   @relation(fields: [studentId], references: [id], onDelete: Cascade)
+    status    StatusEnum @default(NOT_DETERMINED)
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
@@ -99,10 +99,10 @@ model Workshops {
 model StudentsToWorkshop {
     id String @id @default(uuid())
 
-    students  Students @relation(fields: [studentId], references: [id], onDelete: Cascade)
+    student   Students @relation(fields: [studentId], references: [id], onDelete: Cascade)
     studentId String
 
-    workshops  Workshops @relation(fields: [workshopId], references: [id], onDelete: Cascade)
+    workshop   Workshops @relation(fields: [workshopId], references: [id], onDelete: Cascade)
     workshopId String
 
     createdAt DateTime @default(now())
@@ -115,13 +115,21 @@ model Assistances {
     studentId  String
     workshopId String
 
-    countFaults Int @default(autoincrement())
-
     workshop Workshops @relation(fields: [workshopId], references: [id], onDelete: Cascade)
     student  Students  @relation(fields: [studentId], references: [id], onDelete: Cascade)
 
     status StatusEnum @default(NOT_DETERMINED)
     date   DateTime   @default(now())
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+model Absents {
+    id String @id @default(uuid())
+
+    studentId  String
+    workshopId String
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
