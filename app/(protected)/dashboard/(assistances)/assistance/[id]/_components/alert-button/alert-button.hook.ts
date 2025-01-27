@@ -1,11 +1,11 @@
 import { StatusEnum } from '@prisma/client'
 import { AlertButtonProps } from '@/app/(protected)/dashboard/(assistances)/assistance/[id]/_components/alert-button/alert-button.type'
-import { useParams } from 'next/navigation'
+import { useParams, useSearchParams } from 'next/navigation'
 import { createAbsent } from '@/app/(protected)/dashboard/(assistances)/assistance/[id]/_services/create'
 import { useTransition } from 'react'
 import { useData } from '@/providers/data-provider'
 import { toast } from 'sonner'
-import { getCurrentDate, getStringDate } from '@/helpers/get-current-date'
+import { getStringDate } from '@/helpers/get-current-date'
 
 const STATUS_MAP = {
   ATTENDED: 'ASSISTED',
@@ -17,25 +17,28 @@ const STATUS_MAP = {
 export function useAlertButton(props: AlertButtonProps) {
   const { assistances, institute, id } = props
   const STUDENT_ID = id
-  const { id: WORKSHOP_ID } = useParams<{ id: string }>()
-
-  const [isPending, startTransition] = useTransition()
+  
   const { data } = useData()
-
   const { initialAssistances: initial, absents } = data
 
   const INITIAL = initial.find((item) => item.studentId === STUDENT_ID)
   const ABSENT = absents.find((item) => item.studentId === STUDENT_ID)
-
+  const ABSENT_ID = ABSENT?.id
+  
+  const { id: WORKSHOP_ID } = useParams<{ id: string }>()
+  const searchParams = useSearchParams()
+  const [isPending, startTransition] = useTransition()
+  
   const ABSENT_DATE = getStringDate(ABSENT?.createdAt || new Date())
-  const IS_TODAY = getCurrentDate() === ABSENT_DATE
+  const CURRENT_DATE = searchParams.get('date')
+  const IS_TODAY = CURRENT_DATE === ABSENT_DATE
 
   const status = assistances?.at(-1)?.status
   const initialStatus = INITIAL?.status
   const lastStatus = status || 'NOT_DETERMINED'
 
   const onSubmit = () => {
-    if (ABSENT && IS_TODAY) {
+    if (!!ABSENT_ID && IS_TODAY) {
       return toast.error('Este estudiante ya se notificó.')
     }
 
@@ -64,7 +67,7 @@ export function useAlertButton(props: AlertButtonProps) {
 
   const currentStatus = compareStatus(lastStatus)
   const disabled = currentStatus !== 'SPECIAL_CASE_NO_ATTENDED'
-  const isNotified = !!ABSENT?.id && IS_TODAY
+  const isNotified = !!ABSENT_ID && IS_TODAY
 
   return {
     status,

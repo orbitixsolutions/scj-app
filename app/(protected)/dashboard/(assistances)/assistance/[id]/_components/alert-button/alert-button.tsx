@@ -12,7 +12,7 @@ import { Bell, Check } from 'lucide-react'
 export function AlertButton(props: AlertButtonProps) {
   const { disabled, isPending, initialStatus, isNotified, onSubmit } =
     useAlertButton(props)
-
+ 
   if (!initialStatus) return null
 
   return (
