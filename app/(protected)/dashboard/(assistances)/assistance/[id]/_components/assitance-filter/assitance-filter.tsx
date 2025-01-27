@@ -6,11 +6,15 @@ import {
 import { DateQuery } from '@/components/date-query'
 import { SearchBar } from '@/components/search-bar'
 import { Button } from '@/components/ui/button'
+import { Suspense } from 'react'
+import { Loader } from 'lucide-react'
 
 export function AssistanceFilter() {
   return (
     <div className='grid grid-cols-3 gap-4'>
-      <DateQuery />
+      <Suspense fallback={<Loader className='animate-spin' />}>
+        <DateQuery />
+      </Suspense>
 
       <Popover>
         <PopoverTrigger asChild>
