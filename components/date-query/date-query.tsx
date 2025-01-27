@@ -9,7 +9,11 @@ import { getCurrentDate } from '@/helpers/get-current-date'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { AlertCircle, RefreshCcw } from 'lucide-react'
-import { Tooltip, TooltipContent, TooltipProvider } from '@/components/ui/tooltip'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+} from '@/components/ui/tooltip'
 import { TooltipTrigger } from '@radix-ui/react-tooltip'
 
 export function DateQuery(props: DateQueryProps) {
@@ -52,14 +56,12 @@ export function DateQuery(props: DateQueryProps) {
 
   return (
     <div className='flex items-center gap-1'>
-      <div className='flex flex-1 items-center space-x-2'>
-        <InputDate
-          className={cn('flex-1', className)}
-          aria-label='Fecha de nacimiento'
-          value={nowDate}
-          onChange={(value) => handleChange(value?.toString())}
-        />
-      </div>
+      <InputDate
+        className={cn('flex-1', className)}
+        aria-label='Fecha de nacimiento'
+        value={nowDate}
+        onChange={(value) => handleChange(value?.toString())}
+      />
 
       {!IS_TODAY && (
         <TooltipProvider>
@@ -85,6 +87,7 @@ export function DateQuery(props: DateQueryProps) {
             <TooltipTrigger asChild>
               <Button
                 onClick={handleCurrentDay}
+                variant='secondary'
                 size='sm-icon'
               >
                 <RefreshCcw />
