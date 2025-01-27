@@ -18,13 +18,8 @@ export default async function InitialList() {
 
   return (
     <ContentLayout title='Lista inicial'>
-      <header className='flex flex-col space-y-4'>
+      <header>
         <h2 className='font-bold text-xl'>Alumnos</h2>
-
-        <p className='text-sm opacity-70'>
-          La lista inicial sirve para comparar las asistencias de los
-          estudiantes en el taller con el de la institución.
-        </p>
       </header>
 
       <section className='space-y-4'>

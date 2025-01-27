@@ -16,10 +16,13 @@ export const absentColumns: ColumnDef<StudentsProps>[] = [
     accessorKey: 'student',
     header: 'Estudiante',
     cell: ({ row }) => {
-      const { students: students } = row.original
-      const { name, lastName } = students
+      const { lastName, name } = row.original
 
-      return <p>{name} {lastName}</p>
+      return (
+        <p>
+          {name} {lastName}
+        </p>
+      )
     },
   },
 
@@ -27,8 +30,7 @@ export const absentColumns: ColumnDef<StudentsProps>[] = [
     accessorKey: 'number-absences',
     header: 'Número de ausencias',
     cell: ({ row }) => {
-      const { students: students } = row.original
-      const { assistances } = students
+      const { assistances } = row.original
 
       const FALTS_NUMBER = assistances.filter(
         (a) => a.status === 'NOT_ATTENDED'

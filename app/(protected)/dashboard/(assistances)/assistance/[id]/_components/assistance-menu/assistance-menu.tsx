@@ -28,8 +28,15 @@ export function AssistanceMenu(props: AssistanceMenuProps) {
 function AssistanceDialogs(props: AssistanceMenuProps) {
   const { data: STUDENTS } = props
 
-  const FFALTS = filterStudentsByAbsences(STUDENTS, (length) => length <= 6)
-  const SFALTS = filterStudentsByAbsences(STUDENTS, (length) => length >= 7)
+  const FIVE_FALTS = filterStudentsByAbsences(
+    STUDENTS,
+    (length) => length <= 6
+  ) as []
+
+  const SEVER_OR_MORE_FALTS = filterStudentsByAbsences(
+    STUDENTS,
+    (length) => length >= 7
+  ) as []
 
   return (
     <div className='w-full space-y-4'>
@@ -53,8 +60,8 @@ function AssistanceDialogs(props: AssistanceMenuProps) {
                 </DialogHeader>
                 <div>
                   <AbsentDataTable
-                    data={FFALTS ?? []}
                     columns={absentColumns}
+                    data={FIVE_FALTS ?? []}
                   />
                 </div>
                 <DialogFooter>
@@ -75,8 +82,8 @@ function AssistanceDialogs(props: AssistanceMenuProps) {
                 </DialogHeader>
                 <div>
                   <AbsentDataTable
-                    data={SFALTS ?? []}
                     columns={absentColumns}
+                    data={SEVER_OR_MORE_FALTS ?? []}
                   />
                 </div>
                 <DialogFooter>
@@ -94,21 +101,22 @@ function AssistanceDialogs(props: AssistanceMenuProps) {
 }
 
 function filterStudentsByAbsences(
-  students: Array<StudentsProps>,
+  items: StudentsProps[],
   condition: (value: number) => void
 ) {
   // Esto devuelve un array de objetos con los estudiantes con asistencias no atendidas.
 
   // Dependiendo de la condición que se le pase devolverá un array con los estudiantes que
   // tengan x cantidad de asistencias no atendidas
-  return students
-    .map((a) => ({
-      students: {
-        ...a.students,
-        assistances: a.students?.assistances.filter(
-          (a) => a.status === 'NOT_ATTENDED'
-        ),
-      },
-    }))
-    .filter((a) => condition(a.students.assistances?.length))
+
+  const ITEMS =  items
+  .map((item) => ({
+    ...item,
+    assistances: item.assistances.filter(
+      (assistance) => assistance.status === 'NOT_ATTENDED'
+    ),
+  }))
+  .filter((a) => condition(a.assistances.length))
+
+  return ITEMS
 }

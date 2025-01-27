@@ -27,7 +27,6 @@ export async function createAssistance(
             studentId,
             status: 'ATTENDED',
             date: CURRENT_DATE,
-            countFaults: 0,
           },
         })
         revalidatePath(`/dashboard/assistance/${workshopId}`)
@@ -40,7 +39,6 @@ export async function createAssistance(
             studentId,
             status: 'ATTENDED_EXCUSED',
             date: CURRENT_DATE,
-            countFaults: 0,
           },
         })
         revalidatePath(`/dashboard/assistance/${workshopId}`)
@@ -53,7 +51,6 @@ export async function createAssistance(
             studentId,
             status: 'NOT_ATTENDED',
             date: CURRENT_DATE,
-            countFaults: 1,
           },
         })
         revalidatePath(`/dashboard/assistance/${workshopId}`)
@@ -66,7 +63,6 @@ export async function createAssistance(
             studentId,
             status: 'NOT_DETERMINED',
             date: CURRENT_DATE,
-            countFaults: 0,
           },
         })
         revalidatePath(`/dashboard/assistance/${workshopId}`)

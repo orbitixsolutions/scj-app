@@ -1,6 +1,5 @@
 'use client'
 
-import { TablePagination } from '@/components/table-pagination'
 import {
   Table,
   TableBody,
@@ -16,6 +15,7 @@ import {
   getPaginationRowModel,
   useReactTable,
 } from '@tanstack/react-table'
+import { TablePagination } from '@/components/table-pagination'
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -30,7 +30,8 @@ export function AssistanceDataTable<TData, TValue>({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel()
+    getPaginationRowModel: getPaginationRowModel(),
+    initialState: { pagination: { pageSize: 25 } },
   })
 
   return (
@@ -38,6 +39,7 @@ export function AssistanceDataTable<TData, TValue>({
       <TablePagination
         table={table}
         title='Asistencias'
+        pages={[5, 10, 25, 50]}
       />
       <div className='rounded-md border overflow-hidden'>
         <Table>

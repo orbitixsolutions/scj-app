@@ -1,10 +1,10 @@
-import { InitialAssistances, StatusEnum } from '@prisma/client'
+import { StatusEnum } from '@prisma/client'
 import { AssistanceFormProps } from '@/app/(protected)/dashboard/(assistances)/assistance/[id]/_components/assistance-form/assistance-form.type'
-import { useFetch } from '@/hooks/use-fetch'
 import { useParams } from 'next/navigation'
 import { useTransition } from 'react'
 import { createAssistance } from '@/app/(protected)/dashboard/(assistances)/assistences/_services/create'
 import { toast } from 'sonner'
+import { useData } from '@/providers/data-provider'
 
 const STATUS_MAP = {
   ATTENDED: 'ASSISTED',
@@ -14,26 +14,30 @@ const STATUS_MAP = {
 }
 
 export function useAssistanceForm(props: AssistanceFormProps) {
-  const { students: STUDENT } = props
+  const { id, assistances, institute } = props
+  const STUDENT_ID = id
+
   const { id: WORKSHOP_ID } = useParams<{ id: string }>()
-
-  const API_URL = '/api/v0/dashboard/initial-list/student/id'
-  const { data } = useFetch<InitialAssistances>(`${API_URL}/${STUDENT.id}`)
   const [isPending, startTransition] = useTransition()
+  const { data } = useData()
 
-  const studentId = STUDENT.id
-  const status = STUDENT?.assistances?.at(-1)?.status
-
-  const initialStatus = data.status
+  const { initialAssistances } = data
+  const INITIAL_ASSISTANCE = initialAssistances.find(
+    (initial) => initial.studentId === STUDENT_ID
+  )
+  
+  const initialStatus = INITIAL_ASSISTANCE?.status
+  const status = assistances?.at(-1)?.status
   const lastStatus = status || 'NOT_DETERMINED'
+
 
   const compareStatus = (status: StatusEnum) => {
     const ASSISTED = initialStatus === 'ATTENDED' && status === 'NOT_ATTENDED'
 
     if (ASSISTED) return 'SPECIAL_CASE_NO_ATTENDED'
-    if (STUDENT.institute !== 'LOS_PINOS') return 'EXTERNAL_STUDENT'
+    if (institute !== 'LOS_PINOS') return 'EXTERNAL_STUDENT'
 
-    const TRANSITIONS = STATUS_MAP[initialStatus]
+    const TRANSITIONS = STATUS_MAP[initialStatus as never]
     return TRANSITIONS || 'EXTERNAL_STUDENT'
   }
   const currentStatus = compareStatus(lastStatus)
@@ -42,7 +46,7 @@ export function useAssistanceForm(props: AssistanceFormProps) {
     startTransition(async () => {
       const { status, message } = await createAssistance(
         value,
-        studentId,
+        STUDENT_ID,
         WORKSHOP_ID
       )
 
@@ -59,6 +63,7 @@ export function useAssistanceForm(props: AssistanceFormProps) {
     isPending,
     status,
     lastStatus,
+    initialStatus,
     currentStatus,
     onChange,
   }

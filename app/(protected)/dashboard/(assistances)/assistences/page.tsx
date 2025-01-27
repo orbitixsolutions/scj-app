@@ -15,14 +15,9 @@ export default async function AssistancesPage() {
 
   return (
     <ContentLayout title='Asistencias'>
-      <header className='flex flex-col space-y-4'>
+      <header>
         <h2 className='font-bold text-xl'>Asistencias</h2>
-        <p className='text-sm opacity-70'>
-          La asistencias sirve para tener un conteo de los estudiantes que
-          asisten a los talleres.
-        </p>
       </header>
-
       <section className='space-y-4'>
         <WorkshopList data={WORKSHOPS} />
       </section>

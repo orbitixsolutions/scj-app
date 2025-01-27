@@ -1,6 +1,11 @@
-import { InitialAssistances, StatusEnum } from '@prisma/client'
-import { useFetch } from '@/hooks/use-fetch'
+import { StatusEnum } from '@prisma/client'
 import { AlertButtonProps } from '@/app/(protected)/dashboard/(assistances)/assistance/[id]/_components/alert-button/alert-button.type'
+import { useParams } from 'next/navigation'
+import { createAbsent } from '@/app/(protected)/dashboard/(assistances)/assistance/[id]/_services/create'
+import { useTransition } from 'react'
+import { useData } from '@/providers/data-provider'
+import { toast } from 'sonner'
+import { getCurrentDate, getStringDate } from '@/helpers/get-current-date'
 
 const STATUS_MAP = {
   ATTENDED: 'ASSISTED',
@@ -10,29 +15,65 @@ const STATUS_MAP = {
 }
 
 export function useAlertButton(props: AlertButtonProps) {
-  const { students: STUDENT } = props
+  const { assistances, institute, id } = props
+  const STUDENT_ID = id
+  const { id: WORKSHOP_ID } = useParams<{ id: string }>()
 
-  const API_URL = '/api/v0/dashboard/initial-list/student/id'
-  const { data } = useFetch<InitialAssistances>(`${API_URL}/${STUDENT.id}`)
-  const status = STUDENT?.assistances?.at(-1)?.status
+  const [isPending, startTransition] = useTransition()
+  const { data } = useData()
 
-  const initialStatus = data.status
+  const { initialAssistances: initial, absents } = data
+
+  const INITIAL = initial.find((item) => item.studentId === STUDENT_ID)
+  const ABSENT = absents.find((item) => item.studentId === STUDENT_ID)
+
+  const ABSENT_DATE = getStringDate(ABSENT?.createdAt || new Date())
+  const IS_TODAY = getCurrentDate() === ABSENT_DATE
+
+  const status = assistances?.at(-1)?.status
+  const initialStatus = INITIAL?.status
   const lastStatus = status || 'NOT_DETERMINED'
+
+  const onSubmit = () => {
+    if (ABSENT && IS_TODAY) {
+      return toast.error('Este estudiante ya se notificó.')
+    }
+
+    startTransition(async () => {
+      const DATA = { studentId: STUDENT_ID, workshopId: WORKSHOP_ID }
+      const { status, message } = await createAbsent(DATA)
+
+      if (status === 201) {
+        toast.success(message)
+        return
+      }
+
+      toast.success(message)
+    })
+  }
 
   const compareStatus = (status: StatusEnum) => {
     const ASSISTED = initialStatus === 'ATTENDED' && status === 'NOT_ATTENDED'
 
     if (ASSISTED) return 'SPECIAL_CASE_NO_ATTENDED'
-    if (STUDENT.institute !== 'LOS_PINOS') return 'EXTERNAL_STUDENT'
+    if (institute !== 'LOS_PINOS') return 'EXTERNAL_STUDENT'
 
-    const TRANSITIONS = STATUS_MAP[initialStatus]
+    const TRANSITIONS = STATUS_MAP[initialStatus as never]
     return TRANSITIONS || 'EXTERNAL_STUDENT'
   }
+
   const currentStatus = compareStatus(lastStatus)
+  const disabled = currentStatus !== 'SPECIAL_CASE_NO_ATTENDED'
+  const isNotified = !!ABSENT?.id && IS_TODAY
 
   return {
     status,
     lastStatus,
     currentStatus,
+    initialStatus,
+    disabled,
+    isPending,
+    isNotified,
+    onSubmit,
   }
 }

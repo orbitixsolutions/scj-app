@@ -1,6 +1,6 @@
 import {
   PageProps,
-  StudentsProps,
+  WorkshopsProps,
 } from '@/app/(protected)/dashboard/(assistances)/assistance/[id]/_types'
 import { currentRole } from '@/lib/auth'
 import db from '@/lib/db'
@@ -16,27 +16,27 @@ function formattedDate(date: Date) {
   return `${YEAR}-${MONTH}-${DAY}`
 }
 
-function filterByDate(students: StudentsProps[], date: string) {
-  return students.map((student) => ({
-    students: {
-      ...student.students,
-      assistances: student.students.assistances.filter(
-        (s) => formattedDate(s.createdAt) === date
-      ),
-    },
+function filterByDate(data: WorkshopsProps, currDate: string) {
+  const STUDENTS = data.students
+
+  return STUDENTS.map(({ student }) => ({
+    ...student,
+    assistances: student.assistances.filter(
+      (date) => formattedDate(date.createdAt) === currDate
+    ),
   }))
 }
 
-function filterStudents(students: StudentsProps[], filters: PageProps) {
+function filterStudents(data: WorkshopsProps, filters: PageProps) {
   const { lastName, name } = filters.searchParams
+  const STUDENTS = data.students.map(({ student }) => ({ ...student }))
 
-  return students.filter((student) => {
-    const matches = [
-      lastName ? student.students.lastName.includes(lastName) : true,
-      name ? student.students.name.includes(name) : true,
+  return STUDENTS.filter((item) => {
+    const matcher = [
+      name ? item.name.includes(name) : true,
+      lastName ? item.lastName.includes(lastName) : true,
     ]
-
-    return matches.every(Boolean)
+    return matcher.every(Boolean)
   })
 }
 
@@ -48,25 +48,22 @@ type getStudentsProps = {
 export async function getStudents(props: getStudentsProps) {
   const { mode, page } = props
 
-  const SEARCH_PARAMS = page.searchParams.date
+  const CURR_DATE = page.searchParams.date
   const WORKSHOP_ID = page.params.id
 
   const ROLE = await currentRole()
-
-  if (ROLE === 'USER' || ROLE === 'TEACHER') {
-    return null
-  }
+  if (ROLE === 'USER' || ROLE === 'TEACHER') return null
 
   try {
-    const WORKSHOP_DATA = await db.workshops.findUnique({
+    const WORKSHOPS = await db.workshops.findUnique({
       where: { id: WORKSHOP_ID },
       include: {
         students: {
           orderBy: {
-            students: { name: 'asc' },
+            student: { name: 'asc' },
           },
-          select: {
-            students: {
+          include: {
+            student: {
               select: {
                 lastName: true,
                 name: true,
@@ -76,6 +73,8 @@ export async function getStudents(props: getStudentsProps) {
                 dateOfBirth: true,
                 studyYear: true,
                 photo: true,
+                createdAt: true,
+                updatedAt: true,
                 assistances: { where: { workshopId: WORKSHOP_ID } },
               },
             },
@@ -84,16 +83,9 @@ export async function getStudents(props: getStudentsProps) {
       },
     })
 
-    if (mode === 'filter-by-dates') {
-      const WORKSHOPS = WORKSHOP_DATA?.students as StudentsProps[]
-      const WORKSHOP_STUDENTS = filterStudents(WORKSHOPS, page)
-      return filterByDate(WORKSHOP_STUDENTS, SEARCH_PARAMS)
-    }
-
-    if (mode === 'normal') {
-      const STUDENTS = WORKSHOP_DATA?.students
-      return STUDENTS as StudentsProps[]
-    }
+    if (!WORKSHOPS) return null
+    if (mode === 'normal') return filterStudents(WORKSHOPS, page)
+    if (mode === 'filter-by-dates') return filterByDate(WORKSHOPS, CURR_DATE)
 
     return null
   } catch {

@@ -12,8 +12,16 @@ import { AssistanceStatus } from '@/app/(protected)/dashboard/(assistances)/assi
 import { useAssistanceForm } from '@/app/(protected)/dashboard/(assistances)/assistance/[id]/_components/assistance-form/assistance-form.hook'
 
 export function AssistanceForm(props: AssistanceFormProps) {
-  const { currentStatus, status, lastStatus, isPending, onChange } =
-    useAssistanceForm(props)
+  const {
+    currentStatus,
+    status,
+    lastStatus,
+    initialStatus,
+    isPending,
+    onChange,
+  } = useAssistanceForm(props)
+
+  if (!initialStatus) return null
 
   return (
     <div className='flex items-center space-x-2'>

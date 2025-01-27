@@ -1,6 +1,5 @@
 'use client'
 
-import { TablePagination } from '@/components/table-pagination'
 import {
   Table,
   TableBody,
@@ -16,6 +15,7 @@ import {
   getPaginationRowModel,
   useReactTable,
 } from '@tanstack/react-table'
+import { TablePagination } from '@/components/table-pagination'
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -39,6 +39,7 @@ export function AbsentDataTable<TData, TValue>({
       <TablePagination
         table={table}
         title='Ausentes'
+        pages={[5, 10]}
       />
       <div className='rounded-md border overflow-hidden'>
         <Table>

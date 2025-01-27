@@ -10,9 +10,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
-import { useFetch } from '@/hooks/use-fetch'
 import { WorkshopAsigmentStudentsProps } from '@/app/(protected)/dashboard/(workshops)/workshop/[id]/_components/workshop-asigment-students-item/workshop-asigment-students-item.type'
-import { Students } from '@prisma/client'
 import { Button } from '@/components/ui/button'
 import { CornerDownRight } from 'lucide-react'
 import { useTransition } from 'react'
@@ -21,6 +19,7 @@ import { useRouter } from 'next/navigation'
 import { removeStudentFromWorkshop } from '@/app/(protected)/dashboard/(workshops)/workshop/[id]/_services/delete'
 import { Card } from '@/components/ui/card'
 import { cn } from '@/lib/utils'
+import { useData } from '@/providers/data-provider'
 
 export function WorkshopAsigmentStudentsItem(
   props: WorkshopAsigmentStudentsProps
@@ -28,27 +27,29 @@ export function WorkshopAsigmentStudentsItem(
   const { student } = props
   const { studentId, id } = student
 
+  const { data } = useData()
+  const { students } = data
+
   const [isPending, startTransition] = useTransition()
   const { refresh } = useRouter()
-
-  const { data: STUDENT } = useFetch<Students>(
-    `/api/v0/dashboard/students/id/${studentId}`
-  )
 
   const handleRemoveStudent = async (id: string) => {
     startTransition(async () => {
       const { status, message } = await removeStudentFromWorkshop(id)
-
+      
       if (status === 201) {
         toast.success(message)
         refresh()
-
+        
         return
       }
-
+      
       toast.error(message)
     })
   }
+  
+  const STUDENT = students.find((student) => student.id === studentId)
+  if (!STUDENT) return null
 
   return (
     <Card className={cn(isPending && 'cursor-wait opacity-50')}>

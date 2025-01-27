@@ -1,23 +1,21 @@
 'use client'
 
 import { ColumnDef } from '@tanstack/react-table'
-import { StudentsProps } from '@/app/(protected)/dashboard/(assistances)/assistance/[id]/_types'
 import { AssistanceForm } from '@/app/(protected)/dashboard/(assistances)/assistance/[id]/_components/assistance-form'
-import { Suspense } from 'react'
-import { ButtonIconSkeleton, InputSkeleton } from '@/components/skeletons'
 import { AlertButton } from '../alert-button'
+import { StudentsProps } from '../../_types'
 
 export const assistanceColumns: ColumnDef<StudentsProps>[] = [
   {
     accessorKey: 'students',
     header: 'Estudiantes',
     cell: ({ row }) => {
-      const { students: STUDENT } = row.original
+      const { name, lastName } = row.original
 
       return (
         <div className='flex flex-col space-y-1'>
           <h2 className='text-sm line-clamp-1'>
-            {STUDENT.name} {STUDENT.lastName}
+            {name} {lastName}
           </h2>
         </div>
       )
@@ -27,24 +25,16 @@ export const assistanceColumns: ColumnDef<StudentsProps>[] = [
     accessorKey: 'assistance',
     header: 'Asistencias',
     cell: ({ row }) => {
-      const { students: ASSISTANCES } = row.original
-      return (
-        <Suspense fallback={<InputSkeleton />}>
-          <AssistanceForm students={ASSISTANCES} />
-        </Suspense>
-      )
+      const data = row.original
+      return <AssistanceForm {...data} />
     },
   },
   {
     accessorKey: 'actions',
     header: 'Acciones',
     cell: ({ row }) => {
-      const { students: ASSISTANCES } = row.original
-      return (
-        <Suspense fallback={<ButtonIconSkeleton />}>
-          <AlertButton students={ASSISTANCES} />
-        </Suspense>
-      )
+      const data = row.original
+      return <AlertButton {...data} />
     },
   },
 ]

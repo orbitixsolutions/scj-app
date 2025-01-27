@@ -1,3 +1,5 @@
+import { Prisma } from '@prisma/client'
+
 export type PageProps = {
   params: {
     id: string
@@ -13,36 +15,33 @@ export type WorkshopActionType = {
   id: string
 }
 
-export interface StudentsProps {
-  students: StudentsClass
-}
+export type WorkshopsProps = Prisma.WorkshopsGetPayload<{
+  include: {
+    students: {
+      orderBy: {
+        student: { name: 'asc' }
+      }
+      include: {
+        student: {
+          select: {
+            lastName: true
+            name: true
+            documentIdentity: true
+            institute: true
+            id: true
+            dateOfBirth: true
+            studyYear: true
+            photo: true
+            createdAt: true
+            updatedAt: true
+            assistances: true
+          }
+        }
+      }
+    }
+  }
+}>
 
-export interface StudentsClass {
-  assistances: Assistance[]
-  lastName: string
-  name: string
-  documentIdentity: string
-  institute: string
-  id: string
-  dateOfBirth: Date
-  studyYear: string
-  photo: null
-}
-
-export interface Assistance {
-  id: string
-  studentId: string
-  workshopId: string
-  countFaults: number
-  status: Status
-  date: Date
-  createdAt: Date
-  updatedAt: Date
-}
-
-export enum Status {
-  ATTENDED = 'ATTENDED',
-  ATTENDED_EXCUSED = 'ATTENDED_EXCUSED',
-  NOT_ATTENDED = 'NOT_ATTENDED',
-  NOT_DETERMINED = 'NOT_DETERMINED',
-}
+export type StudentsProps = Prisma.StudentsGetPayload<{
+  include: { assistances: true }
+}>
