@@ -77,6 +77,8 @@ export async function getStudents(props: getStudentsProps) {
     if (mode === 'normal') return filterStudents(WORKSHOPS, page)
     if (mode === 'filter-by-dates') return filterByDate(WORKSHOPS, CURR_DATE)
 
+    console.log(JSON.stringify(WORKSHOPS))
+
     return null
   } catch {
     return null

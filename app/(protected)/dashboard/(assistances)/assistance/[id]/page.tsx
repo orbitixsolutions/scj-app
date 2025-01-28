@@ -10,8 +10,6 @@ import { getStudents } from '@/app/(protected)/dashboard/(assistances)/assistanc
 import { ChevronLeft } from 'lucide-react'
 import Link from 'next/link'
 
-export const dynamic = 'force-dynamic'
-
 export default async function AssistancePage(props: PageProps) {
   const [NORMAL_STUDENTS, DATES_STUDENTS] = await Promise.all([
     getStudents({ mode: 'normal', page: props }),
