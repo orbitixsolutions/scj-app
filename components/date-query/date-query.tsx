@@ -1,69 +1,69 @@
 'use client'
 
-import { usePathname, useRouter, useSearchParams } from 'next/navigation'
-import { InputDate } from '@/components/ui/input-date'
-import { DateQueryProps } from '@/components/date-query/date-query.type'
-import { parseDate } from '@internationalized/date'
-import { useEffect, useMemo, useState } from 'react'
-import { getCurrentDate } from '@/helpers/get-current-date'
-import { cn } from '@/lib/utils'
-import { Button } from '@/components/ui/button'
-import { AlertCircle, RefreshCcw } from 'lucide-react'
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
 } from '@/components/ui/tooltip'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
+import { InputDate } from '@/components/ui/input-date'
+import { DateQueryProps } from '@/components/date-query/date-query.type'
+import { parseDate } from '@internationalized/date'
+import { useEffect, useMemo } from 'react'
+import { getCurrentDate } from '@/helpers/get-current-date'
+import { cn } from '@/lib/utils'
+import { Button } from '@/components/ui/button'
+import { AlertCircle, RefreshCcw } from 'lucide-react'
 import { TooltipTrigger } from '@radix-ui/react-tooltip'
+import { DateInputSkeleton } from '@/components/skeletons'
 
 export function DateQuery(props: DateQueryProps) {
   const { className } = props
-  const CURRENT_DATE = getCurrentDate()
+  const TODAY_DATE = getCurrentDate()
 
-  const [nowDate, setNowDate] = useState(parseDate(CURRENT_DATE))
   const { replace } = useRouter()
   const pathname = usePathname()
   const params = useSearchParams()
-  const searchParams = useMemo(() => new URLSearchParams(params), [params])
 
-  const IS_TODAY = CURRENT_DATE === searchParams.get('date')?.toString()
+  const searchParams = useMemo(() => new URLSearchParams(params), [params])
+  const PARAM_DATE = searchParams.get('date')?.toString() ?? ''
+  const IS_TODAY = TODAY_DATE === PARAM_DATE
 
   const handleChange = (value: string | undefined) => {
     if (value) {
       searchParams.set('date', value)
-      setNowDate(parseDate(value))
     } else {
       searchParams.delete('date')
     }
     replace(`${pathname}?${searchParams.toString()}`, { scroll: false })
   }
 
-  const handleCurrentDay = () => {
-    searchParams.set('date', CURRENT_DATE)
-    replace(`${pathname}?${searchParams.toString()}`, { scroll: false })
-    setNowDate(parseDate(CURRENT_DATE))
-  }
+  const handleSetDate = () => handleChange(TODAY_DATE)
 
   useEffect(() => {
     const date = searchParams.get('date')
 
     if (!date) {
-      searchParams.set('date', CURRENT_DATE)
+      searchParams.set('date', TODAY_DATE)
       replace(`${pathname}?${searchParams.toString()}`, { scroll: false })
       return
     }
-  }, [CURRENT_DATE, searchParams, pathname, replace])
+  }, [TODAY_DATE, searchParams, pathname, replace])
 
   return (
     <div className='flex items-center gap-1'>
-      <InputDate
-        className={cn('flex-1', className)}
-        aria-label='Fecha de nacimiento'
-        value={nowDate}
-        onChange={(value) => handleChange(value?.toString())}
-      />
+      {!!PARAM_DATE ? (
+        <InputDate
+          className={cn('flex-1', className)}
+          aria-label='Fecha de nacimiento'
+          defaultValue={parseDate(PARAM_DATE)}
+          onChange={(value) => handleChange(value?.toString())}
+        />
+      ) : (
+        <DateInputSkeleton />
+      )}
 
-      {!IS_TODAY && (
+      {!!PARAM_DATE && !IS_TODAY && (
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
@@ -81,13 +81,13 @@ export function DateQuery(props: DateQueryProps) {
         </TooltipProvider>
       )}
 
-      {!IS_TODAY && (
+      {!!PARAM_DATE && !IS_TODAY && (
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
               <Button
-                onClick={handleCurrentDay}
                 variant='secondary'
+                onClick={handleSetDate}
                 size='sm-icon'
               >
                 <RefreshCcw />
