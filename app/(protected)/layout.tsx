@@ -8,10 +8,10 @@ export default async function DashboardLayout({
   children: React.ReactNode
 }) {
   return (
-    <AuthWrapper>
-      <PanelLayout>
-        <DataProviderWrapper>{children}</DataProviderWrapper>
-      </PanelLayout>
-    </AuthWrapper>
+    <DataProviderWrapper>
+      <AuthWrapper>
+        <PanelLayout>{children}</PanelLayout>
+      </AuthWrapper>
+    </DataProviderWrapper>
   )
 }
