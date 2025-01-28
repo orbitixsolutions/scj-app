@@ -14,11 +14,12 @@ import { LosPinosLogo } from '@/assets/logos/los-pinos-logo'
 import { SIDEBAR_DIRECTIVE_ITEMS, SIDEBAR_TEACHER_ITEMS } from '@/lib/menu-list'
 import { Button } from '@/components/ui/button'
 import { handleSignout } from '@/helpers/sign-out'
-import { useCurrentRole } from '@/hooks/use-session'
+import { useAuth } from '@/providers/auth-provider'
 import Link from 'next/link'
 
 export function PanelSidebar() {
-  const ROLE = useCurrentRole()
+  const { user } = useAuth()
+  const ROLE = user?.role
 
   return (
     <Sidebar className='!border-0'>
