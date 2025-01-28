@@ -2,19 +2,9 @@ import {
   PageProps,
   WorkshopsProps,
 } from '@/app/(protected)/dashboard/(assistances)/assistance/[id]/_types'
+import { getStringDate } from '@/helpers/get-current-date'
 import { currentRole } from '@/lib/auth'
 import db from '@/lib/db'
-
-function formattedDate(date: Date) {
-  const [DAY, MONTH, YEAR] = new Date(date)
-    .toLocaleDateString('es-ES', {
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-    })
-    .split('/')
-  return `${YEAR}-${MONTH}-${DAY}`
-}
 
 function filterByDate(data: WorkshopsProps, currDate: string) {
   const STUDENTS = data.students
@@ -22,7 +12,7 @@ function filterByDate(data: WorkshopsProps, currDate: string) {
   return STUDENTS.map(({ student }) => ({
     ...student,
     assistances: student.assistances.filter(
-      (date) => formattedDate(date.createdAt) === currDate
+      (date) => getStringDate(date.createdAt) === currDate
     ),
   }))
 }
