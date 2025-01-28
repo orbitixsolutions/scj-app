@@ -1,0 +1,1 @@
+export { slashCommand } from './slash-command'

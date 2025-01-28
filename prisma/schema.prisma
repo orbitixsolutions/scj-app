@@ -7,11 +7,12 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
-enum Role {
+enum RolesEnum {
     DIRECTIVE
     ADMIN
     TEACHER
     STUDENT
+    DEVELOPER
 }
 
 enum DayEnum {
@@ -33,12 +34,13 @@ enum StatusEnum {
 }
 
 model User {
-    id               String @id @default(uuid())
+    id               String    @id @default(uuid())
     name             String
     lastName         String
-    email            String @unique
+    password         String
+    email            String    @unique
     documentIdentity String
-    role             Role
+    role             RolesEnum
     description      String
 
     createdAt DateTime @default(now())
@@ -48,54 +50,87 @@ model User {
 }
 
 model Students {
-    id               String   @id @default(uuid())
+    id String @id @default(uuid())
+
     name             String
     lastName         String
-    email            String   @unique
-    studyYear        Int
+    studyYear        String
     institute        String
     documentIdentity String
     dateOfBirth      DateTime
-    photo            String
+    photo            String?
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    workshops   Workshops[]
-    assistences Assistences[]
+    workshops          StudentsToWorkshop[]
+    initialAssistances InitialAssistances?
+    assistances        Assistances[]
+}
+
+model InitialAssistances {
+    id String @id @default(uuid())
+
+    studentId String     @unique
+    student   Students   @relation(fields: [studentId], references: [id], onDelete: Cascade)
+    status    StatusEnum @default(NOT_DETERMINED)
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 }
 
 model Workshops {
     id          String   @id @default(uuid())
     name        String
-    day         String[]
+    days        String[]
     description String
-    photo       String
-
-    teacherId String
-    studentId String
+    photo       String?
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    teacher     User          @relation(fields: [teacherId], references: [id])
-    student     Students      @relation(fields: [studentId], references: [id])
-    assistences Assistences[]
+    teacher   User   @relation(fields: [teacherId], references: [id], onDelete: Cascade)
+    teacherId String
+
+    students    StudentsToWorkshop[]
+    assistances Assistances[]
 }
 
-model Assistences {
-    id         String @id @default(uuid())
+model StudentsToWorkshop {
+    id String @id @default(uuid())
+
+    student   Students @relation(fields: [studentId], references: [id], onDelete: Cascade)
+    studentId String
+
+    workshop   Workshops @relation(fields: [workshopId], references: [id], onDelete: Cascade)
+    workshopId String
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+model Assistances {
+    id String @id @default(uuid())
+
     studentId  String
     workshopId String
 
-    asistanceDate DateTime
-    status        StatusEnum
+    workshop Workshops @relation(fields: [workshopId], references: [id], onDelete: Cascade)
+    student  Students  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+    status StatusEnum @default(NOT_DETERMINED)
+    date   DateTime   @default(now())
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
+}
 
-    student  Students  @relation(fields: [studentId], references: [id])
-    workshop Workshops @relation(fields: [workshopId], references: [id])
+model Absents {
+    id String @id @default(uuid())
 
-    @@index([studentId, workshopId])
+    studentId  String
+    workshopId String
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 }

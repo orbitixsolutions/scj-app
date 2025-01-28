@@ -1,0 +1,82 @@
+import { StatusEnum } from '@prisma/client'
+import { AlertButtonProps } from '@/app/(protected)/dashboard/(assistances)/assistance/[id]/_components/alert-button/alert-button.type'
+import { useParams, useSearchParams } from 'next/navigation'
+import { createAbsent } from '@/app/(protected)/dashboard/(assistances)/assistance/[id]/_services/create'
+import { useTransition } from 'react'
+import { useData } from '@/providers/data-provider'
+import { toast } from 'sonner'
+import { getStringDate } from '@/helpers/get-current-date'
+
+const STATUS_MAP = {
+  ATTENDED: 'ASSISTED',
+  ATTENDED_EXCUSED: 'EXCUSED',
+  NOT_ATTENDED: 'NOT_ASSISTED',
+  NOT_DETERMINED: 'NOT_DETERMINED',
+}
+
+export function useAlertButton(props: AlertButtonProps) {
+  const { assistances, institute, id } = props
+  const STUDENT_ID = id
+  
+  const { data } = useData()
+  const { initialAssistances: initial, absents } = data
+
+  const INITIAL = initial.find((item) => item.studentId === STUDENT_ID)
+  const ABSENT = absents.find((item) => item.studentId === STUDENT_ID)
+  const ABSENT_ID = ABSENT?.id
+  
+  const { id: WORKSHOP_ID } = useParams<{ id: string }>()
+  const searchParams = useSearchParams()
+  const [isPending, startTransition] = useTransition()
+  
+  const ABSENT_DATE = getStringDate(ABSENT?.createdAt || new Date())
+  const CURRENT_DATE = searchParams.get('date')
+  const IS_TODAY = CURRENT_DATE === ABSENT_DATE
+
+  const status = assistances?.at(-1)?.status
+  const initialStatus = INITIAL?.status
+  const lastStatus = status || 'NOT_DETERMINED'
+
+  const onSubmit = () => {
+    if (!!ABSENT_ID && IS_TODAY) {
+      return toast.error('Este estudiante ya se notificó.')
+    }
+
+    startTransition(async () => {
+      const DATA = { studentId: STUDENT_ID, workshopId: WORKSHOP_ID }
+      const { status, message } = await createAbsent(DATA)
+
+      if (status === 201) {
+        toast.success(message)
+        return
+      }
+
+      toast.success(message)
+    })
+  }
+
+  const compareStatus = (status: StatusEnum) => {
+    const ASSISTED = initialStatus === 'ATTENDED' && status === 'NOT_ATTENDED'
+
+    if (ASSISTED) return 'SPECIAL_CASE_NO_ATTENDED'
+    if (institute !== 'LOS_PINOS') return 'EXTERNAL_STUDENT'
+
+    const TRANSITIONS = STATUS_MAP[initialStatus as never]
+    return TRANSITIONS || 'EXTERNAL_STUDENT'
+  }
+
+  const currentStatus = compareStatus(lastStatus)
+  const disabled = currentStatus !== 'SPECIAL_CASE_NO_ATTENDED'
+  const isNotified = !!ABSENT_ID && IS_TODAY
+
+  return {
+    status,
+    lastStatus,
+    currentStatus,
+    initialStatus,
+    disabled,
+    isPending,
+    isNotified,
+    onSubmit,
+  }
+}
