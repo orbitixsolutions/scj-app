@@ -47,6 +47,9 @@ export function AssistanceForm(props: AssistanceFormProps) {
         </SelectContent>
       </Select>
 
+      {lastStatus}
+      {currentStatus}
+
       {currentStatus === 'SPECIAL_CASE_NO_ATTENDED' && (
         <AssistanceStatus destructive>
           Según la lista de asistencias este estudiante debió asistir al taller
