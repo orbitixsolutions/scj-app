@@ -30,9 +30,10 @@ import { createStudent } from '@/app/(protected)/dashboard/students/_services/cr
 import { updateStudent } from '@/app/(protected)/dashboard/students/_services/update'
 import { useUploadImageToCloud } from '@/services/upload-core/use-upload-to-cloud'
 import { InputDate } from '@/components/ui/input-date'
-import { getCurrentDate, getStringDate } from '@/helpers/get-current-date'
+import { getCurrentDate, formatDateToString } from '@/helpers/get-current-date'
 import { toast } from 'sonner'
 import { SELECT_INSTITUTES } from '@/constants'
+
 export function CreateStudentForm(props: CreateStudentFormProps) {
   const { id } = props
 
@@ -69,7 +70,7 @@ export function CreateStudentForm(props: CreateStudentFormProps) {
         form.setValue('studyYear', DATA.studyYear)
         form.setValue('institute', DATA.institute)
         form.setValue('documentIdentity', DATA.documentIdentity)
-        form.setValue('dateOfBirth', getStringDate(DATA.dateOfBirth))
+        form.setValue('dateOfBirth', formatDateToString(DATA.dateOfBirth))
       })
     }
   }, [IS_EDITING, form, id])

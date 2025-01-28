@@ -1,12 +1,12 @@
 import { currentRole } from '@/lib/auth'
 import { Absents } from '@prisma/client'
 import { AbsentProps } from '@/app/(protected)/dashboard/absents/_types'
-import { getStringDate } from '@/helpers/get-current-date'
+import { formatDateToString } from '@/helpers/get-current-date'
 import db from '@/lib/db'
 
 function filterAbsents(abensts: Absents[], filters: AbsentProps) {
   const { date } = filters
-  return abensts.filter((item) => getStringDate(item.createdAt) === date)
+  return abensts.filter((item) => formatDateToString(item.date) === date)
 }
 
 export async function getAbsents(props: AbsentProps) {
