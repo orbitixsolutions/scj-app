@@ -26,6 +26,7 @@ export function AssistanceForm(props: AssistanceFormProps) {
   return (
     <div className='flex items-center space-x-2'>
       <Select
+        key={status}
         value={status}
         onValueChange={onChange}
         disabled={isPending}
