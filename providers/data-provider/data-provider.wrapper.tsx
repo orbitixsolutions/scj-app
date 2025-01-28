@@ -24,5 +24,7 @@ export async function DataProviderWrapper({
     absents: ABSENTS,
   }
 
+  console.log(DATA)
+
   return <DataProvider data={DATA}>{children}</DataProvider>
 }
