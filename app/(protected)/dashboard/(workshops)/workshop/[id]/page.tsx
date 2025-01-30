@@ -1,11 +1,28 @@
 import { ContentLayout } from '@/components/content-layout'
 import { WorkshopPageProps } from '@/app/(protected)/dashboard/(workshops)/workshop/[id]/_types'
 import { ChevronLeft } from 'lucide-react'
-import { getStudents, getWorkshop } from '@/app/(protected)/dashboard/(workshops)/workshop/[id]/_services/fetch'
+import {
+  getStudents,
+  getWorkshop,
+} from '@/app/(protected)/dashboard/(workshops)/workshop/[id]/_services/fetch'
 import { WorkshopAsigmentStudentsList } from '@/app/(protected)/dashboard/(workshops)/workshop/[id]/_components/workshop-asigment-students-list'
 import { redirect } from 'next/navigation'
 import { WorkshopStudents } from '@/app/(protected)/dashboard/(workshops)/workshop/[id]/_components/workshop-students-list'
+import { Metadata } from 'next'
 import Link from 'next/link'
+
+export async function generateMetadata(
+  props: WorkshopPageProps
+): Promise<Metadata> {
+  const { params } = props
+  const WORKSHOP_ID = params.id
+
+  const WORKSHOP = await getWorkshop(WORKSHOP_ID)
+
+  if (!WORKSHOP) return { title: 'Taller - Indefinido' }
+
+  return { title: `Taller - ${WORKSHOP.name}` }
+}
 
 export default async function WorkshopPage(props: WorkshopPageProps) {
   const { params, searchParams: PARAMS } = props

@@ -2,6 +2,11 @@ import { ContentLayout } from '@/components/content-layout'
 import { ModeToggle } from '@/components/mode-toggle'
 import { SidebarTrigger } from '@/components/ui/sidebar'
 import { currentUser } from '@/lib/auth'
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Inicio',
+}
 
 export default async function DashboardHomePage() {
   const SESSION = await currentUser()
