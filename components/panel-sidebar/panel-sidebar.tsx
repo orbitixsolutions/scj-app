@@ -11,7 +11,11 @@ import {
   SidebarMenuItem,
 } from '@/components/ui/sidebar'
 import { LosPinosLogo } from '@/assets/logos/los-pinos-logo'
-import { SIDEBAR_DIRECTIVE_ITEMS, SIDEBAR_TEACHER_ITEMS } from '@/lib/menu-list'
+import {
+  SIDEBAR_ADMIN_ITEMS,
+  SIDEBAR_DIRECTIVE_ITEMS,
+  SIDEBAR_TEACHER_ITEMS,
+} from '@/lib/menu-list'
 import { Button } from '@/components/ui/button'
 import { handleSignout } from '@/helpers/sign-out'
 import { useAuth } from '@/providers/auth-provider'
@@ -37,32 +41,33 @@ export function PanelSidebar() {
           <SidebarGroupLabel>Administrar</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {ROLE === 'DIRECTIVE' &&
-                SIDEBAR_DIRECTIVE_ITEMS.sidebarItems.map((item) => (
-                  <SidebarMenuItem key={item.name}>
-                    <SidebarMenuButton asChild>
-                      <Link href={item.url}>
-                        <item.icon />
-                        <span>{item.name}</span>
-                      </Link>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                ))}
-
-              {ROLE === 'DEVELOPER' &&
-                SIDEBAR_DIRECTIVE_ITEMS.sidebarItems.map((item) => (
-                  <SidebarMenuItem key={item.name}>
-                    <SidebarMenuButton asChild>
-                      <Link href={item.url}>
-                        <item.icon />
-                        <span>{item.name}</span>
-                      </Link>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                ))}
+              {ROLE === 'DIRECTIVE' ||
+                (ROLE === 'DEVELOPER' &&
+                  SIDEBAR_DIRECTIVE_ITEMS.sidebarItems.map((item) => (
+                    <SidebarMenuItem key={item.name}>
+                      <SidebarMenuButton asChild>
+                        <Link href={item.url}>
+                          <item.icon />
+                          <span>{item.name}</span>
+                        </Link>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  )))}
 
               {ROLE === 'TEACHER' &&
                 SIDEBAR_TEACHER_ITEMS.sidebarItems.map((item) => (
+                  <SidebarMenuItem key={item.name}>
+                    <SidebarMenuButton asChild>
+                      <Link href={item.url}>
+                        <item.icon />
+                        <span>{item.name}</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ))}
+
+              {ROLE === 'ADMIN' &&
+                SIDEBAR_ADMIN_ITEMS.sidebarItems.map((item) => (
                   <SidebarMenuItem key={item.name}>
                     <SidebarMenuButton asChild>
                       <Link href={item.url}>

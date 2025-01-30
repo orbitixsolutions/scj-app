@@ -1,5 +1,6 @@
 'use server'
 
+import { currentRole } from '@/lib/auth'
 import { revalidatePath } from 'next/cache'
 import db from '@/lib/db'
 
@@ -11,6 +12,11 @@ type AbsentsProps = {
 
 export async function createAbsent(props: AbsentsProps) {
   const { studentId, workshopId, currentDate } = props
+  const ROLE = await currentRole()
+
+  if (ROLE === 'STUDENT') {
+    return { status: 400, message: 'No tienes permisos.' }
+  }
 
   const CURRENT_DATE = new Date(currentDate ?? '')
   CURRENT_DATE.setHours(24)
