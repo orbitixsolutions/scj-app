@@ -1,5 +1,5 @@
 import {
-  PageProps,
+  AssistancePageProps,
   WorkshopsProps,
 } from '@/app/(protected)/dashboard/(assistances)/assistance/[id]/_types'
 import { formatDateToString } from '@/helpers/get-current-date'
@@ -17,7 +17,7 @@ function filterByDate(data: WorkshopsProps, currDate: string) {
   }))
 }
 
-function filterStudents(data: WorkshopsProps, filters: PageProps) {
+function filterStudents(data: WorkshopsProps, filters: AssistancePageProps) {
   const { lastName, name } = filters.searchParams
   const STUDENTS = data.students.map(({ student }) => ({ ...student }))
 
@@ -32,7 +32,7 @@ function filterStudents(data: WorkshopsProps, filters: PageProps) {
 
 type getStudentsProps = {
   mode: 'normal' | 'filter-by-dates'
-  page: PageProps
+  page: AssistancePageProps
 }
 
 export async function getStudents(props: getStudentsProps) {
@@ -78,6 +78,37 @@ export async function getStudents(props: getStudentsProps) {
     if (mode === 'filter-by-dates') return filterByDate(WORKSHOPS, CURR_DATE)
 
     return null
+  } catch {
+    return null
+  }
+}
+
+import { Prisma } from '@prisma/client'
+
+export async function getWorkshop(id: string) {
+  const ROLE = await currentRole()
+
+  if (ROLE === 'STUDENT') {
+    return null
+  }
+
+  try {
+    const WORKSHOP = await db.workshops.findUnique({
+      where: {
+        id,
+      },
+      include: {
+        students: true,
+        teacher: true,
+      },
+    })
+
+    return WORKSHOP as Prisma.WorkshopsGetPayload<{
+      include: {
+        students: true
+        teacher: true
+      }
+    }>
   } catch {
     return null
   }

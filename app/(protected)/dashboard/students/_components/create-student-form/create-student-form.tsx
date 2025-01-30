@@ -33,9 +33,13 @@ import { InputDate } from '@/components/ui/input-date'
 import { getCurrentDate, formatDateToString } from '@/helpers/get-current-date'
 import { toast } from 'sonner'
 import { SELECT_INSTITUTES } from '@/constants'
+import { useData } from '@/providers/data-provider'
 
 export function CreateStudentForm(props: CreateStudentFormProps) {
   const { id } = props
+
+  const { data } = useData()
+  const STUDENT = data.students.find((item) => item.id === id)
 
   const [isPending, startTransition] = useTransition()
   const { handleUpload } = useUploadImageToCloud()
@@ -59,21 +63,19 @@ export function CreateStudentForm(props: CreateStudentFormProps) {
 
   useEffect(() => {
     if (IS_EDITING) {
-      startTransition(async () => {
-        const RES = await fetch(`/api/v0/dashboard/students/id/${id}`)
-        const DATA = await RES.json()
+      if (!STUDENT) return
 
-        if (DATA.ok) return
-
-        form.setValue('name', DATA.name)
-        form.setValue('lastName', DATA.lastName)
-        form.setValue('studyYear', DATA.studyYear)
-        form.setValue('institute', DATA.institute)
-        form.setValue('documentIdentity', DATA.documentIdentity)
-        form.setValue('dateOfBirth', formatDateToString(DATA.dateOfBirth))
-      })
+      form.setValue('name', STUDENT.name)
+      form.setValue('lastName', STUDENT.lastName)
+      form.setValue('studyYear', STUDENT.studyYear)
+      form.setValue('institute', STUDENT.institute)
+      form.setValue('documentIdentity', STUDENT.documentIdentity)
+      form.setValue(
+        'dateOfBirth',
+        formatDateToString(new Date(STUDENT.dateOfBirth))
+      )
     }
-  }, [IS_EDITING, form, id])
+  }, [STUDENT, IS_EDITING, form, id])
 
   const onSubmit = form.handleSubmit((values) => {
     startTransition(async () => {
