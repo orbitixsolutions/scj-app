@@ -10,6 +10,8 @@ import { useParams, useSearchParams } from 'next/navigation'
 import { useMemo } from 'react'
 import Link from 'next/link'
 
+const API_URL = `/api/v0/dashboard/assistances/id`
+
 export function AssistanceView() {
   const { id: WORKSHOP_ID } = useParams<{ id: string }>()
 
@@ -19,12 +21,14 @@ export function AssistanceView() {
   const CURRENT_DATE = searchParams.get('date')?.toString()
 
   const { data: NORMAL_ASSIS, status: NORMAL_ASSIS_STATUS } = useFetch(
-    `/api/v0/dashboard/assistances/id/${WORKSHOP_ID}?date=${CURRENT_DATE}&mode=normal`
+    `${API_URL}/${WORKSHOP_ID}?date=${CURRENT_DATE}&mode=normal`
   )
 
   const { data: ASSIS_DATES, status: NORMAL_ASSIS_DATES } = useFetch(
-    `/api/v0/dashboard/assistances/id/${WORKSHOP_ID}?date=${CURRENT_DATE}&mode=filter-by-dates`
+    `${API_URL}/${WORKSHOP_ID}?date=${CURRENT_DATE}&mode=filter-by-dates`
   )
+
+  console.log(ASSIS_DATES)
 
   if (NORMAL_ASSIS_STATUS === 'pending' && NORMAL_ASSIS_DATES === 'pending') {
     return <Loader2 className='animate-spin' />

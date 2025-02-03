@@ -15,6 +15,8 @@ const STATUS_MAP = {
   NOT_DETERMINED: 'NOT_DETERMINED',
 }
 
+const API_URL = `/api/v0/dashboard/assistances/id`
+
 function filterCurrentStatus(
   assistances: Assistances[],
   currentDate: string | undefined
@@ -22,8 +24,6 @@ function filterCurrentStatus(
   const STATUS = assistances.filter((item) => {
     return formatDateToString(item.date) === currentDate
   })
-
-  console.log(STATUS)
 
   return STATUS.at(0)?.status
 }
@@ -41,11 +41,11 @@ export function useAssistanceForm(props: AssistanceFormProps) {
   const CURRENT_DATE = searchParams.get('date')?.toString()
 
   const { refetch: refetchNormalAssis } = useFetch(
-    `/api/v0/dashboard/assistances/id/${WORKSHOP_ID}?date=${CURRENT_DATE}&mode=normal`
+    `${API_URL}/${WORKSHOP_ID}?date=${CURRENT_DATE}&mode=normal`
   )
 
   const { refetch: refetchDateAssis } = useFetch(
-    `/api/v0/dashboard/assistances/id/${WORKSHOP_ID}?date=${CURRENT_DATE}&mode=filter-by-dates`
+    `${API_URL}/${WORKSHOP_ID}?date=${CURRENT_DATE}&mode=filter-by-dates`
   )
 
   const { data } = useData()
