@@ -23,6 +23,8 @@ function filterCurrentStatus(
     return formatDateToString(item.date) === currentDate
   })
 
+  console.log(STATUS)
+
   return STATUS.at(0)?.status
 }
 

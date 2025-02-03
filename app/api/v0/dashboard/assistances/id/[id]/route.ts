@@ -83,7 +83,8 @@ export async function GET(
       },
     })
 
-    if (!WORKSHOPS) return null
+    if (!WORKSHOPS) return NextResponse.json({ error: null }, { status: 500 })
+
     if (QUERY_DATA.MODE === 'normal') {
       return NextResponse.json(filterStudents(WORKSHOPS, QUERY_DATA), {
         status: 201,
