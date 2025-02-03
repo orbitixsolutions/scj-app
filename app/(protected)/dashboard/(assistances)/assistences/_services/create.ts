@@ -12,13 +12,12 @@ export async function createAssistance(
   currentDate: string | undefined
 ) {
   const ROLE = await currentRole()
-  
+
   if (ROLE === 'STUDENT') {
     return { status: 400, message: 'No tienes permisos.' }
   }
 
   const CURRENT_DATE = new Date(currentDate ?? '')
-  CURRENT_DATE.setHours(24)
   CURRENT_DATE.setMinutes(30)
 
   try {
