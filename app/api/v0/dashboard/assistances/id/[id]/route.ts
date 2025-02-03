@@ -12,17 +12,6 @@ type QueryData = {
   LAST_NAME: string
 }
 
-function filterByDate(data: WorkshopsProps, currDate: string) {
-  const STUDENTS = data.students
-
-  return STUDENTS.map(({ student }) => ({
-    ...student,
-    assistances: student.assistances.filter((item) => {
-      return formatDateToString(item.date) === currDate
-    }),
-  }))
-}
-
 function filterAssistances(data: WorkshopsProps, filters: QueryData) {
   const { LAST_NAME, NAME } = filters
   const STUDENTS = data.students.map(({ student }) => ({ ...student }))
@@ -34,6 +23,17 @@ function filterAssistances(data: WorkshopsProps, filters: QueryData) {
     ]
     return matcher.every(Boolean)
   })
+}
+
+function filterByDate(data: WorkshopsProps, currDate: string) {
+  const STUDENTS = data.students
+
+  return STUDENTS.map(({ student }) => ({
+    ...student,
+    assistances: student.assistances.filter((item) => {
+      return formatDateToString(item.date) === currDate
+    }),
+  }))
 }
 
 export async function GET(
@@ -90,7 +90,11 @@ export async function GET(
       return NextResponse.json(ITEMS, { status: 201 })
     }
 
-    if (QUERY_DATA.MODE === 'filter-by-dates') {
+    if (QUERY_DATA.MODE === 'all') {
+      return NextResponse.json(WORKSHOPS, { status: 201 })
+    }
+
+    if (QUERY_DATA.MODE === 'dates') {
       const ITEMS = filterByDate(WORKSHOPS, QUERY_DATA.CURR_DATE)
       return NextResponse.json(ITEMS, { status: 201 })
     }

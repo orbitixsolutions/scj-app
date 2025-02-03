@@ -25,8 +25,6 @@ export function AssistanceForm(props: AssistanceFormProps) {
 
   return (
     <div className='flex items-center space-x-2'>
-      <p>{status}</p>
-
       <Select
         key={status}
         value={status}
