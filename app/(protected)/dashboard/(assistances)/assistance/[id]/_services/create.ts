@@ -19,7 +19,6 @@ export async function createAbsent(props: AbsentsProps) {
   }
 
   const CURRENT_DATE = new Date(currentDate ?? '')
-  CURRENT_DATE.setHours(24)
   CURRENT_DATE.setMinutes(30)
 
   try {
