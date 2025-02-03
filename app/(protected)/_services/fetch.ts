@@ -20,7 +20,9 @@ export async function getWorkshops() {
 
 export async function getInitialAssistances() {
   try {
-    const ASSISTANCES = await db.initialAssistances.findMany()
+    const ASSISTANCES = await db.initialAssistances.findMany({
+      orderBy: { createdAt: 'asc' },
+    })
     return ASSISTANCES
   } catch {
     return null

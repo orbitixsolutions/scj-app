@@ -22,9 +22,8 @@ function filterCurrentStatus(
     .filter((item) => {
       return formatDateToString(item.date) === currentDate
     })
-    .at(-1)?.status
 
-  return STATUS
+  return STATUS.at(-1)?.status
 }
 
 export function useAssistanceForm(props: AssistanceFormProps) {
@@ -42,10 +41,10 @@ export function useAssistanceForm(props: AssistanceFormProps) {
 
   const { data } = useData()
   const { initialAssistances: initial } = data
-
+  
   const INITIAL = initial.find((item) => item.studentId === STUDENT_ID)
   const initialStatus = INITIAL?.status
-
+  
   const status = filterCurrentStatus(assistances, CURRENT_DATE)
   const lastStatus = status || 'NOT_DETERMINED'
 
