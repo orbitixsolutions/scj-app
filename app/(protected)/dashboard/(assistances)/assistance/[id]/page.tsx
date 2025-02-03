@@ -27,8 +27,6 @@ export async function generateMetadata(
   return { title: `Asistencia de alumnos - ${WORKSHOP.name}`}
 }
 
-export const dynamic = 'force-dynamic'
-
 export default async function AssistancePage(props: AssistancePageProps) {
   const [NORMAL_STUDENTS, DATES_STUDENTS] = await Promise.all([
     getStudents({ mode: 'normal', page: props }),

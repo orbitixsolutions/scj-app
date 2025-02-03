@@ -66,7 +66,10 @@ export async function getStudents(props: getStudentsProps) {
                 photo: true,
                 createdAt: true,
                 updatedAt: true,
-                assistances: { where: { workshopId: WORKSHOP_ID } },
+                assistances: {
+                  where: { workshopId: WORKSHOP_ID },
+                  orderBy: { createdAt: 'asc' },
+                },
               },
             },
           },
