@@ -1,10 +1,11 @@
-import { StatusEnum } from '@prisma/client'
+import { Assistances, StatusEnum } from '@prisma/client'
 import { AssistanceFormProps } from '@/app/(protected)/dashboard/(assistances)/assistance/[id]/_components/assistance-form/assistance-form.type'
-import { useParams } from 'next/navigation'
-import { useTransition } from 'react'
+import { useParams, useRouter, useSearchParams } from 'next/navigation'
+import { useMemo, useTransition } from 'react'
 import { createAssistance } from '@/app/(protected)/dashboard/(assistances)/assistences/_services/create'
 import { toast } from 'sonner'
 import { useData } from '@/providers/data-provider'
+import { formatDateToString } from '@/helpers/get-current-date'
 
 const STATUS_MAP = {
   ATTENDED: 'ASSISTED',
@@ -13,23 +14,40 @@ const STATUS_MAP = {
   NOT_DETERMINED: 'NOT_DETERMINED',
 }
 
+function filterCurrentStatus(
+  assistances: Assistances[],
+  currentDate: string | undefined
+) {
+  const STATUS = assistances
+    .filter((item) => {
+      return formatDateToString(item.date) === currentDate
+    })
+    .at(-1)?.status
+
+  return STATUS
+}
+
 export function useAssistanceForm(props: AssistanceFormProps) {
   const { id, assistances, institute } = props
   const STUDENT_ID = id
 
+  const { refresh } = useRouter()
   const { id: WORKSHOP_ID } = useParams<{ id: string }>()
   const [isPending, startTransition] = useTransition()
+
+  const params = useSearchParams()
+
+  const searchParams = useMemo(() => new URLSearchParams(params), [params])
+  const CURRENT_DATE = searchParams.get('date')?.toString()
+
   const { data } = useData()
+  const { initialAssistances: initial } = data
 
-  const { initialAssistances } = data
-  const INITIAL_ASSISTANCE = initialAssistances.find(
-    (initial) => initial.studentId === STUDENT_ID
-  )
-  
-  const initialStatus = INITIAL_ASSISTANCE?.status
-  const status = assistances?.at(-1)?.status
+  const INITIAL = initial.find((item) => item.studentId === STUDENT_ID)
+  const initialStatus = INITIAL?.status
+
+  const status = filterCurrentStatus(assistances, CURRENT_DATE)
   const lastStatus = status || 'NOT_DETERMINED'
-
 
   const compareStatus = (status: StatusEnum) => {
     const ASSISTED = initialStatus === 'ATTENDED' && status === 'NOT_ATTENDED'
@@ -40,6 +58,7 @@ export function useAssistanceForm(props: AssistanceFormProps) {
     const TRANSITIONS = STATUS_MAP[initialStatus as never]
     return TRANSITIONS || 'EXTERNAL_STUDENT'
   }
+
   const currentStatus = compareStatus(lastStatus)
 
   const onChange = (value: StatusEnum) => {
@@ -47,11 +66,13 @@ export function useAssistanceForm(props: AssistanceFormProps) {
       const { status, message } = await createAssistance(
         value,
         STUDENT_ID,
-        WORKSHOP_ID
+        WORKSHOP_ID,
+        CURRENT_DATE
       )
 
       if (status === 201) {
         toast.success(message)
+        refresh()
         return
       }
 

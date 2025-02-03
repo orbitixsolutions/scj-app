@@ -1,7 +1,7 @@
 import { currentRole } from '@/lib/auth'
 import { Prisma } from '@prisma/client'
+import { WorkshopStudentActionProps } from '@/app/(protected)/dashboard/(workshops)/workshop/[id]/_types'
 import db from '@/lib/db'
-import { WorkshopStudentActionProps } from '../_types'
 
 export async function getWorkshop(id: string) {
   const ROLE = await currentRole()

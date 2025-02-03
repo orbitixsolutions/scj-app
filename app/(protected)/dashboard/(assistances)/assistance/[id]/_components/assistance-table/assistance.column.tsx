@@ -2,8 +2,8 @@
 
 import { ColumnDef } from '@tanstack/react-table'
 import { AssistanceForm } from '@/app/(protected)/dashboard/(assistances)/assistance/[id]/_components/assistance-form'
-import { AlertButton } from '../alert-button'
-import { StudentsProps } from '../../_types'
+import { AlertButton } from '@/app/(protected)/dashboard/(assistances)/assistance/[id]/_components/alert-button'
+import { StudentsProps } from '@/app/(protected)/dashboard/(assistances)/assistance/[id]/_types'
 
 export const assistanceColumns: ColumnDef<StudentsProps>[] = [
   {

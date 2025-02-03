@@ -7,6 +7,11 @@ import { StudentFilter } from '@/app/(protected)/dashboard/students/_components/
 import { Prisma } from '@prisma/client'
 import { StudentBatchDelete } from '@/app/(protected)/dashboard/students/_components/student-batch-delete'
 import { StudentBatchProvider } from '@/providers/student-batch-provider'
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Alumnos',
+}
 
 export default async function StudentsPage(props: PageProps) {
   const { searchParams: PARAMS } = props

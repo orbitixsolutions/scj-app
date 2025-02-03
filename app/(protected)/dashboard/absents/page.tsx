@@ -4,6 +4,11 @@ import { AbsentDataTable } from '@/app/(protected)/dashboard/absents/_components
 import { absentColumns } from '@/app/(protected)/dashboard/absents/_components/absent-table/absent.column'
 import { AbsentFilter } from '@/app/(protected)/dashboard/absents/_components/absent-filter'
 import { PageProps } from '@/app/(protected)/dashboard/absents/_types'
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Lista de ausentes',
+}
 
 export default async function AbsentsPage(props: PageProps) {
   const { searchParams: PARAMS } = props

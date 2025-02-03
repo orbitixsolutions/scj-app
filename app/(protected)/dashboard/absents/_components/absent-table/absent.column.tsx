@@ -1,7 +1,7 @@
 'use client'
 
 import { DeleteButton } from '@/components/delete-button'
-import { getStringDate } from '@/helpers/get-current-date'
+import { formatDateToString } from '@/helpers/get-current-date'
 import { useData } from '@/providers/data-provider'
 import { Absents } from '@prisma/client'
 import { ColumnDef } from '@tanstack/react-table'
@@ -55,8 +55,8 @@ export const absentColumns: ColumnDef<Absents>[] = [
     accessorKey: 'absentDate',
     header: 'Fecha de ausencia',
     cell: ({ row }) => {
-      const { studentId, createdAt } = row.original
-      const ABSENT_DATE = getStringDate(createdAt)
+      const { studentId, date } = row.original
+      const ABSENT_DATE = formatDateToString(date)
 
       const AbsentDate = () => {
         const { data } = useData()

@@ -6,6 +6,11 @@ import { UserColumns } from '@/app/(protected)/dashboard/create-user/_components
 import { UserFilter } from '@/app/(protected)/dashboard/create-user/_components/user-filter'
 import { PageProps } from '@/app/(protected)/dashboard/create-user/_types'
 import { User } from '@prisma/client'
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Crear usuarios',
+}
 
 export default async function CreateUserPage(props: PageProps) {
   const { searchParams: PARAMS } = props

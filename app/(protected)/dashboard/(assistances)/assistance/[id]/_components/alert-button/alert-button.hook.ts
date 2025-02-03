@@ -1,11 +1,11 @@
-import { StatusEnum } from '@prisma/client'
+import { Assistances, StatusEnum } from '@prisma/client'
 import { AlertButtonProps } from '@/app/(protected)/dashboard/(assistances)/assistance/[id]/_components/alert-button/alert-button.type'
 import { useParams, useSearchParams } from 'next/navigation'
 import { createAbsent } from '@/app/(protected)/dashboard/(assistances)/assistance/[id]/_services/create'
 import { useTransition } from 'react'
 import { useData } from '@/providers/data-provider'
 import { toast } from 'sonner'
-import { getStringDate } from '@/helpers/get-current-date'
+import { formatDateToString } from '@/helpers/get-current-date'
 
 const STATUS_MAP = {
   ATTENDED: 'ASSISTED',
@@ -14,26 +14,40 @@ const STATUS_MAP = {
   NOT_DETERMINED: 'NOT_DETERMINED',
 }
 
+function filterCurrentStatus(
+  assistances: Assistances[],
+  currentDate: string | undefined
+) {
+  const STATUS = assistances
+    .filter((item) => {
+      return formatDateToString(item.date) === currentDate
+    })
+    .at(-1)?.status
+
+  return STATUS
+}
+
 export function useAlertButton(props: AlertButtonProps) {
   const { assistances, institute, id } = props
   const STUDENT_ID = id
-  
+
   const { data } = useData()
   const { initialAssistances: initial, absents } = data
 
   const INITIAL = initial.find((item) => item.studentId === STUDENT_ID)
   const ABSENT = absents.find((item) => item.studentId === STUDENT_ID)
   const ABSENT_ID = ABSENT?.id
-  
+
   const { id: WORKSHOP_ID } = useParams<{ id: string }>()
-  const searchParams = useSearchParams()
+  const params = useSearchParams()
+  const searchParams = new URLSearchParams(params)
   const [isPending, startTransition] = useTransition()
-  
-  const ABSENT_DATE = getStringDate(ABSENT?.createdAt || new Date())
-  const CURRENT_DATE = searchParams.get('date')
+
+  const ABSENT_DATE = formatDateToString(ABSENT?.date || new Date())
+  const CURRENT_DATE = searchParams.get('date')?.toString() ?? ''
   const IS_TODAY = CURRENT_DATE === ABSENT_DATE
 
-  const status = assistances?.at(-1)?.status
+  const status = filterCurrentStatus(assistances, CURRENT_DATE)
   const initialStatus = INITIAL?.status
   const lastStatus = status || 'NOT_DETERMINED'
 
@@ -43,7 +57,12 @@ export function useAlertButton(props: AlertButtonProps) {
     }
 
     startTransition(async () => {
-      const DATA = { studentId: STUDENT_ID, workshopId: WORKSHOP_ID }
+      const DATA = {
+        studentId: STUDENT_ID,
+        workshopId: WORKSHOP_ID,
+        currentDate: CURRENT_DATE,
+      }
+
       const { status, message } = await createAbsent(DATA)
 
       if (status === 201) {

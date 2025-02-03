@@ -5,6 +5,11 @@ import { getWorkshops } from '@/app/(protected)/dashboard/(workshops)/workshops/
 import { WorkshopFilter } from '@/app/(protected)/dashboard/(workshops)/workshops/_components/workshop-filter'
 import { Prisma } from '@prisma/client'
 import { WorkshopPageProps } from '@/app/(protected)/dashboard/(workshops)/workshops/_types'
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Talleres',
+}
 
 export default async function WorkshopPage(props: WorkshopPageProps) {
   const { searchParams: PARAMS } = props
@@ -25,7 +30,7 @@ export default async function WorkshopPage(props: WorkshopPageProps) {
         <CreateWorkshopForm />
       </header>
       <section className='space-y-4'>
-        <WorkshopFilter/>
+        <WorkshopFilter />
 
         <WorkshopList data={WORKSHOPS} />
       </section>
