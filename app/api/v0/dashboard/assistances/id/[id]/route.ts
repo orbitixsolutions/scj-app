@@ -23,7 +23,7 @@ function filterByDate(data: WorkshopsProps, currDate: string) {
   }))
 }
 
-function filterStudents(data: WorkshopsProps, filters: QueryData) {
+function filterAssistances(data: WorkshopsProps, filters: QueryData) {
   const { LAST_NAME, NAME } = filters
   const STUDENTS = data.students.map(({ student }) => ({ ...student }))
 
@@ -86,15 +86,13 @@ export async function GET(
     if (!WORKSHOPS) return NextResponse.json({ error: null }, { status: 500 })
 
     if (QUERY_DATA.MODE === 'normal') {
-      return NextResponse.json(filterStudents(WORKSHOPS, QUERY_DATA), {
-        status: 201,
-      })
+      const ITEMS = filterAssistances(WORKSHOPS, QUERY_DATA)
+      return NextResponse.json(ITEMS, { status: 201 })
     }
 
     if (QUERY_DATA.MODE === 'filter-by-dates') {
-      return NextResponse.json(filterByDate(WORKSHOPS, QUERY_DATA.CURR_DATE), {
-        status: 201,
-      })
+      const ITEMS = filterByDate(WORKSHOPS, QUERY_DATA.CURR_DATE)
+      return NextResponse.json(ITEMS, { status: 201 })
     }
 
     return NextResponse.json({ error: null }, { status: 500 })

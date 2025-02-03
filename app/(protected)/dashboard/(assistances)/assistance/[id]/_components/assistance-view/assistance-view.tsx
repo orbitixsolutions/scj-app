@@ -37,7 +37,7 @@ export function AssistanceView() {
   if (NORMAL_ASSIS_STATUS === 'error' && NORMAL_ASSIS_DATES === 'error') {
     return null
   }
-
+  
   return (
     <>
       <header>

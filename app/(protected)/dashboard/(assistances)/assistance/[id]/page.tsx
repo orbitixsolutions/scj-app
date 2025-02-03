@@ -1,8 +1,8 @@
 import { AssistancePageProps } from '@/app/(protected)/dashboard/(assistances)/assistance/[id]/_types'
 import { getWorkshop } from '@/app/(protected)/dashboard/(assistances)/assistance/[id]/_services/fetch'
-import { AssistanceView } from './_components/assistance-view'
-import { Metadata } from 'next'
+import { AssistanceView } from '@/app/(protected)/dashboard/(assistances)/assistance/[id]/_components/assistance-view'
 import { ContentLayout } from '@/components/content-layout'
+import { Metadata } from 'next'
 
 export async function generateMetadata(
   props: AssistancePageProps
