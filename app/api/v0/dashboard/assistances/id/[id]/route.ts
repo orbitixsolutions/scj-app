@@ -91,7 +91,7 @@ export async function GET(
     }
 
     if (QUERY_DATA.MODE === 'all') {
-      return NextResponse.json(WORKSHOPS, { status: 201 })
+      return NextResponse.json(WORKSHOPS.students, { status: 201 })
     }
 
     if (QUERY_DATA.MODE === 'dates') {
