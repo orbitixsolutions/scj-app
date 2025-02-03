@@ -3,6 +3,7 @@
 import { currentRole } from '@/lib/auth'
 import { StatusEnum } from '@prisma/client'
 import db from '@/lib/db'
+import { revalidatePath } from 'next/cache'
 
 export async function createAssistance(
   data: StatusEnum,
@@ -10,6 +11,7 @@ export async function createAssistance(
   workshopId: string,
   currentDate: string | undefined
 ) {
+  const PATH = `/dashboard/assistance/${workshopId}`
   const ROLE = await currentRole()
 
   if (ROLE === 'STUDENT') {
@@ -31,7 +33,7 @@ export async function createAssistance(
             date: CURRENT_DATE,
           },
         })
-
+        revalidatePath(PATH)
         return { status: 201, message: 'Asistencia creada.' }
 
       case 'ATTENDED_EXCUSED':
@@ -43,7 +45,7 @@ export async function createAssistance(
             date: CURRENT_DATE,
           },
         })
-
+        revalidatePath(PATH)
         return { status: 201, message: 'Asistencia creada.' }
 
       case 'NOT_ATTENDED':
@@ -55,7 +57,7 @@ export async function createAssistance(
             date: CURRENT_DATE,
           },
         })
-
+        revalidatePath(PATH)
         return { status: 201, message: 'Asistencia creada.' }
 
       case 'NOT_DETERMINED':
@@ -67,9 +69,10 @@ export async function createAssistance(
             date: CURRENT_DATE,
           },
         })
-
+        revalidatePath(PATH)
         return { status: 201, message: 'Asistencia creada.' }
       default:
+        revalidatePath(PATH)
         return { status: 400, message: 'No se ha podido crear la asistencia.' }
     }
   } catch {
