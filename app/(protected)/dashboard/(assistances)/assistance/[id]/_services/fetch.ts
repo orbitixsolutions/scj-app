@@ -45,7 +45,6 @@ export async function getStudents(props: getStudentsProps) {
   const WORKSHOP_ID = page.params.id
 
   const ROLE = await currentRole()
-
   if (ROLE === 'USER') return null
 
   try {

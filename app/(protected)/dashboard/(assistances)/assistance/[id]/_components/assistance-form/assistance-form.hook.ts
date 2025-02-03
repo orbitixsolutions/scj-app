@@ -6,6 +6,7 @@ import { createAssistance } from '@/app/(protected)/dashboard/(assistances)/assi
 import { toast } from 'sonner'
 import { useData } from '@/providers/data-provider'
 import { formatDateToString } from '@/helpers/get-current-date'
+import { useFetch } from '@/hooks/use-fetch'
 
 const STATUS_MAP = {
   ATTENDED: 'ASSISTED',
@@ -22,8 +23,6 @@ function filterCurrentStatus(
     return formatDateToString(item.date) === currentDate
   })
 
-  console.log(STATUS)
-
   return STATUS.at(0)?.status
 }
 
@@ -38,6 +37,14 @@ export function useAssistanceForm(props: AssistanceFormProps) {
 
   const searchParams = useMemo(() => new URLSearchParams(params), [params])
   const CURRENT_DATE = searchParams.get('date')?.toString()
+
+  const { refetch: refetchNormalAssis } = useFetch(
+    `/api/v0/dashboard/assistances/id/${WORKSHOP_ID}?date=${CURRENT_DATE}&mode=normal`
+  )
+
+  const { refetch: refetchDateAssis } = useFetch(
+    `/api/v0/dashboard/assistances/id/${WORKSHOP_ID}?date=${CURRENT_DATE}&mode=filter-by-dates`
+  )
 
   const { data } = useData()
   const { initialAssistances: initial } = data
@@ -68,9 +75,11 @@ export function useAssistanceForm(props: AssistanceFormProps) {
         WORKSHOP_ID,
         CURRENT_DATE
       )
-      
+
       if (status === 201) {
         toast.success(message)
+        refetchNormalAssis()
+        refetchDateAssis()
         return
       }
 

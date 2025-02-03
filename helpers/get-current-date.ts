@@ -10,14 +10,16 @@ export function getCurrentDate() {
   return [YEAR, MONTH, DAY].join('-')
 }
 
-export function formatDateToString(date: Date | number) {
-  if (!(date instanceof Date)) {
+export function formatDateToString(date: Date | string) {
+  const DATE = new Date(date)
+
+  if (!(DATE instanceof Date)) {
     throw new Error('La entrada debe ser un objeto Date válido.')
   }
 
-  const year = date.getFullYear()
-  const month = String(date.getMonth() + 1).padStart(2, '0')
-  const day = String(date.getDate()).padStart(2, '0')
+  const year = DATE.getFullYear()
+  const month = String(DATE.getMonth() + 1).padStart(2, '0')
+  const day = String(DATE.getDate()).padStart(2, '0')
 
   return `${year}-${month}-${day}`
 }

@@ -12,7 +12,7 @@ import {
   CommandItem,
   CommandList,
 } from '@/components/ui/command'
-import { useFetch } from '@/hooks/use-fetch'
+import { useSuspenseFetch } from '@/hooks/use-fetch'
 import { Button } from '@/components/ui/button'
 import { User } from '@prisma/client'
 import { Check, ChevronsUpDown, Plus } from 'lucide-react'
@@ -25,7 +25,7 @@ export function TeacherSelector(props: TeacherSelectorProps) {
   const { value, disabled, className, onChange } = props
 
   const TEACHER_END_POINT = '/api/v0/dashboard/teachers'
-  const { data } = useFetch<User[]>(TEACHER_END_POINT)
+  const { data } = useSuspenseFetch<User[]>(TEACHER_END_POINT)
 
   const TEACHERS = useMemo(
     () =>
