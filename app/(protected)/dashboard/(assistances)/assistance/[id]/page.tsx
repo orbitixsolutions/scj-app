@@ -14,6 +14,8 @@ import { ChevronLeft } from 'lucide-react'
 import { Metadata } from 'next'
 import Link from 'next/link'
 
+export const dynamic = 'force-dynamic'
+
 export async function generateMetadata(
   props: AssistancePageProps
 ): Promise<Metadata> {
@@ -24,7 +26,7 @@ export async function generateMetadata(
 
   if (!WORKSHOP) return { title: 'Taller - Indefinido' }
 
-  return { title: `Asistencia de alumnos - ${WORKSHOP.name}`}
+  return { title: `Asistencia de alumnos - ${WORKSHOP.name}` }
 }
 
 export default async function AssistancePage(props: AssistancePageProps) {
@@ -32,6 +34,8 @@ export default async function AssistancePage(props: AssistancePageProps) {
     getStudents({ mode: 'normal', page: props }),
     getStudents({ mode: 'filter-by-dates', page: props }),
   ])
+
+  console.log(DATES_STUDENTS)
 
   return (
     <ContentLayout title='Asistencia'>

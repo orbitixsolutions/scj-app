@@ -2,6 +2,7 @@ import {
   AssistancePageProps,
   WorkshopsProps,
 } from '@/app/(protected)/dashboard/(assistances)/assistance/[id]/_types'
+import { Prisma } from '@prisma/client'
 import { formatDateToString } from '@/helpers/get-current-date'
 import { currentRole } from '@/lib/auth'
 import db from '@/lib/db'
@@ -68,7 +69,7 @@ export async function getStudents(props: getStudentsProps) {
                 updatedAt: true,
                 assistances: {
                   where: { workshopId: WORKSHOP_ID },
-                  orderBy: { createdAt: 'asc' },
+                  orderBy: { createdAt: 'desc' },
                 },
               },
             },
@@ -86,8 +87,6 @@ export async function getStudents(props: getStudentsProps) {
     return null
   }
 }
-
-import { Prisma } from '@prisma/client'
 
 export async function getWorkshop(id: string) {
   const ROLE = await currentRole()

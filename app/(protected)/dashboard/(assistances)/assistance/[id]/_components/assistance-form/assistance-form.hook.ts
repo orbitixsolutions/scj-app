@@ -1,6 +1,6 @@
 import { Assistances, StatusEnum } from '@prisma/client'
 import { AssistanceFormProps } from '@/app/(protected)/dashboard/(assistances)/assistance/[id]/_components/assistance-form/assistance-form.type'
-import { useParams, useRouter, useSearchParams } from 'next/navigation'
+import { useParams, useSearchParams } from 'next/navigation'
 import { useMemo, useTransition } from 'react'
 import { createAssistance } from '@/app/(protected)/dashboard/(assistances)/assistences/_services/create'
 import { toast } from 'sonner'
@@ -24,14 +24,13 @@ function filterCurrentStatus(
 
   console.log(STATUS)
 
-  return STATUS.at(-1)?.status
+  return STATUS.at(0)?.status
 }
 
 export function useAssistanceForm(props: AssistanceFormProps) {
   const { id, assistances, institute } = props
   const STUDENT_ID = id
 
-  const { refresh } = useRouter()
   const { id: WORKSHOP_ID } = useParams<{ id: string }>()
   const [isPending, startTransition] = useTransition()
 
@@ -69,10 +68,9 @@ export function useAssistanceForm(props: AssistanceFormProps) {
         WORKSHOP_ID,
         CURRENT_DATE
       )
-
+      
       if (status === 201) {
         toast.success(message)
-        refresh()
         return
       }
 
