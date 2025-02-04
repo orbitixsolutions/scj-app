@@ -1,6 +1,6 @@
 import { Assistances, StatusEnum } from '@prisma/client'
 import { AssistanceFormProps } from '@/app/(protected)/dashboard/(assistances)/assistance/[id]/_components/assistance-form/assistance-form.type'
-import { useParams, useRouter, useSearchParams } from 'next/navigation'
+import { useParams, useSearchParams } from 'next/navigation'
 import { useMemo, useTransition } from 'react'
 import { createAssistance } from '@/app/(protected)/dashboard/(assistances)/assistences/_services/create'
 import { toast } from 'sonner'
@@ -14,31 +14,31 @@ const STATUS_MAP = {
   NOT_DETERMINED: 'NOT_DETERMINED',
 }
 
-function filterCurrentStatus(
-  assistances: Assistances[],
-  currentDate: string | undefined
-) {
-  const STATUS = assistances
-    .filter((item) => {
-      return formatDateToString(item.date) === currentDate
-    })
-    .at(-1)?.status
+function filterCurrentStatus(assistances: Assistances[], currDate: string) {
+  const STATUS = assistances.filter((item) => {
+    const matcher = [
+      currDate
+        ? formatDateToString(item.date) === formatDateToString(currDate)
+        : true,
+    ]
 
-  return STATUS
+    return matcher.every(Boolean)
+  })
+
+  return STATUS.at(0)?.status
 }
 
 export function useAssistanceForm(props: AssistanceFormProps) {
   const { id, assistances, institute } = props
   const STUDENT_ID = id
 
-  const { refresh } = useRouter()
   const { id: WORKSHOP_ID } = useParams<{ id: string }>()
   const [isPending, startTransition] = useTransition()
 
   const params = useSearchParams()
 
   const searchParams = useMemo(() => new URLSearchParams(params), [params])
-  const CURRENT_DATE = searchParams.get('date')?.toString()
+  const CURRENT_DATE = searchParams.get('date')?.toString() ?? ''
 
   const { data } = useData()
   const { initialAssistances: initial } = data
@@ -72,7 +72,6 @@ export function useAssistanceForm(props: AssistanceFormProps) {
 
       if (status === 201) {
         toast.success(message)
-        refresh()
         return
       }
 

@@ -2,17 +2,20 @@ import {
   AssistancePageProps,
   StudentsProps,
 } from '@/app/(protected)/dashboard/(assistances)/assistance/[id]/_types'
+import {
+  getAssistances,
+  getWorkshop,
+} from '@/app/(protected)/dashboard/(assistances)/assistance/[id]/_services/fetch'
 import { ContentLayout } from '@/components/content-layout'
 import { AssistanceDataTable } from '@/app/(protected)/dashboard/(assistances)/assistance/[id]/_components/assistance-table'
 import { AssistanceMenu } from '@/app/(protected)/dashboard/(assistances)/assistance/[id]/_components/assistance-menu'
 import { assistanceColumns } from '@/app/(protected)/dashboard/(assistances)/assistance/[id]/_components/assistance-table/assistance.column'
-import {
-  getStudents,
-  getWorkshop,
-} from '@/app/(protected)/dashboard/(assistances)/assistance/[id]/_services/fetch'
 import { ChevronLeft } from 'lucide-react'
 import { Metadata } from 'next'
+import { RefreshButton } from '@/components/refresh-button'
 import Link from 'next/link'
+
+export const dynamic = 'force-dynamic'
 
 export async function generateMetadata(
   props: AssistancePageProps
@@ -24,18 +27,18 @@ export async function generateMetadata(
 
   if (!WORKSHOP) return { title: 'Taller - Indefinido' }
 
-  return { title: `Asistencia de alumnos - ${WORKSHOP.name}`}
+  return { title: `Asistencia de alumnos - ${WORKSHOP.name}` }
 }
 
 export default async function AssistancePage(props: AssistancePageProps) {
-  const [NORMAL_STUDENTS, DATES_STUDENTS] = await Promise.all([
-    getStudents({ mode: 'normal', page: props }),
-    getStudents({ mode: 'filter-by-dates', page: props }),
+  const [ASSIS_NORMAL_STUDENTS, ASSIS_DATES_STUDENTS] = await Promise.all([
+    getAssistances({ mode: 'normal', page: props }),
+    getAssistances({ mode: 'dates', page: props }),
   ])
 
   return (
     <ContentLayout title='Asistencia'>
-      <header>
+      <header className='flex items-center justify-between'>
         <Link
           href={`/dashboard/assistences`}
           className='text-primary flex items-center space-x-2 hover:underline'
@@ -43,13 +46,16 @@ export default async function AssistancePage(props: AssistancePageProps) {
           <ChevronLeft />
           <h2 className='font-bold text-xl'>Asistencia</h2>
         </Link>
+        <RefreshButton />
       </header>
       <section className='space-y-4'>
-        <AssistanceMenu data={(NORMAL_STUDENTS as StudentsProps[]) ?? []} />
+        <AssistanceMenu
+          data={(ASSIS_NORMAL_STUDENTS as StudentsProps[]) ?? []}
+        />
 
         <AssistanceDataTable
           columns={assistanceColumns}
-          data={(DATES_STUDENTS as StudentsProps[]) ?? []}
+          data={(ASSIS_DATES_STUDENTS as StudentsProps[]) ?? []}
         />
       </section>
     </ContentLayout>

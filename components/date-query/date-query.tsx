@@ -57,6 +57,7 @@ export function DateQuery(props: DateQueryProps) {
           className={cn('flex-1', className)}
           aria-label='Fecha de nacimiento'
           defaultValue={parseDate(PARAM_DATE)}
+          value={parseDate(PARAM_DATE)}
           onChange={(value) => handleChange(value?.toString())}
         />
       ) : (
