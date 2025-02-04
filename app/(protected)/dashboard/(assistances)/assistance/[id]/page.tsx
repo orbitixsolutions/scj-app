@@ -12,6 +12,7 @@ import {
 } from '@/app/(protected)/dashboard/(assistances)/assistance/[id]/_services/fetch'
 import { ChevronLeft } from 'lucide-react'
 import { Metadata } from 'next'
+import { AssistanceRefresh } from './_components/assistance-refresh'
 import Link from 'next/link'
 
 export const dynamic = 'force-dynamic'
@@ -35,11 +36,9 @@ export default async function AssistancePage(props: AssistancePageProps) {
     getAssistances({ mode: 'dates', page: props }),
   ])
 
-  
-
   return (
     <ContentLayout title='Asistencia'>
-      <header>
+      <header className='flex items-center justify-between'>
         <Link
           href={`/dashboard/assistences`}
           className='text-primary flex items-center space-x-2 hover:underline'
@@ -47,9 +46,13 @@ export default async function AssistancePage(props: AssistancePageProps) {
           <ChevronLeft />
           <h2 className='font-bold text-xl'>Asistencia</h2>
         </Link>
+
+        <AssistanceRefresh />
       </header>
       <section className='space-y-4'>
-        <AssistanceMenu data={(ASSIS_NORMAL_STUDENTS as StudentsProps[]) ?? []} />
+        <AssistanceMenu
+          data={(ASSIS_NORMAL_STUDENTS as StudentsProps[]) ?? []}
+        />
 
         <AssistanceDataTable
           columns={assistanceColumns}
