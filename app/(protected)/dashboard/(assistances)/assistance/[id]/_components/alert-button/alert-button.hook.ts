@@ -25,7 +25,7 @@ function filterCurrentStatus(assistances: Assistances[], currDate: string) {
     return matcher.every(Boolean)
   })
 
-  return STATUS.at(-1)?.status
+  return STATUS.at(0)?.status
 }
 
 export function useAlertButton(props: AlertButtonProps) {
@@ -48,7 +48,7 @@ export function useAlertButton(props: AlertButtonProps) {
   const ABSENT_ID = ABSENT?.id
 
   const ABSENT_DATE = formatDateToString(ABSENT?.date || new Date())
-  const IS_TODAY = CURRENT_DATE === ABSENT_DATE
+  const IS_TODAY = formatDateToString(CURRENT_DATE) === ABSENT_DATE
 
   const status = filterCurrentStatus(assistances, CURRENT_DATE)
   const initialStatus = INITIAL?.status
