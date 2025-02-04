@@ -14,12 +14,15 @@ const STATUS_MAP = {
   NOT_DETERMINED: 'NOT_DETERMINED',
 }
 
-function filterCurrentStatus(
-  assistances: Assistances[],
-  currentDate: string
-) {
+function filterCurrentStatus(assistances: Assistances[], currDate: string) {
   const STATUS = assistances.filter((item) => {
-    return formatDateToString(item.date) === formatDateToString(currentDate)
+    const matcher = [
+      currDate
+        ? formatDateToString(item.date) === formatDateToString(currDate)
+        : true,
+    ]
+
+    return matcher.every(Boolean)
   })
 
   return STATUS.at(0)?.status
