@@ -14,22 +14,31 @@ const STATUS_MAP = {
   NOT_DETERMINED: 'NOT_DETERMINED',
 }
 
-function filterCurrentStatus(
-  assistances: Assistances[],
-  currentDate: string | undefined
-) {
-  const STATUS = assistances
-    .filter((item) => {
-      return formatDateToString(item.date) === currentDate
-    })
-    .at(-1)?.status
+function filterCurrentStatus(assistances: Assistances[], currDate: string) {
+  const STATUS = assistances.filter((item) => {
+    const matcher = [
+      currDate
+        ? formatDateToString(item.date) === formatDateToString(currDate)
+        : true,
+    ]
 
-  return STATUS
+    return matcher.every(Boolean)
+  })
+
+  return STATUS.at(-1)?.status
 }
 
 export function useAlertButton(props: AlertButtonProps) {
   const { assistances, institute, id } = props
   const STUDENT_ID = id
+
+  const { id: WORKSHOP_ID } = useParams<{ id: string }>()
+  const [isPending, startTransition] = useTransition()
+
+  const params = useSearchParams()
+
+  const searchParams = new URLSearchParams(params)
+  const CURRENT_DATE = searchParams.get('date')?.toString() ?? ''
 
   const { data } = useData()
   const { initialAssistances: initial, absents } = data
@@ -38,13 +47,7 @@ export function useAlertButton(props: AlertButtonProps) {
   const ABSENT = absents.find((item) => item.studentId === STUDENT_ID)
   const ABSENT_ID = ABSENT?.id
 
-  const { id: WORKSHOP_ID } = useParams<{ id: string }>()
-  const params = useSearchParams()
-  const searchParams = new URLSearchParams(params)
-  const [isPending, startTransition] = useTransition()
-
   const ABSENT_DATE = formatDateToString(ABSENT?.date || new Date())
-  const CURRENT_DATE = searchParams.get('date')?.toString() ?? ''
   const IS_TODAY = CURRENT_DATE === ABSENT_DATE
 
   const status = filterCurrentStatus(assistances, CURRENT_DATE)
