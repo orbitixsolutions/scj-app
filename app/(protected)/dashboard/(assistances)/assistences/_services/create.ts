@@ -18,7 +18,6 @@ export async function createAssistance(
   }
 
   const CURRENT_DATE = new Date(currentDate ?? '')
-  CURRENT_DATE.setMinutes(30)
 
   try {
     switch (data) {

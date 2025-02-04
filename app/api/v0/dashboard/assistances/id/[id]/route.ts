@@ -31,7 +31,7 @@ function filterByDate(data: WorkshopsProps, currDate: string) {
   return STUDENTS.map(({ student }) => ({
     ...student,
     assistances: student.assistances.filter((item) => {
-      return formatDateToString(item.date) === currDate
+      return formatDateToString(item.date) === formatDateToString(currDate)
     }),
   }))
 }

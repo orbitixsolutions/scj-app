@@ -7,17 +7,6 @@ import { formatDateToString } from '@/helpers/get-current-date'
 import { currentRole } from '@/lib/auth'
 import db from '@/lib/db'
 
-function filterByDate(data: WorkshopsProps, currDate: string) {
-  const STUDENTS = data.students
-
-  return STUDENTS.map(({ student }) => ({
-    ...student,
-    assistances: student.assistances.filter((item) => {
-      return formatDateToString(item.date) === currDate
-    }),
-  }))
-}
-
 function filterAssistances(data: WorkshopsProps, filters: AssistancePageProps) {
   const { lastName, name } = filters.searchParams
   const STUDENTS = data.students.map(({ student }) => ({ ...student }))
@@ -29,6 +18,23 @@ function filterAssistances(data: WorkshopsProps, filters: AssistancePageProps) {
     ]
     return matcher.every(Boolean)
   })
+}
+
+function filterByDate(data: WorkshopsProps, currDate: string) {
+  const STUDENTS = data.students
+
+  return STUDENTS.map(({ student }) => ({
+    ...student,
+    assistances: student.assistances.filter((item) => {
+      const matcher = [
+        currDate
+          ? formatDateToString(item.date) === formatDateToString(currDate)
+          : true,
+      ]
+
+      return matcher.every(Boolean)
+    }),
+  }))
 }
 
 type getStudentsProps = {

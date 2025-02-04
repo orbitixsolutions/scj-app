@@ -16,10 +16,10 @@ const STATUS_MAP = {
 
 function filterCurrentStatus(
   assistances: Assistances[],
-  currentDate: string | undefined
+  currentDate: string
 ) {
   const STATUS = assistances.filter((item) => {
-    return formatDateToString(item.date) === currentDate
+    return formatDateToString(item.date) === formatDateToString(currentDate)
   })
 
   return STATUS.at(0)?.status
@@ -35,7 +35,7 @@ export function useAssistanceForm(props: AssistanceFormProps) {
   const params = useSearchParams()
 
   const searchParams = useMemo(() => new URLSearchParams(params), [params])
-  const CURRENT_DATE = searchParams.get('date')?.toString()
+  const CURRENT_DATE = searchParams.get('date')?.toString() ?? ''
 
   const { data } = useData()
   const { initialAssistances: initial } = data
