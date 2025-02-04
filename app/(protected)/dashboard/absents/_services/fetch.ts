@@ -6,13 +6,19 @@ import db from '@/lib/db'
 
 function filterAbsents(abensts: Absents[], filters: AbsentProps) {
   const { date } = filters
-  return abensts.filter((item) => formatDateToString(item.date) === date)
+  return abensts.filter((item) => {
+    const matcher = [
+      date ? formatDateToString(item.date) === formatDateToString(date) : true,
+    ]
+
+    return matcher.every(Boolean)
+  })
 }
 
 export async function getAbsents(props: AbsentProps) {
   const ROLE = await currentRole()
 
-  if (ROLE === 'TEACHER') return null
+  if (ROLE !== 'DIRECTIVE') return null
 
   try {
     const ABSENTS = await db.absents.findMany()
