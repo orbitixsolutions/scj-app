@@ -12,7 +12,7 @@ import { RefreshCw } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useTransition } from 'react'
 
-export function AssistanceRefresh() {
+export function RefreshButton() {
   const [isPending, startTransition] = useTransition()
   const { refresh } = useRouter()
 

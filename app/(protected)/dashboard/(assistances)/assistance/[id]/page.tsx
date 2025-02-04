@@ -2,17 +2,17 @@ import {
   AssistancePageProps,
   StudentsProps,
 } from '@/app/(protected)/dashboard/(assistances)/assistance/[id]/_types'
-import { ContentLayout } from '@/components/content-layout'
-import { AssistanceDataTable } from '@/app/(protected)/dashboard/(assistances)/assistance/[id]/_components/assistance-table'
-import { AssistanceMenu } from '@/app/(protected)/dashboard/(assistances)/assistance/[id]/_components/assistance-menu'
-import { assistanceColumns } from '@/app/(protected)/dashboard/(assistances)/assistance/[id]/_components/assistance-table/assistance.column'
 import {
   getAssistances,
   getWorkshop,
 } from '@/app/(protected)/dashboard/(assistances)/assistance/[id]/_services/fetch'
+import { ContentLayout } from '@/components/content-layout'
+import { AssistanceDataTable } from '@/app/(protected)/dashboard/(assistances)/assistance/[id]/_components/assistance-table'
+import { AssistanceMenu } from '@/app/(protected)/dashboard/(assistances)/assistance/[id]/_components/assistance-menu'
+import { assistanceColumns } from '@/app/(protected)/dashboard/(assistances)/assistance/[id]/_components/assistance-table/assistance.column'
 import { ChevronLeft } from 'lucide-react'
 import { Metadata } from 'next'
-import { AssistanceRefresh } from './_components/assistance-refresh'
+import { RefreshButton } from '@/components/refresh-button'
 import Link from 'next/link'
 
 export const dynamic = 'force-dynamic'
@@ -46,8 +46,7 @@ export default async function AssistancePage(props: AssistancePageProps) {
           <ChevronLeft />
           <h2 className='font-bold text-xl'>Asistencia</h2>
         </Link>
-
-        <AssistanceRefresh />
+        <RefreshButton />
       </header>
       <section className='space-y-4'>
         <AssistanceMenu
