@@ -23,7 +23,6 @@ export async function updateStudent(
 
   const {
     dateOfBirth,
-    documentIdentity,
     institute,
     lastName,
     name,
@@ -38,7 +37,6 @@ export async function updateStudent(
         lastName,
         studyYear,
         institute,
-        documentIdentity,
         dateOfBirth: new Date(dateOfBirth),
       },
     })

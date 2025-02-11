@@ -15,7 +15,7 @@ export async function GET() {
   try {
     const TEACHERS = await db.user.findMany({
       where: {
-        role: 'TEACHER',
+        role: 'EDUCATOR',
       },
     })
 

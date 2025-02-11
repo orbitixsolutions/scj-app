@@ -56,7 +56,6 @@ export function CreateStudentForm(props: CreateStudentFormProps) {
       lastName: '',
       studyYear: '',
       institute: '',
-      documentIdentity: '',
       dateOfBirth: getCurrentDate(),
     },
   })
@@ -69,7 +68,6 @@ export function CreateStudentForm(props: CreateStudentFormProps) {
       form.setValue('lastName', STUDENT.lastName)
       form.setValue('studyYear', STUDENT.studyYear)
       form.setValue('institute', STUDENT.institute)
-      form.setValue('documentIdentity', STUDENT.documentIdentity)
       form.setValue(
         'dateOfBirth',
         formatDateToString(new Date(STUDENT.dateOfBirth))
@@ -167,7 +165,7 @@ export function CreateStudentForm(props: CreateStudentFormProps) {
             name='studyYear'
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Año de estudio</FormLabel>
+                <FormLabel>Año que cursa</FormLabel>
                 <FormControl>
                   <Input
                     {...field}
@@ -185,7 +183,7 @@ export function CreateStudentForm(props: CreateStudentFormProps) {
             name='institute'
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Institución</FormLabel>
+                <FormLabel>Liceos</FormLabel>
                 <FormControl>
                   <Select
                     onValueChange={field.onChange}
@@ -194,7 +192,7 @@ export function CreateStudentForm(props: CreateStudentFormProps) {
                   >
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder='Seleccionar institución' />
+                        <SelectValue placeholder='Seleccionar Liceos' />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
@@ -208,24 +206,6 @@ export function CreateStudentForm(props: CreateStudentFormProps) {
                       ))}
                     </SelectContent>
                   </Select>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name='documentIdentity'
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>CI</FormLabel>
-                <FormControl>
-                  <Input
-                    {...field}
-                    placeholder='10101010'
-                    disabled={isPending}
-                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>

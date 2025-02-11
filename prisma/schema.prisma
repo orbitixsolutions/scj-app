@@ -10,7 +10,7 @@ datasource db {
 enum RolesEnum {
     DIRECTIVE
     ADMIN
-    TEACHER
+    EDUCATOR
     STUDENT
     DEVELOPER
 }
@@ -52,13 +52,12 @@ model User {
 model Students {
     id String @id @default(uuid())
 
-    name             String
-    lastName         String
-    studyYear        String
-    institute        String
-    documentIdentity String
-    dateOfBirth      DateTime
-    photo            String?
+    name        String
+    lastName    String
+    studyYear   String
+    institute   String
+    dateOfBirth DateTime
+    photo       String?
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
@@ -80,20 +79,20 @@ model InitialAssistances {
 }
 
 model Workshops {
-    id          String   @id @default(uuid())
+    id          String               @id @default(uuid())
     name        String
     days        String[]
     description String
     photo       String?
+    students    StudentsToWorkshop[]
+    assistances Assistances[]
+    absents     Absents[]
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
     teacher   User   @relation(fields: [teacherId], references: [id], onDelete: Cascade)
     teacherId String
-
-    students    StudentsToWorkshop[]
-    assistances Assistances[]
 }
 
 model StudentsToWorkshop {
@@ -134,4 +133,6 @@ model Absents {
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
+
+    workshop Workshops @relation(fields: [workshopId], references: [id], onDelete: Cascade)
 }

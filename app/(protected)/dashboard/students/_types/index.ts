@@ -1,9 +1,11 @@
 export type PageProps = {
   searchParams: {
-    name: string
+    firstName: string
+    lastName: string
   }
 }
 
 export type StudentActionProps = {
-  name: string
+  firstName: string
+  lastName: string
 }

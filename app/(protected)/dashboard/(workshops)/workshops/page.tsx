@@ -31,7 +31,6 @@ export default async function WorkshopPage(props: WorkshopPageProps) {
       </header>
       <section className='space-y-4'>
         <WorkshopFilter />
-
         <WorkshopList data={WORKSHOPS} />
       </section>
     </ContentLayout>

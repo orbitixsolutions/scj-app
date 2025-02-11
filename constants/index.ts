@@ -12,8 +12,8 @@ export const SELECT_ROLES = [
     label: 'Administrador',
   },
   {
-    value: 'TEACHER',
-    label: 'Profesor',
+    value: 'EDUCATOR',
+    label: 'Educador',
   },
   {
     value: 'STUDENT',
@@ -28,11 +28,11 @@ export const SELECT_ROLES = [
 export const SELECT_INSTITUTES = [
   {
     value: 'LOS_PINOS',
-    label: 'Los Pinos',
+    label: 'Liceo Los Pinos',
   },
   {
     value: 'EXTERIOR_STUDENT',
-    label: 'Estudiante externo',
+    label: 'CJotero',
   },
 ]
 

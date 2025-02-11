@@ -1,41 +1,40 @@
 import { currentRole, currentUser } from '@/lib/auth'
 import { UserActionProps } from '@/app/(protected)/dashboard/create-user/_types'
-import { RolesEnum } from '@prisma/client'
+import { RolesEnum, User } from '@prisma/client'
 import db from '@/lib/db'
 
-export async function fetchUser(props: UserActionProps) {
-  const { name, role } = props
+function filterUser(users: User[], filters: UserActionProps) {
+  const { name, role } = filters
   const ROLES = role?.toUpperCase() as RolesEnum
 
-  const USER = await currentUser()
-  const USER_ID = USER?.id
+  return users.filter((user) => {
+    const matcher = [
+      name ? user.name.includes(name) : true,
+      role ? user.role === ROLES : true,
+    ]
 
-  const ROLE = await currentRole()
+    return matcher.every(Boolean)
+  })
+}
+
+export async function fetchUser(props: UserActionProps) {
+  const [USER, ROLE] = await Promise.all([currentUser(), currentRole()])
+
+  const USER_ID = USER?.id
 
   if (ROLE === 'STUDENT' || ROLE === 'TEACHER') {
     return { status: 401, message: 'No tienes permisos.' }
   }
 
   try {
-    if (name || role) {
-      const USERS = await db.user.findMany({
-        where: {
-          id: { not: USER_ID },
-          ...(name && { name: { contains: name } }),
-          ...(role && { role: { equals: ROLES } }),
-        },
-        orderBy: [{ createdAt: 'asc' }, { name: 'asc' }],
-      })
-
-      return USERS
-    }
-
     const USERS = await db.user.findMany({
       where: { id: { not: USER_ID } },
       orderBy: [{ createdAt: 'asc' }, { name: 'asc' }],
     })
 
-    return USERS
+    const FILTERED_USERS = filterUser(USERS, props)
+
+    return FILTERED_USERS
   } catch {
     return null
   }

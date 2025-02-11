@@ -8,7 +8,7 @@ export function UserActions(props: UserActionsProps) {
   const { id } = props
 
   return (
-    <div className='flex items-center space-x-5'>
+    <div className='flex items-center space-x-2'>
       <EditorUserForm id={id} />
 
       <DeleteButton

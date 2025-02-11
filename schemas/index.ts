@@ -25,7 +25,7 @@ export const UserSchema = z.object({
   documentIdentity: z.string().min(2, {
     message: 'La identidad es inválida',
   }),
-  role: z.enum(['DIRECTIVE', 'ADMIN', 'TEACHER', 'STUDENT', 'DEVELOPER'], {
+  role: z.enum(['DIRECTIVE', 'ADMIN', 'EDUCATOR', 'STUDENT', 'DEVELOPER'], {
     message: 'El rol es inválido',
   }),
   description: z.string().min(2, {
@@ -45,9 +45,6 @@ export const StudentSchema = z.object({
   }),
   institute: z.string().min(2, {
     message: 'La institución es inválida',
-  }),
-  documentIdentity: z.string().min(2, {
-    message: 'La identidad es inválida',
   }),
   dateOfBirth: z.string().min(1, {
     message: 'La fecha de nacimiento es inválida',

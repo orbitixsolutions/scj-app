@@ -28,7 +28,6 @@ export default async function StudentsPage(props: PageProps) {
       <StudentBatchProvider>
         <section className='space-y-4'>
           <StudentFilter />
-
           <StudentList data={STUDENTS} />
         </section>
 

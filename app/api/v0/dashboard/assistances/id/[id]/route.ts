@@ -64,7 +64,6 @@ export async function GET(
               select: {
                 lastName: true,
                 name: true,
-                documentIdentity: true,
                 institute: true,
                 id: true,
                 dateOfBirth: true,

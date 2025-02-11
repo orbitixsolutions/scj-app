@@ -1,28 +1,30 @@
 import { currentRole } from '@/lib/auth'
 import { StudentActionProps } from '@/app/(protected)/dashboard/students/_types'
+import { Students } from '@prisma/client'
 import db from '@/lib/db'
 
-export async function getStudents(props: StudentActionProps) {
-  const { name } = props
+function filterStudents(students: Students[], filters: StudentActionProps) {
+  const { firstName, lastName } = filters
 
+  return students.filter((student) => {
+    const matcher = [
+      firstName
+        ? student.name.toLowerCase().includes(firstName.toLowerCase())
+        : true,
+      lastName
+        ? student.lastName.toLowerCase().includes(lastName.toLowerCase())
+        : true,
+    ]
+
+    return matcher.every(Boolean)
+  })
+}
+
+export async function getStudents(props: StudentActionProps) {
   const ROLE = await currentRole()
 
   if (ROLE === 'STUDENT' || ROLE === 'TEACHER') {
     return null
-  }
-
-  if (name) {
-    const STUDENTS = await db.students.findMany({
-      where: {
-        ...(name && { name: { contains: name } }),
-      },
-      include: {
-        workshops: true,
-      },
-      orderBy: [{ createdAt: 'desc' }, { name: 'asc' }],
-    })
-
-    return STUDENTS
   }
 
   try {
@@ -33,7 +35,9 @@ export async function getStudents(props: StudentActionProps) {
       orderBy: [{ createdAt: 'desc' }, { name: 'asc' }],
     })
 
-    return STUDENTS
+    const FILTERED_STUDENTS = filterStudents(STUDENTS, props)
+
+    return FILTERED_STUDENTS
   } catch {
     return null
   }

@@ -21,14 +21,7 @@ export async function createStudent(
     return { status: 401, message: 'Campos inválidos.' }
   }
 
-  const {
-    dateOfBirth,
-    documentIdentity,
-    institute,
-    lastName,
-    name,
-    studyYear,
-  } = VALIDATION.data
+  const { dateOfBirth, institute, lastName, name, studyYear } = VALIDATION.data
 
   try {
     await db.students.create({
@@ -38,7 +31,6 @@ export async function createStudent(
         lastName,
         studyYear,
         institute,
-        documentIdentity,
         dateOfBirth: new Date(dateOfBirth),
       },
     })
@@ -46,12 +38,12 @@ export async function createStudent(
     await db.initialAssistances.create({
       data: {
         studentId: studentId,
-        status: 'NOT_DETERMINED',
+        status: 'ATTENDED',
       },
     })
 
     return { status: 201, message: 'Alumno creado correctamente.' }
-  } catch {
+  } catch{
     return { status: 400, message: 'Ha ocurrido un error.' }
   }
 }

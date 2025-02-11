@@ -30,12 +30,12 @@ function AssistanceDialogs(props: AssistanceMenuProps) {
 
   const FIVE_FALTS = filterStudentsByAbsences(
     STUDENTS,
-    (length) => length <= 6
+    (length) => length <= 4
   ) as []
 
-  const SEVER_OR_MORE_FALTS = filterStudentsByAbsences(
+  const FIVE_OR_MORE_FALTS = filterStudentsByAbsences(
     STUDENTS,
-    (length) => length >= 7
+    (length) => length >= 5
   ) as []
 
   return (
@@ -83,7 +83,7 @@ function AssistanceDialogs(props: AssistanceMenuProps) {
                 <div>
                   <AbsentDataTable
                     columns={absentColumns}
-                    data={SEVER_OR_MORE_FALTS ?? []}
+                    data={FIVE_OR_MORE_FALTS ?? []}
                   />
                 </div>
                 <DialogFooter>

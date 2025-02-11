@@ -6,7 +6,7 @@ import { useData } from '@/providers/data-provider'
 import { Absents } from '@prisma/client'
 import { ColumnDef } from '@tanstack/react-table'
 import { Trash2 } from 'lucide-react'
-import { deleteAbsent } from '@/app/(protected)/dashboard/absents/_services/delete'
+import { deleteAbsent } from '../../_services/delete'
 
 export const absentColumns: ColumnDef<Absents>[] = [
   {
@@ -27,25 +27,6 @@ export const absentColumns: ColumnDef<Absents>[] = [
             {STUDENT.name} {STUDENT.lastName}
           </p>
         )
-      }
-
-      return <Student />
-    },
-  },
-  {
-    accessorKey: 'documentIdentity',
-    header: 'CI',
-    cell: ({ row }) => {
-      const { studentId } = row.original
-
-      const Student = () => {
-        const { data } = useData()
-        const { students } = data
-
-        const STUDENT = students.find((item) => item.id === studentId)
-        if (!STUDENT) return
-
-        return <p>{STUDENT.documentIdentity}</p>
       }
 
       return <Student />

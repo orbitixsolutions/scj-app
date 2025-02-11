@@ -65,7 +65,6 @@ export async function getAssistances(props: getStudentsProps) {
               select: {
                 lastName: true,
                 name: true,
-                documentIdentity: true,
                 institute: true,
                 id: true,
                 dateOfBirth: true,

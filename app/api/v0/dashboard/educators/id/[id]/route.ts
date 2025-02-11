@@ -20,7 +20,7 @@ export async function GET(
     const TEACHER = await db.user.findUnique({
       where: {
         id: TEACHER_ID,
-        role: 'TEACHER',
+        role: 'EDUCATOR',
       },
     })
 
