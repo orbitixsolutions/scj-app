@@ -1,25 +1,14 @@
 import type { Metadata } from 'next'
-import localFont from 'next/font/local'
-import './globals.css'
+import { Onest } from 'next/font/google'
 import { Toaster } from '@/components/ui/sonner'
 import { Providers } from '@/providers'
 import { AuthWrapper } from '@/providers/auth-provider/auth.wrapper'
 import { DataProviderWrapper } from '@/providers/data-provider/data-provider.wrapper'
+import './globals.css'
 
-const geistSans = localFont({
-  src: './fonts/GeistVF.woff',
-  variable: '--font-geist-sans',
-  weight: '100 900',
-})
-const geistMono = localFont({
-  src: './fonts/GeistMonoVF.woff',
-  variable: '--font-geist-mono',
-  weight: '100 900',
-})
-const mermaid = localFont({
-  src: './fonts/MermaidSwashCaps.woff',
-  variable: '--font-mermaid',
-  weight: '100 900',
+const onest = Onest({
+  variable: '--font-onest',
+  subsets: ['latin'],
 })
 
 export const metadata: Metadata = {
@@ -34,9 +23,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='es'>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} ${mermaid.variable} antialiased`}
-      >
+      <body className={`${onest.variable} ${onest.className} antialiased`}>
         <Toaster position='top-center' />
         <Providers>
           <DataProviderWrapper>
