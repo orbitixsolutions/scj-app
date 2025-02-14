@@ -1,12 +1,9 @@
-import { Card, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardHeader, CardTitle } from '@/components/ui/card'
 import { AbsentItemProps } from '@/app/(protected)/dashboard/(absents)/absents/_components/absent-item/absent-item.type'
-import { Users } from 'lucide-react'
-import NumberTicker from '@/components/ui/number-ticker'
 import Link from 'next/link'
 
 export function AbsentItem(props: AbsentItemProps) {
-  const { teacher, students, name, id } = props
-  const NUMBER_OF_STUDENTS = students.length
+  const { teacher, name, id } = props
 
   return (
     <>
@@ -21,18 +18,6 @@ export function AbsentItem(props: AbsentItemProps) {
             </CardTitle>
             <CardTitle className='text-2xl font-bold'>{name}</CardTitle>
           </CardHeader>
-
-          <CardFooter className='px-4 pb-4 flex items-center justify-between'>
-            <Card className='flex items-center space-x-4 py-2 px-4 bg-secondary'>
-              <Users />
-
-              {NUMBER_OF_STUDENTS !== 0 ? (
-                <NumberTicker value={NUMBER_OF_STUDENTS} />
-              ) : (
-                <span>0</span>
-              )}
-            </Card>
-          </CardFooter>
         </Card>
       </Link>
     </>
