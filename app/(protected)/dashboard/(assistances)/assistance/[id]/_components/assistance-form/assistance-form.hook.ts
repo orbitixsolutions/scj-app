@@ -5,7 +5,7 @@ import { useMemo, useTransition } from 'react'
 import { createAssistance } from '@/app/(protected)/dashboard/(assistances)/assistences/_services/create'
 import { toast } from 'sonner'
 import { useData } from '@/providers/data-provider'
-import { formatDateToString } from '@/helpers/get-current-date'
+import { formatISODateToString } from '@/helpers/get-current-date'
 
 const STATUS_MAP = {
   ATTENDED: 'ASSISTED',
@@ -17,9 +17,7 @@ const STATUS_MAP = {
 function filterCurrentStatus(assistances: Assistances[], currDate: string) {
   const STATUS = assistances.filter((item) => {
     const matcher = [
-      currDate
-        ? formatDateToString(item.date) === formatDateToString(currDate)
-        : true,
+      currDate ? formatISODateToString(item.date) === currDate : true,
     ]
 
     return matcher.every(Boolean)
@@ -38,7 +36,7 @@ export function useAssistanceForm(props: AssistanceFormProps) {
   const params = useSearchParams()
 
   const searchParams = useMemo(() => new URLSearchParams(params), [params])
-  const CURRENT_DATE = searchParams.get('date')?.toString() ?? ''
+  const CURRENT_DATE = searchParams.get('date')?.toString() ?? formatISODateToString(new Date())
 
   const { data } = useData()
   const { initialAssistances: initial } = data
@@ -85,6 +83,7 @@ export function useAssistanceForm(props: AssistanceFormProps) {
     lastStatus,
     initialStatus,
     currentStatus,
+    CURRENT_DATE,
     onChange,
   }
 }

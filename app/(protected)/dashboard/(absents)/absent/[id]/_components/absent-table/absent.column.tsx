@@ -1,12 +1,12 @@
 'use client'
 
 import { DeleteButton } from '@/components/delete-button'
-import { formatDateToString } from '@/helpers/get-current-date'
+import { formatISODateToString } from '@/helpers/get-current-date'
 import { useData } from '@/providers/data-provider'
 import { Absents } from '@prisma/client'
 import { ColumnDef } from '@tanstack/react-table'
 import { Trash2 } from 'lucide-react'
-import { deleteAbsent } from '../../_services/delete'
+import { deleteAbsent } from '@/app/(protected)/dashboard/(absents)/absent/[id]/_services/delete'
 
 export const absentColumns: ColumnDef<Absents>[] = [
   {
@@ -37,7 +37,8 @@ export const absentColumns: ColumnDef<Absents>[] = [
     header: 'Fecha de ausencia',
     cell: ({ row }) => {
       const { studentId, date } = row.original
-      const ABSENT_DATE = formatDateToString(date)
+      
+      const ABSENT_DATE = formatISODateToString(date)
 
       const AbsentDate = () => {
         const { data } = useData()

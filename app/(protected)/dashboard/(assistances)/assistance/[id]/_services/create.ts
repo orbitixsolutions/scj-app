@@ -18,7 +18,8 @@ export async function createAbsent(props: AbsentsProps) {
     return { status: 400, message: 'No tienes permisos.' }
   }
 
-  const CURRENT_DATE = new Date(currentDate ?? '')
+  const CURRENT_DATE = new Date(currentDate)
+  console.log(CURRENT_DATE)
 
   try {
     await db.absents.create({

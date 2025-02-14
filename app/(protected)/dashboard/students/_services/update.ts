@@ -28,7 +28,6 @@ export async function updateStudent(
     name,
     educationalLevel,
     instituteName,
-    studyYear,
   } = VALIDATION.data
 
   try {
@@ -37,7 +36,6 @@ export async function updateStudent(
       data: {
         name,
         lastName,
-        studyYear,
         institute,
         educationalLevel,
         instituteName,

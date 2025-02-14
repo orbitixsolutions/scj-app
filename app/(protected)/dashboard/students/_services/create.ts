@@ -26,7 +26,6 @@ export async function createStudent(
     institute,
     lastName,
     name,
-    studyYear,
     educationalLevel,
     instituteName,
   } = VALIDATION.data
@@ -37,7 +36,6 @@ export async function createStudent(
         id: studentId,
         name,
         lastName,
-        studyYear,
         institute,
         educationalLevel,
         instituteName,

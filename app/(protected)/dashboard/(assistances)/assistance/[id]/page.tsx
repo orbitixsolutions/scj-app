@@ -27,7 +27,7 @@ export async function generateMetadata(
 
   if (!WORKSHOP) return { title: 'Taller - Indefinido' }
 
-  return { title: `Asistencia de alumnos - ${WORKSHOP.name}` }
+  return { title: `Asistencia de alumnos - ${WORKSHOP?.name}` }
 }
 
 export default async function AssistancePage(props: AssistancePageProps) {

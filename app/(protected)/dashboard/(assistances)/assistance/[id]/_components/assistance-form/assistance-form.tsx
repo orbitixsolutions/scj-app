@@ -21,7 +21,7 @@ export function AssistanceForm(props: AssistanceFormProps) {
     onChange,
   } = useAssistanceForm(props)
 
-  if (!initialStatus && !currentStatus) return null
+  if ((!initialStatus && !currentStatus)) return null
 
   return (
     <div className='flex items-center space-x-2'>

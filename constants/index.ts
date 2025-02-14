@@ -15,17 +15,17 @@ export const SELECT_ROLES = [
 
 export const SELECT_EDUCATIONAL_LEVEL = [
   {
-    label: '7º de Bachillerato',
-    value: 'SEVENTH_SECONDARY',
+    label: '7º',
+    value: 'SEVENTH',
   },
   {
-    label: '8º de Bachillerato',
-    value: 'EIGHTH_SECONDARY',
+    label: '8º',
+    value: 'EIGHTH',
   },
 
   {
-    label: '9º de Bachilletaro',
-    value: 'NINTH_SECONDARY',
+    label: '9º',
+    value: 'NINTH',
   },
   {
     label: '4º de Bachillerato',

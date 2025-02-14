@@ -40,9 +40,6 @@ export const StudentSchema = z.object({
   lastName: z.string().min(2, {
     message: 'El apellido es inválido',
   }),
-  studyYear: z.string().min(1, {
-    message: 'El año es inválido',
-  }),
   institute: z.string().min(2, {
     message: 'La institución es inválida',
   }),

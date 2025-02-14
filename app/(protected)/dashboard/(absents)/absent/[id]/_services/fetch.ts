@@ -1,16 +1,17 @@
+import {
+  AbsentParamProps,
+  AbsentProps,
+} from '@/app/(protected)/dashboard/(absents)/absent/[id]/_types'
 import { currentRole } from '@/lib/auth'
 import { Absents, Prisma } from '@prisma/client'
-import { formatDateToString } from '@/helpers/get-current-date'
-import { AbsentParamProps, AbsentProps } from '../_types'
+import { formatISODateToString } from '@/helpers/get-current-date'
 import db from '@/lib/db'
 
-function filterAbsents(abensts: Absents[], filters: AbsentProps) {
+function filterAbsents(absents: Absents[], filters: AbsentProps) {
   const { date } = filters
-  return abensts.filter((item) => {
-    const matcher = [
-      date ? formatDateToString(item.date) === formatDateToString(date) : true,
-    ]
 
+  return absents.filter((item) => {
+    const matcher = [date ? formatISODateToString(item.date) === date : true]
     return matcher.every(Boolean)
   })
 }
@@ -43,7 +44,7 @@ export async function getWorkshop(id: string) {
 
 export async function getAbsents(props: AbsentProps, params: AbsentParamProps) {
   const { id } = params
-  
+
   const ROLE = await currentRole()
   if (ROLE !== 'DIRECTIVE') return null
 

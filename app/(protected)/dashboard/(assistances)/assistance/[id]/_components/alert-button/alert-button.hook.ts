@@ -5,7 +5,7 @@ import { createAbsent } from '@/app/(protected)/dashboard/(assistances)/assistan
 import { useTransition } from 'react'
 import { useData } from '@/providers/data-provider'
 import { toast } from 'sonner'
-import { formatDateToString } from '@/helpers/get-current-date'
+import { formatISODateToString } from '@/helpers/get-current-date'
 
 const STATUS_MAP = {
   ATTENDED: 'ASSISTED',
@@ -17,9 +17,7 @@ const STATUS_MAP = {
 function filterCurrentStatus(assistances: Assistances[], currDate: string) {
   const STATUS = assistances.filter((item) => {
     const matcher = [
-      currDate
-        ? formatDateToString(item.date) === formatDateToString(currDate)
-        : true,
+      currDate ? formatISODateToString(item.date) === currDate : true,
     ]
 
     return matcher.every(Boolean)
@@ -38,7 +36,7 @@ export function useAlertButton(props: AlertButtonProps) {
   const params = useSearchParams()
 
   const searchParams = new URLSearchParams(params)
-  const CURRENT_DATE = searchParams.get('date')?.toString() ?? ''
+  const CURRENT_DATE = searchParams.get('date')?.toString() ?? formatISODateToString(new Date())
 
   const { data } = useData()
   const { initialAssistances: initial, absents } = data
@@ -47,8 +45,8 @@ export function useAlertButton(props: AlertButtonProps) {
   const ABSENT = absents.find((item) => item.studentId === STUDENT_ID)
   const ABSENT_ID = ABSENT?.id
 
-  const ABSENT_DATE = formatDateToString(ABSENT?.date || new Date())
-  const IS_TODAY = formatDateToString(CURRENT_DATE) === ABSENT_DATE
+  const ABSENT_DATE = formatISODateToString(ABSENT?.date || new Date())
+  const IS_TODAY = formatISODateToString(CURRENT_DATE) === ABSENT_DATE
 
   const status = filterCurrentStatus(assistances, CURRENT_DATE)
   const initialStatus = INITIAL?.status
@@ -89,7 +87,8 @@ export function useAlertButton(props: AlertButtonProps) {
 
   const currentStatus = compareStatus(lastStatus)
   const disabled = currentStatus !== 'SPECIAL_CASE_NO_ATTENDED'
-  const isNotified = !!ABSENT_ID && IS_TODAY
+  const isNotified =
+    !!ABSENT_ID && IS_TODAY && currentStatus === 'SPECIAL_CASE_NO_ATTENDED'
 
   return {
     status,
@@ -99,6 +98,7 @@ export function useAlertButton(props: AlertButtonProps) {
     disabled,
     isPending,
     isNotified,
+    CURRENT_DATE,
     onSubmit,
   }
 }

@@ -3,7 +3,7 @@ import {
   WorkshopsProps,
 } from '@/app/(protected)/dashboard/(assistances)/assistance/[id]/_types'
 import { Prisma } from '@prisma/client'
-import { formatDateToString } from '@/helpers/get-current-date'
+import { formatISODateToString } from '@/helpers/get-current-date'
 import { currentRole } from '@/lib/auth'
 import db from '@/lib/db'
 
@@ -28,7 +28,7 @@ function filterByDate(data: WorkshopsProps, currDate: string) {
     assistances: student.assistances.filter((item) => {
       const matcher = [
         currDate
-          ? formatDateToString(item.date) === formatDateToString(currDate)
+          ? formatISODateToString(item.date) === currDate
           : true,
       ]
 
@@ -70,7 +70,6 @@ export async function getAssistances(props: getStudentsProps) {
                 educationalLevel: true,
                 instituteName: true,
                 dateOfBirth: true,
-                studyYear: true,
                 photo: true,
                 createdAt: true,
                 updatedAt: true,

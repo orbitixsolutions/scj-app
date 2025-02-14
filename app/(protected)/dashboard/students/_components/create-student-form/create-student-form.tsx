@@ -54,7 +54,6 @@ export function CreateStudentForm(props: CreateStudentFormProps) {
     defaultValues: {
       name: '',
       lastName: '',
-      studyYear: '',
       institute: '',
       educationalLevel: '',
       instituteName: '',
@@ -69,7 +68,6 @@ export function CreateStudentForm(props: CreateStudentFormProps) {
 
       form.setValue('name', STUDENT.name)
       form.setValue('lastName', STUDENT.lastName)
-      form.setValue('studyYear', STUDENT.studyYear)
       form.setValue('institute', STUDENT.institute)
       form.setValue('educationalLevel', STUDENT.educationalLevel)
       form.setValue('instituteName', STUDENT.instituteName)
@@ -154,24 +152,6 @@ export function CreateStudentForm(props: CreateStudentFormProps) {
                   <Input
                     {...field}
                     placeholder='Jimenez'
-                    disabled={isPending}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name='studyYear'
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Año que cursa</FormLabel>
-                <FormControl>
-                  <Input
-                    {...field}
-                    placeholder='Primaria'
                     disabled={isPending}
                   />
                 </FormControl>

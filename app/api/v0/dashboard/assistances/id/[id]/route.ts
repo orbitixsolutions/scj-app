@@ -67,7 +67,6 @@ export async function GET(
                 institute: true,
                 id: true,
                 dateOfBirth: true,
-                studyYear: true,
                 photo: true,
                 createdAt: true,
                 updatedAt: true,
