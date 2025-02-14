@@ -30,7 +30,7 @@ import { createStudent } from '@/app/(protected)/dashboard/students/_services/cr
 import { updateStudent } from '@/app/(protected)/dashboard/students/_services/update'
 import { useUploadImageToCloud } from '@/services/upload-core/use-upload-to-cloud'
 import { InputDate } from '@/components/ui/input-date'
-import { getCurrentDate, formatDateToString } from '@/helpers/get-current-date'
+import { getCurrentDate, formatISODateToString } from '@/helpers/get-current-date'
 import { SELECT_EDUCATIONAL_LEVEL, SELECT_INSTITUTES } from '@/constants'
 import { useData } from '@/providers/data-provider'
 import { toast } from 'sonner'
@@ -71,7 +71,7 @@ export function CreateStudentForm(props: CreateStudentFormProps) {
       form.setValue('institute', STUDENT.institute)
       form.setValue('educationalLevel', STUDENT.educationalLevel)
       form.setValue('instituteName', STUDENT.instituteName)
-      form.setValue('dateOfBirth', formatDateToString(DOB))
+      form.setValue('dateOfBirth', formatISODateToString(DOB))
     }
   }, [STUDENT, IS_EDITING, form, id])
 

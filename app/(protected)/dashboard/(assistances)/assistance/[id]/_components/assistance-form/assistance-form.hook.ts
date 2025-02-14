@@ -36,7 +36,8 @@ export function useAssistanceForm(props: AssistanceFormProps) {
   const params = useSearchParams()
 
   const searchParams = useMemo(() => new URLSearchParams(params), [params])
-  const CURRENT_DATE = searchParams.get('date')?.toString() ?? formatISODateToString(new Date())
+  const CURRENT_DATE =
+    searchParams.get('date')?.toString() ?? formatISODateToString(new Date())
 
   const { data } = useData()
   const { initialAssistances: initial } = data
@@ -50,8 +51,8 @@ export function useAssistanceForm(props: AssistanceFormProps) {
   const compareStatus = (status: StatusEnum) => {
     const ASSISTED = initialStatus === 'ATTENDED' && status === 'NOT_ATTENDED'
 
+    if (institute === 'EXTERIOR_STUDENT') return 'EXTERNAL_STUDENT'
     if (ASSISTED) return 'SPECIAL_CASE_NO_ATTENDED'
-    if (institute !== 'LOS_PINOS') return 'EXTERNAL_STUDENT'
 
     const TRANSITIONS = STATUS_MAP[initialStatus as never]
     return TRANSITIONS || 'EXTERNAL_STUDENT'

@@ -21,7 +21,7 @@ export function AssistanceForm(props: AssistanceFormProps) {
     onChange,
   } = useAssistanceForm(props)
 
-  if ((!initialStatus && !currentStatus)) return null
+  if (!initialStatus && !currentStatus) return null
 
   return (
     <div className='flex items-center space-x-2'>
@@ -48,16 +48,16 @@ export function AssistanceForm(props: AssistanceFormProps) {
         </SelectContent>
       </Select>
 
+      {currentStatus === 'EXTERNAL_STUDENT' && (
+        <AssistanceStatus>
+          Este estudiante es un alumno exterior y sus asistencias no se cuentan
+        </AssistanceStatus>
+      )}
+
       {currentStatus === 'SPECIAL_CASE_NO_ATTENDED' && (
         <AssistanceStatus destructive>
           Según la lista de asistencias este estudiante debió asistir al taller
           y no lo hizo
-        </AssistanceStatus>
-      )}
-
-      {currentStatus === 'EXTERNAL_STUDENT' && (
-        <AssistanceStatus>
-          Este estudiante es un alumno exterior y sus asistencias no se cuentan
         </AssistanceStatus>
       )}
     </div>
