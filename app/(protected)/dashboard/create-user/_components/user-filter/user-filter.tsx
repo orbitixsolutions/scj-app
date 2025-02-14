@@ -18,23 +18,9 @@ export function UserFilter() {
 
       <QueryToggle
         queryKey='role'
-        queryValue='admin'
-      >
-        Administrador
-      </QueryToggle>
-
-      <QueryToggle
-        queryKey='role'
         queryValue='educator'
       >
         Educador
-      </QueryToggle>
-
-      <QueryToggle
-        queryKey='role'
-        queryValue='student'
-      >
-        Estudiante
       </QueryToggle>
     </div>
   )

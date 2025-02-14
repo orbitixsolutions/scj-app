@@ -4,7 +4,7 @@ import { Students } from '@prisma/client'
 import db from '@/lib/db'
 
 function filterStudents(students: Students[], filters: StudentActionProps) {
-  const { firstName, lastName } = filters
+  const { firstName, lastName, educational_level, liceo } = filters
 
   return students.filter((student) => {
     const matcher = [
@@ -14,6 +14,8 @@ function filterStudents(students: Students[], filters: StudentActionProps) {
       lastName
         ? student.lastName.toLowerCase().includes(lastName.toLowerCase())
         : true,
+      educational_level ? student.educationalLevel === educational_level : true,
+      liceo ? student.institute.includes(liceo) : true,
     ]
 
     return matcher.every(Boolean)

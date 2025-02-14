@@ -8,20 +8,37 @@ export const SELECT_ROLES = [
     label: 'Directivo',
   },
   {
-    value: 'ADMIN',
-    label: 'Administrador',
-  },
-  {
     value: 'EDUCATOR',
     label: 'Educador',
   },
+]
+
+export const SELECT_EDUCATIONAL_LEVEL = [
   {
-    value: 'STUDENT',
-    label: 'Estudiante',
+    label: '7º de Bachillerato',
+    value: 'SEVENTH_SECONDARY',
   },
   {
-    value: 'DEVELOPER',
-    label: 'Desarrollador',
+    label: '8º de Bachillerato',
+    value: 'EIGHTH_SECONDARY',
+  },
+
+  {
+    label: '9º de Bachilletaro',
+    value: 'NINTH_SECONDARY',
+  },
+  {
+    label: '4º de Bachillerato',
+    value: 'FOURTH_SECONDARY',
+  },
+  {
+    label: '5º de Bachillerato',
+    value: 'FIFTH_SECONDARY',
+  },
+
+  {
+    label: '6º de Bachilletaro',
+    value: 'SIXTH_SECONDARY',
   },
 ]
 

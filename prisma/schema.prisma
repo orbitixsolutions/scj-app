@@ -52,12 +52,14 @@ model User {
 model Students {
     id String @id @default(uuid())
 
-    name        String
-    lastName    String
-    studyYear   String
-    institute   String
-    dateOfBirth DateTime
-    photo       String?
+    name             String
+    lastName         String
+    studyYear        String
+    institute        String
+    dateOfBirth      DateTime
+    educationalLevel String
+    instituteName    String
+    photo            String?
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt

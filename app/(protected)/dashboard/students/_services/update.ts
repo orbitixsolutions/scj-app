@@ -26,6 +26,8 @@ export async function updateStudent(
     institute,
     lastName,
     name,
+    educationalLevel,
+    instituteName,
     studyYear,
   } = VALIDATION.data
 
@@ -37,6 +39,8 @@ export async function updateStudent(
         lastName,
         studyYear,
         institute,
+        educationalLevel,
+        instituteName,
         dateOfBirth: new Date(dateOfBirth),
       },
     })
