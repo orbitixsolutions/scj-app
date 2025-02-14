@@ -28,6 +28,8 @@ export type WorkshopsProps = Prisma.WorkshopsGetPayload<{
             name: true
             documentIdentity: true
             institute: true
+            educationalLevel: true
+            instituteName: true
             id: true
             dateOfBirth: true
             studyYear: true
