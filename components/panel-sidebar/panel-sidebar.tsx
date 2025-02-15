@@ -65,7 +65,7 @@ export function PanelSidebar() {
                   </SidebarMenuItem>
                 ))}
 
-              {ROLE === 'TEACHER' &&
+              {ROLE === 'EDUCATOR' &&
                 SIDEBAR_TEACHER_ITEMS.sidebarItems.map((item) => (
                   <SidebarMenuItem key={item.name}>
                     <SidebarMenuButton asChild>

@@ -32,7 +32,7 @@ export function AssistanceForm(props: AssistanceFormProps) {
         disabled={isPending}
       >
         <SelectTrigger
-          className={cn('w-[180px]', ASSISTANCE_COLORS[lastStatus as never])}
+          className={cn('w-[200px]', ASSISTANCE_COLORS[lastStatus as never])}
         >
           <SelectValue placeholder='Seleccione un estado' />
         </SelectTrigger>
