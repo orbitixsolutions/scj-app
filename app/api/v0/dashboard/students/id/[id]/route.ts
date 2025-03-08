@@ -9,7 +9,7 @@ export async function GET(
   const ROLE = await currentRole()
   const STUDENT_ID = params.id
 
-  if (ROLE === 'STUDENT' || ROLE === 'TEACHER') {
+  if (ROLE === 'STUDENT' || ROLE === 'EDUCATOR') {
     return NextResponse.json(
       { message: 'No tienes permisos.' },
       { status: 401 }

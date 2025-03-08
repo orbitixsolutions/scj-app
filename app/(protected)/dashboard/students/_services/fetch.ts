@@ -24,10 +24,7 @@ function filterStudents(students: Students[], filters: StudentActionProps) {
 
 export async function getStudents(props: StudentActionProps) {
   const ROLE = await currentRole()
-
-  if (ROLE === 'STUDENT' || ROLE === 'TEACHER') {
-    return null
-  }
+  if (ROLE === 'STUDENT') return null
 
   try {
     const STUDENTS = await db.students.findMany({

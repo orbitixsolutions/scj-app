@@ -10,7 +10,7 @@ export async function updateInitialAssistance(
 ) {
   const ROLE = await currentRole()
 
-  if (ROLE === 'STUDENT' || ROLE === 'TEACHER') {
+  if (ROLE === 'STUDENT' || ROLE === 'EDUCATOR') {
     return { status: 403, message: 'No tienes permisos.' }
   }
 

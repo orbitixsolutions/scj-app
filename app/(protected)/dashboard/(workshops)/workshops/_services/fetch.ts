@@ -45,7 +45,7 @@ function filterWorkshops(
 export async function getWorkshops(props: WorkshopActionProps) {
   const ROLE = await currentRole()
 
-  if (ROLE === 'STUDENT' || ROLE === 'TEACHER') {
+  if (ROLE === 'STUDENT' || ROLE === 'EDUCATOR') {
     return null
   }
 

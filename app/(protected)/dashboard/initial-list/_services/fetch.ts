@@ -4,7 +4,7 @@ import db from '@/lib/db'
 export async function getInitialList() {
   const ROLE = await currentRole()
 
-  if (ROLE === 'STUDENT' || ROLE === 'TEACHER') {
+  if (ROLE === 'STUDENT' || ROLE === 'EDUCATOR') {
     return null
   }
 

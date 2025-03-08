@@ -4,11 +4,15 @@ import { StudentActionsProps } from '@/app/(protected)/dashboard/students/_compo
 import { deleteStudent } from '@/app/(protected)/dashboard/students/_services/delete'
 import { Trash2 } from 'lucide-react'
 import { useStudentBatch } from '@/providers/student-batch-provider'
+import { useCurrentRole } from '@/hooks/use-session'
 
 export function StudentActions(props: StudentActionsProps) {
   const { id } = props
 
   const { isDeleting } = useStudentBatch()
+  const ROLE = useCurrentRole()
+
+  if (ROLE === 'STUDENT' || ROLE === 'EDUCATOR') return null
   if (isDeleting) return null
 
   return (

@@ -19,7 +19,7 @@ type FormType = UseFormReturn<
   {
     items: string[]
   },
-  any,
+  never,
   undefined
 >
 

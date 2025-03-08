@@ -6,7 +6,7 @@ import db from '@/lib/db'
 export async function deleteUser(id: string) {
   const ROLE = await currentRole()
 
-  if (ROLE === 'STUDENT' || ROLE === 'TEACHER') {
+  if (ROLE === 'STUDENT' || ROLE === 'EDUCATOR') {
     return { status: 401, message: 'No tienes permisos.' }
   }
 

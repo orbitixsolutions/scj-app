@@ -20,7 +20,7 @@ export const deleteImage = async (props: DeleteAvatarProps) => {
   const { itemId, folder, path } = props
 
   const ROLE = await currentRole()
-  if (ROLE === 'STUDENT' || ROLE === 'TEACHER')
+  if (ROLE === 'STUDENT' || ROLE === 'EDUCATOR')
     return { message: 'No tienes permisos.', status: 403 }
 
   try {

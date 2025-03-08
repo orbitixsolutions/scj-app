@@ -6,7 +6,7 @@ import db from '@/lib/db'
 export async function deleteAbsent(id: string) {
   const ROLE = await currentRole()
 
-  if (ROLE === 'TEACHER' || ROLE === 'ROLE') {
+  if (ROLE === 'EDUCATOR' || ROLE === 'ROLE') {
     return { status: 403, message: 'No tienes permisos!' }
   }
 

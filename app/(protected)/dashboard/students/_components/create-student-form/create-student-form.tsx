@@ -30,16 +30,21 @@ import { createStudent } from '@/app/(protected)/dashboard/students/_services/cr
 import { updateStudent } from '@/app/(protected)/dashboard/students/_services/update'
 import { useUploadImageToCloud } from '@/services/upload-core/use-upload-to-cloud'
 import { InputDate } from '@/components/ui/input-date'
-import { getCurrentDate, formatISODateToString } from '@/helpers/get-current-date'
+import {
+  getCurrentDate,
+  formatISODateToString,
+} from '@/helpers/get-current-date'
 import { SELECT_EDUCATIONAL_LEVEL, SELECT_INSTITUTES } from '@/constants'
 import { useData } from '@/providers/data-provider'
 import { toast } from 'sonner'
+import { useCurrentRole } from '@/hooks/use-session'
 
 export function CreateStudentForm(props: CreateStudentFormProps) {
   const { id } = props
 
   const { data } = useData()
   const STUDENT = data.students.find((item) => item.id === id)
+  const ROLE = useCurrentRole()
 
   const [isPending, startTransition] = useTransition()
   const { handleUpload } = useUploadImageToCloud()
@@ -60,7 +65,7 @@ export function CreateStudentForm(props: CreateStudentFormProps) {
       dateOfBirth: getCurrentDate(),
     },
   })
-  
+
   useEffect(() => {
     if (IS_EDITING) {
       if (!STUDENT) return
@@ -109,6 +114,8 @@ export function CreateStudentForm(props: CreateStudentFormProps) {
       toast.error(message)
     })
   })
+
+  if (ROLE === 'STUDENT' || ROLE === 'EDUCATOR') return null
 
   return (
     <DialogForm

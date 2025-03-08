@@ -11,7 +11,7 @@ export async function createStudent(
 ) {
   const ROLE = await currentRole()
 
-  if (ROLE === 'STUDENT' || ROLE === 'TEACHER') {
+  if (ROLE === 'STUDENT') {
     return { status: 403, message: 'No tienes permisos.' }
   }
 

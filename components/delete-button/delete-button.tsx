@@ -21,6 +21,7 @@ import { useTransition } from 'react'
 import { useRouter } from 'next/navigation'
 import { cn } from '@/lib/utils'
 import { toast } from 'sonner'
+import { useCurrentRole } from '@/hooks/use-session'
 
 function useDelete(props: UseDeleteProps) {
   const { itemId, imageSettings, onDelete } = props
@@ -59,12 +60,15 @@ function useDelete(props: UseDeleteProps) {
 export function DeleteButton(props: DeleteButtonProps) {
   const { children, className, itemId, disabled, imageSettings, onDelete } =
     props
+  const ROLE = useCurrentRole()
 
   const { isPending, onDeleteItem } = useDelete({
     itemId,
     imageSettings,
     onDelete,
   })
+
+  if (ROLE === 'STUDENT' || ROLE === 'EDUCATOR') return null
 
   return (
     <AlertDialog>

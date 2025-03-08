@@ -10,7 +10,7 @@ export async function getWorkshops() {
 
   const USER_ID = USER?.id
 
-  if (ROLE === 'TEACHER') {
+  if (ROLE === 'EDUCATOR') {
     const WORKSHOPS = await db.workshops.findMany({
       where: { teacherId: USER_ID },
       include: { teacher: true, students: true },
