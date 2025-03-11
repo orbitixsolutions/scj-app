@@ -1,22 +1,24 @@
 'use client'
 
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { WorkshopStudentsProps } from '@/app/(protected)/dashboard/(workshops)/workshop/[id]/_components/workshop-students-list/workshop-students-list.type'
 import { WorkshopStudentItem } from '@/app/(protected)/dashboard/(workshops)/workshop/[id]/_components/workshop-students-item'
 import { SearchBar } from '@/components/search-bar'
 import { Button } from '@/components/ui/button'
-import { Plus } from 'lucide-react'
+import { Plus, Search } from 'lucide-react'
 import Link from 'next/link'
 
 export function WorkshopStudents(props: WorkshopStudentsProps) {
   const { data: STUDENTS } = props
 
-  const WORKSHOP_STUDENTS_MAPPED = STUDENTS.map((student, index) => (
+  const WORKSHOP_STUDENTS_MAPPED = STUDENTS.map((student) => (
     <li key={student.id}>
-      <WorkshopStudentItem
-        student={student}
-        index={index}
-      />
+      <WorkshopStudentItem student={student} />
     </li>
   ))
 
@@ -42,11 +44,31 @@ export function WorkshopStudents(props: WorkshopStudentsProps) {
 
   return (
     <div className='space-y-4'>
-      <SearchBar
-        queryParam='name'
-        placeholder='Buscar alumno...'
-        className='w-full'
-      />
+      <Popover>
+        <PopoverTrigger asChild>
+          <Button
+            size='full'
+            className='justify-start'
+          >
+            <Search />
+            Buscar estudiante
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className='w-[480px]'>
+          <div className='space-y-2'>
+            <SearchBar
+              queryParam='firstName'
+              placeholder='Buscar por nombre'
+              className='w-full'
+            />
+            <SearchBar
+              queryParam='lastName'
+              placeholder='Buscar por apellido'
+              className='w-full'
+            />
+          </div>
+        </PopoverContent>
+      </Popover>
       <Card>
         <CardHeader className='space-y-4'>
           <CardTitle className='text-center text-2xl'>Alumnos</CardTitle>
