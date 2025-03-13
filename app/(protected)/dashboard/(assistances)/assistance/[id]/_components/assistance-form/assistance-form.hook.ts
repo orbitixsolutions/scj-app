@@ -51,7 +51,7 @@ export function useAssistanceForm(props: AssistanceFormProps) {
   const compareStatus = (status: StatusEnum) => {
     const ASSISTED = initialStatus === 'ATTENDED' && status === 'NOT_ATTENDED'
 
-    if (institute === 'EXTERIOR_STUDENT') return 'EXTERNAL_STUDENT'
+    if (institute === 'EXTERIOR_STUDENT' && ASSISTED) return 'EXTERNAL_STUDENT'
     if (ASSISTED) return 'SPECIAL_CASE_NO_ATTENDED'
 
     const TRANSITIONS = STATUS_MAP[initialStatus as never]
