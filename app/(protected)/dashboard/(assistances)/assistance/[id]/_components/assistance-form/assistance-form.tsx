@@ -50,14 +50,15 @@ export function AssistanceForm(props: AssistanceFormProps) {
 
       {currentStatus === 'EXTERNAL_STUDENT' && (
         <AssistanceStatus>
-          Este estudiante es externo, por lo que sus asistencias y ausencias no
-          se contabilizan.
+          Este estudiante es externo, por lo que sus ausencias no se
+          contabilizan.
         </AssistanceStatus>
       )}
 
       {currentStatus === 'SPECIAL_CASE_NO_ATTENDED' && (
         <AssistanceStatus destructive>
-          Según la lista de asistencias, este estudiante tenía que asistir al taller, pero no lo hizo.
+          Según la lista de asistencias, este estudiante tenía que asistir al
+          taller, pero no lo hizo.
         </AssistanceStatus>
       )}
     </div>
