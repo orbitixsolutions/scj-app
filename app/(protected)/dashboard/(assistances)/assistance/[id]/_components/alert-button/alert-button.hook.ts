@@ -78,7 +78,6 @@ export function useAlertButton(props: AlertButtonProps) {
   const compareStatus = (status: StatusEnum) => {
     const ASSISTED = initialStatus === 'ATTENDED' && status === 'NOT_ATTENDED'
 
-    if (institute !== 'LOS_PINOS') return 'EXTERNAL_STUDENT'
     if (ASSISTED) return 'SPECIAL_CASE_NO_ATTENDED'
 
     const TRANSITIONS = STATUS_MAP[initialStatus as never]

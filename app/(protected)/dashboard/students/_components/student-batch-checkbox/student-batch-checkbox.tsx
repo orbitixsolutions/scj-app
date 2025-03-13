@@ -28,7 +28,7 @@ export function StudentBatchCheckbox(props: StudentBatchCheckboxProps) {
                     )
               }}
             />
-          </FormControl>
+          </FormControl> 
         </FormItem>
       )}
     />
