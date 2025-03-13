@@ -27,7 +27,7 @@ function filterCurrentStatus(assistances: Assistances[], currDate: string) {
 }
 
 export function useAlertButton(props: AlertButtonProps) {
-  const { assistances, id } = props
+  const { assistances, institute, id } = props
   const STUDENT_ID = id
 
   const { id: WORKSHOP_ID } = useParams<{ id: string }>()
@@ -36,7 +36,8 @@ export function useAlertButton(props: AlertButtonProps) {
   const params = useSearchParams()
 
   const searchParams = new URLSearchParams(params)
-  const CURRENT_DATE = searchParams.get('date')?.toString() ?? formatISODateToString(new Date())
+  const CURRENT_DATE =
+    searchParams.get('date')?.toString() ?? formatISODateToString(new Date())
 
   const { data } = useData()
   const { initialAssistances: initial, absents } = data
@@ -77,6 +78,8 @@ export function useAlertButton(props: AlertButtonProps) {
 
   const compareStatus = (status: StatusEnum) => {
     const ASSISTED = initialStatus === 'ATTENDED' && status === 'NOT_ATTENDED'
+
+    if (institute !== 'LOS_PINOS') return 'EXTERNAL_STUDENT'
 
     if (ASSISTED) return 'SPECIAL_CASE_NO_ATTENDED'
 
