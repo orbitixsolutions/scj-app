@@ -27,7 +27,7 @@ function filterCurrentStatus(assistances: Assistances[], currDate: string) {
 }
 
 export function useAlertButton(props: AlertButtonProps) {
-  const { assistances, institute, id } = props
+  const { assistances, id } = props
   const STUDENT_ID = id
 
   const { id: WORKSHOP_ID } = useParams<{ id: string }>()
