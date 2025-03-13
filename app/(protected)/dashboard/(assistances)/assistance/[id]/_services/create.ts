@@ -19,7 +19,6 @@ export async function createAbsent(props: AbsentsProps) {
   }
 
   const CURRENT_DATE = new Date(currentDate)
-  console.log(CURRENT_DATE)
 
   try {
     await db.absents.create({

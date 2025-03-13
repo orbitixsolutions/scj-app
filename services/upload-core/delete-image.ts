@@ -30,8 +30,6 @@ export const deleteImage = async (props: DeleteAvatarProps) => {
 
     await updateImage({ itemId, path, secure_url: null })
 
-    console.log('asd')
-
     return { message: 'Imagen eliminada.', status: 201 }
   } catch {
     return { message: 'Error al eliminar la imagen.', status: 403 }

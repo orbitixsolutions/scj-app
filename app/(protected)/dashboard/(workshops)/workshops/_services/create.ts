@@ -35,8 +35,7 @@ export async function createWorkshop(
     })
 
     return { status: 201, message: 'Taller creado correctamente.' }
-  } catch (error) {
-    console.log(error)
+  } catch {
     return { status: 400, message: 'Ha ocurrido un error.' }
   }
 }
