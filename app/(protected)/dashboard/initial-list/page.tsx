@@ -10,6 +10,8 @@ export const metadata: Metadata = {
   title: 'Lista inicial',
 }
 
+export const dynamic = 'force-dynamic'
+
 const CURRENT_DATE = getCurrentDate().split('-').join('/')
 
 export default async function InitialList() {
