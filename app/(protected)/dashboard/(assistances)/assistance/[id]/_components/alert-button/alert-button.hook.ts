@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 import { Assistances, StatusEnum } from '@prisma/client'
 import { AlertButtonProps } from '@/app/(protected)/dashboard/(assistances)/assistance/[id]/_components/alert-button/alert-button.type'
 import { useParams, useSearchParams } from 'next/navigation'
