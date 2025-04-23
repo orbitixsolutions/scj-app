@@ -1,7 +1,7 @@
 'use server'
 
 import { currentRole } from '@/lib/auth'
-import db from '@/lib/db'
+import { db } from '@/lib/db'
 
 type WorkshopStudent = {
   id: string

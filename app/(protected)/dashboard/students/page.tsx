@@ -15,6 +15,7 @@ export const metadata: Metadata = {
 
 export default async function StudentsPage(props: PageProps) {
   const { searchParams: PARAMS } = props
+  
   const STUDENTS = (await getStudents(PARAMS)) as Array<
     Prisma.StudentsGetPayload<{ include: { workshops: true } }>
   >
@@ -28,7 +29,6 @@ export default async function StudentsPage(props: PageProps) {
       <StudentBatchProvider>
         <section className='space-y-4'>
           <StudentFilter />
-
           <StudentList data={STUDENTS} />
         </section>
 

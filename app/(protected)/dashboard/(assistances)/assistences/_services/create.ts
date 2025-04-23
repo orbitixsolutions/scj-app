@@ -3,7 +3,7 @@
 import { currentRole } from '@/lib/auth'
 import { StatusEnum } from '@prisma/client'
 import { revalidatePath } from 'next/cache'
-import db from '@/lib/db'
+import { db } from '@/lib/db'
 
 export async function createAssistance(
   data: StatusEnum,

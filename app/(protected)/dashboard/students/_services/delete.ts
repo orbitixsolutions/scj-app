@@ -1,13 +1,13 @@
 'use server'
 
+import { db } from '@/lib/db'
 import { currentRole } from '@/lib/auth'
-import db from '@/lib/db'
 import { deleteImage } from '@/services/upload-core/delete-image'
 
 export async function deleteStudent(id: string) {
   const ROLE = await currentRole()
 
-  if (ROLE === 'STUDENT' || ROLE === 'TEACHER') {
+  if (ROLE === 'STUDENT') {
     return { status: 403, message: 'No tienes permisos.' }
   }
 
@@ -22,7 +22,7 @@ export async function deleteStudent(id: string) {
 export async function deleteStudents(items: string[]) {
   const ROLE = await currentRole()
 
-  if (ROLE === 'STUDENT' || ROLE === 'TEACHER') {
+  if (ROLE === 'STUDENT' || ROLE === 'EDUCATOR') {
     return { status: 403, message: 'No tienes permisos.' }
   }
 

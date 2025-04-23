@@ -3,7 +3,8 @@
 import { z } from 'zod'
 import { currentRole } from '@/lib/auth'
 import { WorkshopSchema } from '@/schemas'
-import db from '@/lib/db'
+import { DayEnum } from '@prisma/client'
+import { db } from '@/lib/db'
 
 export async function updateWorkshop(
   values: z.infer<typeof WorkshopSchema>,
@@ -11,7 +12,7 @@ export async function updateWorkshop(
 ) {
   const ROLE = await currentRole()
 
-  if (ROLE === 'STUDENT' || ROLE === 'TEACHER') {
+  if (ROLE === 'STUDENT' || ROLE === 'EDUCATOR') {
     return { status: 403, message: 'No tienes permisos.' }
   }
 
@@ -30,9 +31,21 @@ export async function updateWorkshop(
         name,
         description,
         teacherId,
-        days,
       },
     })
+
+    await db.workshopsByDay.deleteMany({
+      where: { workshopId: workshopId },
+    })
+
+    for (const day of days) {
+      await db.workshopsByDay.create({
+        data: {
+          day: day as DayEnum,
+          workshopId,
+        },
+      })
+    }
 
     return { status: 201, message: 'Taller actualizado correctamente.' }
   } catch {

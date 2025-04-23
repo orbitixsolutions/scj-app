@@ -1,11 +1,11 @@
-import authConfig from '@/auth.config'
-import NextAuth from 'next-auth'
 import {
   DEFAULT_LOGIN_REDIRECT,
   apiAuthPrefix,
   authRoutes,
   publicRoutes,
 } from '@/routes'
+import authConfig from '@/auth.config'
+import NextAuth from 'next-auth'
 
 export const { auth } = NextAuth(authConfig)
 
@@ -29,7 +29,7 @@ export default auth(async (req) => {
   }
 
   if (!isLoggedIn && !isPublicRoute) {
-    const redirect = new URL('/', nextUrl).href
+    const redirect = new URL('/login', nextUrl).href
     return Response.redirect(redirect)
   }
 

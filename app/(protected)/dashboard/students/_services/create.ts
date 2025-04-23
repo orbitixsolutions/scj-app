@@ -3,7 +3,7 @@
 import { z } from 'zod'
 import { currentRole } from '@/lib/auth'
 import { StudentSchema } from '@/schemas'
-import db from '@/lib/db'
+import { db } from '@/lib/db'
 
 export async function createStudent(
   data: z.infer<typeof StudentSchema>,
@@ -11,7 +11,7 @@ export async function createStudent(
 ) {
   const ROLE = await currentRole()
 
-  if (ROLE === 'STUDENT' || ROLE === 'TEACHER') {
+  if (ROLE === 'STUDENT') {
     return { status: 403, message: 'No tienes permisos.' }
   }
 
@@ -23,11 +23,11 @@ export async function createStudent(
 
   const {
     dateOfBirth,
-    documentIdentity,
     institute,
     lastName,
     name,
-    studyYear,
+    educationalLevel,
+    instituteName,
   } = VALIDATION.data
 
   try {
@@ -36,9 +36,9 @@ export async function createStudent(
         id: studentId,
         name,
         lastName,
-        studyYear,
         institute,
-        documentIdentity,
+        educationalLevel,
+        instituteName,
         dateOfBirth: new Date(dateOfBirth),
       },
     })
@@ -46,7 +46,7 @@ export async function createStudent(
     await db.initialAssistances.create({
       data: {
         studentId: studentId,
-        status: 'NOT_DETERMINED',
+        status: 'ATTENDED',
       },
     })
 

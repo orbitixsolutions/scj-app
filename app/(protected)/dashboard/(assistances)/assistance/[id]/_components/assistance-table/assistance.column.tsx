@@ -26,7 +26,7 @@ export const assistanceColumns: ColumnDef<StudentsProps>[] = [
     header: 'Asistencias',
     cell: ({ row }) => {
       const data = row.original
-      return <AssistanceForm {...data} />
+     return <AssistanceForm {...data} />
     },
   },
   {
@@ -34,7 +34,7 @@ export const assistanceColumns: ColumnDef<StudentsProps>[] = [
     header: 'Acciones',
     cell: ({ row }) => {
       const data = row.original
-      return <AlertButton {...data} />
+     return <AlertButton {...data} />
     },
   },
 ]

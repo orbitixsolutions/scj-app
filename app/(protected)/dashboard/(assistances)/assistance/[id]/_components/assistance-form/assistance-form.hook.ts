@@ -5,7 +5,7 @@ import { useMemo, useTransition } from 'react'
 import { createAssistance } from '@/app/(protected)/dashboard/(assistances)/assistences/_services/create'
 import { toast } from 'sonner'
 import { useData } from '@/providers/data-provider'
-import { formatDateToString } from '@/helpers/get-current-date'
+import { formatISODateToString } from '@/helpers/get-current-date'
 
 const STATUS_MAP = {
   ATTENDED: 'ASSISTED',
@@ -17,9 +17,7 @@ const STATUS_MAP = {
 function filterCurrentStatus(assistances: Assistances[], currDate: string) {
   const STATUS = assistances.filter((item) => {
     const matcher = [
-      currDate
-        ? formatDateToString(item.date) === formatDateToString(currDate)
-        : true,
+      currDate ? formatISODateToString(item.date) === currDate : true,
     ]
 
     return matcher.every(Boolean)
@@ -38,28 +36,34 @@ export function useAssistanceForm(props: AssistanceFormProps) {
   const params = useSearchParams()
 
   const searchParams = useMemo(() => new URLSearchParams(params), [params])
-  const CURRENT_DATE = searchParams.get('date')?.toString() ?? ''
+  const CURRENT_DATE =
+    searchParams.get('date')?.toString() ?? formatISODateToString(new Date())
 
   const { data } = useData()
   const { initialAssistances: initial } = data
 
   const INITIAL = initial.find((item) => item.studentId === STUDENT_ID)
-  const initialStatus = INITIAL?.status
+  const INITIAL_LIST_STATUS = INITIAL?.status
 
-  const status = filterCurrentStatus(assistances, CURRENT_DATE)
-  const lastStatus = status || 'NOT_DETERMINED'
+  const STATUS = filterCurrentStatus(assistances, CURRENT_DATE)
+  const LAST_STATUS = STATUS || 'NOT_DETERMINED'
 
   const compareStatus = (status: StatusEnum) => {
-    const ASSISTED = initialStatus === 'ATTENDED' && status === 'NOT_ATTENDED'
+    const ASSISTED =
+      INITIAL_LIST_STATUS === 'ATTENDED' && status === 'NOT_ATTENDED'
+    const ASSISTED_EXCUSED =
+      INITIAL_LIST_STATUS === 'ATTENDED' && status === 'ATTENDED_EXCUSED'
 
+    if (institute === 'EXTERIOR_STUDENT' && ASSISTED) return 'EXTERNAL_STUDENT'
+
+    if (ASSISTED_EXCUSED) return 'SPECIAL_CASE_ATTENDED_EXCUSED'
     if (ASSISTED) return 'SPECIAL_CASE_NO_ATTENDED'
-    if (institute !== 'LOS_PINOS') return 'EXTERNAL_STUDENT'
 
-    const TRANSITIONS = STATUS_MAP[initialStatus as never]
+    const TRANSITIONS = STATUS_MAP[INITIAL_LIST_STATUS as never]
     return TRANSITIONS || 'EXTERNAL_STUDENT'
   }
 
-  const currentStatus = compareStatus(lastStatus)
+  const currentStatus = compareStatus(LAST_STATUS)
 
   const onChange = (value: StatusEnum) => {
     startTransition(async () => {
@@ -81,10 +85,11 @@ export function useAssistanceForm(props: AssistanceFormProps) {
 
   return {
     isPending,
-    status,
-    lastStatus,
-    initialStatus,
+    status: STATUS,
+    lastStatus: LAST_STATUS,
+    initialStatus: INITIAL_LIST_STATUS,
     currentStatus,
+    CURRENT_DATE,
     onChange,
   }
 }

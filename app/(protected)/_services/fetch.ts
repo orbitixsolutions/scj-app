@@ -1,4 +1,4 @@
-import db from '@/lib/db'
+import { db } from '@/lib/db'
 
 export async function getStudents() {
   try {
@@ -9,9 +9,22 @@ export async function getStudents() {
   }
 }
 
+export async function getEducators() {
+  try {
+    const EDUCATORS = await db.user.findMany({
+      where: { role: 'EDUCATOR' },
+    })
+    return EDUCATORS
+  } catch {
+    return null
+  }
+}
+
 export async function getWorkshops() {
   try {
-    const WORKSHOPS = await db.workshops.findMany()
+    const WORKSHOPS = await db.workshops.findMany({
+      include: { workshopsByDay: true },
+    })
     return WORKSHOPS
   } catch {
     return null

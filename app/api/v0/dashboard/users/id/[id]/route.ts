@@ -1,6 +1,6 @@
 import { currentRole } from '@/lib/auth'
 import { NextResponse } from 'next/server'
-import db from '@/lib/db'
+import { db } from '@/lib/db'
 
 export async function GET(
   request: Request,
@@ -9,7 +9,7 @@ export async function GET(
   const ROLE = await currentRole()
   const USER_ID = params.id
 
-  if (ROLE === 'STUDENT' || ROLE === 'TEACHER') {
+  if (ROLE === 'STUDENT' || ROLE === 'EDUCATOR') {
     return NextResponse.json(
       { message: 'No tienes permisos.' },
       { status: 401 }

@@ -12,28 +12,28 @@ import {
   CommandItem,
   CommandList,
 } from '@/components/ui/command'
-import { useSuspenseFetch } from '@/hooks/use-fetch'
 import { Button } from '@/components/ui/button'
-import { User } from '@prisma/client'
 import { Check, ChevronsUpDown, Plus } from 'lucide-react'
 import { TeacherSelectorProps } from '@/components/teacher-selector/teacher-selector.type'
 import { cn } from '@/lib/utils'
 import { useMemo } from 'react'
+import { useData } from '@/providers/data-provider'
 import Link from 'next/link'
 
 export function TeacherSelector(props: TeacherSelectorProps) {
   const { value, disabled, className, onChange } = props
 
-  const TEACHER_END_POINT = '/api/v0/dashboard/teachers'
-  const { data } = useSuspenseFetch<User[]>(TEACHER_END_POINT)
+  const {
+    data: { educators },
+  } = useData()
 
   const TEACHERS = useMemo(
     () =>
-      data.map((teacher) => ({
+      educators?.map((teacher) => ({
         label: `${teacher.name} ${teacher.lastName}`,
         value: teacher.id,
       })),
-    [data]
+    [educators]
   )
 
   return (
@@ -60,23 +60,11 @@ export function TeacherSelector(props: TeacherSelectorProps) {
           <CommandList>
             <CommandEmpty>
               <article className='text-muted-foreground'>
-                <p>No se encontraron profesores.</p>
-                <p>
-                  Asigne un{' '}
-                  <span>
-                    <Link
-                      className='underline '
-                      href={'/dashboard/create-user'}
-                    >
-                      profesor
-                    </Link>
-                  </span>{' '}
-                  a este taller.
-                </p>
+                <p>No se encontraron educadores.</p>
               </article>
             </CommandEmpty>
             <CommandGroup>
-              {TEACHERS.map((teacher) => (
+              {TEACHERS?.map((teacher) => (
                 <CommandItem
                   key={teacher.value}
                   value={teacher.value}
@@ -104,7 +92,7 @@ export function TeacherSelector(props: TeacherSelectorProps) {
                   href={'/dashboard/create-user'}
                   className='flex items-center justify-between space-x-2'
                 >
-                  <span>Agregar profesor</span>
+                  <span>Agregar educador</span>
                   <Plus />
                 </Link>
               </Button>

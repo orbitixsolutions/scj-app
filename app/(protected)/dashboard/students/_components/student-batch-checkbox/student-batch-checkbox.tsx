@@ -13,7 +13,7 @@ export function StudentBatchCheckbox(props: StudentBatchCheckboxProps) {
 
   return (
     <FormField
-      control={form.control}
+      control={form.control as never}
       name='items'
       render={({ field }) => (
         <FormItem className='absolute top-4 left-4'>
@@ -23,10 +23,12 @@ export function StudentBatchCheckbox(props: StudentBatchCheckboxProps) {
               onCheckedChange={(checked) => {
                 return checked
                   ? field.onChange([...field.value, id])
-                  : field.onChange(field.value.filter((item) => item !== id))
+                  : field.onChange(
+                      field.value.filter((item: never) => item !== id)
+                    )
               }}
             />
-          </FormControl>
+          </FormControl> 
         </FormItem>
       )}
     />

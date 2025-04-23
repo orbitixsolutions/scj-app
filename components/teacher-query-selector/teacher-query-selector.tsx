@@ -1,9 +1,7 @@
 'use client'
 
-import { Suspense } from 'react'
-import { TeacherSelector } from '../teacher-selector'
-import { TeacherQuerySelectorProps } from './teacher-query-selector.type'
-import { Loader } from 'lucide-react'
+import { TeacherSelector } from '@/components/teacher-selector'
+import { TeacherQuerySelectorProps } from '@/components/teacher-query-selector/teacher-query-selector.type'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { useDebouncedCallback } from 'use-debounce'
 
@@ -30,14 +28,12 @@ export function TeacherQuerySelector(props: TeacherQuerySelectorProps) {
   return (
     <div className='flex items-center space-x-2'>
       <p className='text-sm'>Talleres de:</p>
-      
-      <Suspense fallback={<Loader className='animate-spin' />}>
-        <TeacherSelector
-          className={className}
-          onChange={(value) => handleSearch(value)}
-          value={searchParams.get(queryParam)?.toString()}
-        />
-      </Suspense>
+
+      <TeacherSelector
+        className={className}
+        onChange={(value) => handleSearch(value)}
+        value={searchParams.get(queryParam)?.toString()}
+      />
     </div>
   )
 }

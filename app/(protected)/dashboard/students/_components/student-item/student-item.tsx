@@ -4,6 +4,7 @@ import { studentPlaceholder } from '@/assets/images'
 import { SquareBox } from '@/components/square-box'
 import { StudentActions } from '@/app/(protected)/dashboard/students/_components/student-actions'
 import { StudentBatchCheckbox } from '@/app/(protected)/dashboard/students/_components/student-batch-checkbox'
+import { WorkshopList } from '../workshop-list'
 import Image from 'next/image'
 
 export function StudentItem(props: StudentItemProps) {
@@ -12,7 +13,6 @@ export function StudentItem(props: StudentItemProps) {
   } = props
 
   const IS_PHOTO = !!photo ? photo : studentPlaceholder.src
-  const WORKSHOP_COUNT = workshops?.length
 
   return (
     <Card className='w-full min-h-64 h-full flex flex-col justify-between items-center gap-4 relative overflow-hidden select-none'>
@@ -36,18 +36,7 @@ export function StudentItem(props: StudentItemProps) {
         </div>
       </div>
 
-      <div className='bg-secondary p-4 w-full rounded text-sm'>
-        <p className='text-center font-light'>
-          {!!WORKSHOP_COUNT ? (
-            <span>
-              Talleres asignados{' '}
-              <span className='text-primary'>({WORKSHOP_COUNT})</span>
-            </span>
-          ) : (
-            'Sin talleres asignados'
-          )}
-        </p>
-      </div>
+      <WorkshopList workshops={workshops} />
 
       <StudentActions id={id} />
       <StudentBatchCheckbox id={id} />

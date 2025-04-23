@@ -19,9 +19,10 @@ export function DialogForm(props: DialogFormProps) {
     disabled,
     isEditing,
     isOpen,
-    setIsOpen,
+    buttonClassName,
     children,
     formId,
+    setIsOpen,
   } = props
 
   return (
@@ -42,6 +43,7 @@ export function DialogForm(props: DialogFormProps) {
           <Button
             disabled={disabled}
             variant='outline'
+            className={buttonClassName}
           >
             Crear
           </Button>

@@ -1,7 +1,7 @@
 import { currentRole } from '@/lib/auth'
-import { Prisma } from '@prisma/client'
+import { Prisma, Students } from '@prisma/client'
 import { WorkshopStudentActionProps } from '@/app/(protected)/dashboard/(workshops)/workshop/[id]/_types'
-import db from '@/lib/db'
+import { db } from '@/lib/db'
 
 export async function getWorkshop(id: string) {
   const ROLE = await currentRole()
@@ -32,12 +32,30 @@ export async function getWorkshop(id: string) {
   }
 }
 
+function filterStudents(
+  students: Students[],
+  params: WorkshopStudentActionProps
+) {
+  const { firstName, lastName } = params
+
+  return students.filter((student) => {
+    const matcher = [
+      firstName
+        ? student.name.toLowerCase().includes(firstName.toLowerCase())
+        : true,
+      lastName
+        ? student.lastName.toLowerCase().includes(lastName.toLowerCase())
+        : true,
+    ]
+
+    return matcher.every(Boolean)
+  })
+}
+
 export async function getStudents(
   id: string,
   params: WorkshopStudentActionProps
 ) {
-  const { name } = params
-
   const ROLE = await currentRole()
 
   if (ROLE === 'STUDENT') {
@@ -45,29 +63,6 @@ export async function getStudents(
   }
 
   try {
-    if (name) {
-      const STUDENTS = await db.students.findMany({
-        include: {
-          workshops: true,
-        },
-        where: {
-          workshops: {
-            every: {
-              workshopId: {
-                not: id,
-              },
-            },
-          },
-        },
-      })
-
-      const FILTERED_STUDENTS = STUDENTS.filter((student) =>
-        student.name.toLowerCase().includes(name.toLowerCase())
-      )
-
-      return FILTERED_STUDENTS
-    }
-
     const STUDENTS = await db.students.findMany({
       include: {
         workshops: true,
@@ -83,7 +78,9 @@ export async function getStudents(
       },
     })
 
-    return STUDENTS
+    const FILTERED_STUDENTS = filterStudents(STUDENTS, params)
+
+    return FILTERED_STUDENTS
   } catch {
     return null
   }

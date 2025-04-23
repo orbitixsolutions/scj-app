@@ -1,5 +1,3 @@
-import { format } from 'date-fns'
-
 export function getCurrentDate() {
   const [DAY, MONTH, YEAR] = new Date()
     .toLocaleDateString('es-ES', {
@@ -13,6 +11,18 @@ export function getCurrentDate() {
 }
 
 export function formatDateToString(date: Date | string) {
-  const [MONTH, DAY, YEAR] = format(date, 'P').split('/')
-  return `${YEAR}-${MONTH}-${DAY}`
+  const [DAY, MONTH, YEAR] = new Date(date)
+    .toLocaleDateString('es-ES', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+    })
+    .split('/')
+
+  return [YEAR, MONTH, DAY].join('-')
+}
+
+export function formatISODateToString(date: Date | string) {
+  const [YEAR, MONTH, DAY] = new Date(date).toISOString().split('T')[0].split('-')
+  return [YEAR, MONTH, DAY].join('-')
 }

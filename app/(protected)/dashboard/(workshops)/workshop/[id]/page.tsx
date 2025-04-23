@@ -34,11 +34,11 @@ export default async function WorkshopPage(props: WorkshopPageProps) {
   if (!WORKSHOP || !STUDENTS) return redirect('/dashboard/workshops')
 
   return (
-    <ContentLayout title={`Taller`}>
+    <ContentLayout title={`Taller - ${WORKSHOP.name}`}>
       <header className='flex justify-start'>
         <Link
           href={`/dashboard/workshops`}
-          className='text-primary flex items-center space-x-2 hover:underline'
+          className='text-primary text-sm flex items-center space-x-2 hover:underline'
         >
           <ChevronLeft />
           <span>Volver a la lista de talleres</span>

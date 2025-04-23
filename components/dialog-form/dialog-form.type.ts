@@ -7,4 +7,5 @@ export type DialogFormProps = {
   formId: string
   isOpen?: boolean
   setIsOpen?: React.Dispatch<React.SetStateAction<boolean>>
+  buttonClassName?: string
 }

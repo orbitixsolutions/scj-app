@@ -41,20 +41,31 @@ export function PanelSidebar() {
           <SidebarGroupLabel>Administrar</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {ROLE === 'DIRECTIVE' ||
-                (ROLE === 'DEVELOPER' &&
-                  SIDEBAR_DIRECTIVE_ITEMS.sidebarItems.map((item) => (
-                    <SidebarMenuItem key={item.name}>
-                      <SidebarMenuButton asChild>
-                        <Link href={item.url}>
-                          <item.icon />
-                          <span>{item.name}</span>
-                        </Link>
-                      </SidebarMenuButton>
-                    </SidebarMenuItem>
-                  )))}
+              {ROLE === 'DIRECTIVE' &&
+                SIDEBAR_DIRECTIVE_ITEMS.sidebarItems.map((item) => (
+                  <SidebarMenuItem key={item.name}>
+                    <SidebarMenuButton asChild>
+                      <Link href={item.url}>
+                        <item.icon />
+                        <span>{item.name}</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ))}
 
-              {ROLE === 'TEACHER' &&
+              {ROLE === 'DEVELOPER' &&
+                SIDEBAR_DIRECTIVE_ITEMS.sidebarItems.map((item) => (
+                  <SidebarMenuItem key={item.name}>
+                    <SidebarMenuButton asChild>
+                      <Link href={item.url}>
+                        <item.icon />
+                        <span>{item.name}</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ))}
+
+              {ROLE === 'EDUCATOR' &&
                 SIDEBAR_TEACHER_ITEMS.sidebarItems.map((item) => (
                   <SidebarMenuItem key={item.name}>
                     <SidebarMenuButton asChild>

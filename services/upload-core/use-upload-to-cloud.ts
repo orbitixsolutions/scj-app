@@ -22,7 +22,7 @@ export function useUploadImageToCloud() {
 
     if (!IMAGE_FILE) return
 
-    if (ROLE === 'STUDENT' || ROLE === 'TEACHER') {
+    if (ROLE === 'STUDENT' || ROLE === 'EDUCATOR') {
       return toast.error('No tienes permisos.')
     }
 

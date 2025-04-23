@@ -1,10 +1,17 @@
-import { Absents, InitialAssistances, Students, Workshops } from '@prisma/client'
+import {
+  Absents,
+  InitialAssistances,
+  Prisma,
+  Students,
+  User,
+} from '@prisma/client'
 
 type DataProps = {
   students: Students[]
-  workshops: Workshops[]
+  workshops: Prisma.WorkshopsGetPayload<{ include: { workshopsByDay: true } }>[]
   initialAssistances: InitialAssistances[]
   absents: Absents[]
+  educators: User[]
 }
 
 export type DataContextProps = {

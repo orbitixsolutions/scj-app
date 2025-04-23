@@ -27,14 +27,19 @@ export async function generateMetadata(
 
   if (!WORKSHOP) return { title: 'Taller - Indefinido' }
 
-  return { title: `Asistencia de alumnos - ${WORKSHOP.name}` }
+  return { title: `Asistencia de alumnos - ${WORKSHOP?.name}` }
 }
 
 export default async function AssistancePage(props: AssistancePageProps) {
-  const [ASSIS_NORMAL_STUDENTS, ASSIS_DATES_STUDENTS] = await Promise.all([
-    getAssistances({ mode: 'normal', page: props }),
-    getAssistances({ mode: 'dates', page: props }),
-  ])
+  const { params } = props
+  const WORKSHOP_ID = params.id
+
+  const [ASSIS_NORMAL_STUDENTS, ASSIS_DATES_STUDENTS, WORKSHOP] =
+    await Promise.all([
+      getAssistances({ mode: 'normal', page: props }),
+      getAssistances({ mode: 'dates', page: props }),
+      getWorkshop(WORKSHOP_ID),
+    ])
 
   return (
     <ContentLayout title='Asistencia'>
@@ -44,7 +49,7 @@ export default async function AssistancePage(props: AssistancePageProps) {
           className='text-primary flex items-center space-x-2 hover:underline'
         >
           <ChevronLeft />
-          <h2 className='font-bold text-xl'>Asistencia</h2>
+          <h2 className='font-bold text-xl'>Asistencias - {WORKSHOP?.name}</h2>
         </Link>
         <RefreshButton />
       </header>

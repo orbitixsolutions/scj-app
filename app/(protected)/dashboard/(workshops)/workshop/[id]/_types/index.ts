@@ -3,10 +3,12 @@ export type WorkshopPageProps = {
     id: string
   }
   searchParams: {
-    name: string
+    firstName: string
+    lastName: string
   }
 }
 
 export type WorkshopStudentActionProps = {
-  name: string
+  firstName: string
+    lastName: string
 }

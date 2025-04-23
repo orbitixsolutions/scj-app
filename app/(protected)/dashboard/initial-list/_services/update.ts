@@ -2,7 +2,7 @@
 
 import { currentRole } from '@/lib/auth'
 import { StatusEnum } from '@prisma/client'
-import db from '@/lib/db'
+import { db } from '@/lib/db'
 
 export async function updateInitialAssistance(
   data: StatusEnum,
@@ -10,7 +10,7 @@ export async function updateInitialAssistance(
 ) {
   const ROLE = await currentRole()
 
-  if (ROLE === 'STUDENT' || ROLE === 'TEACHER') {
+  if (ROLE === 'STUDENT' || ROLE === 'EDUCATOR') {
     return { status: 403, message: 'No tienes permisos.' }
   }
 

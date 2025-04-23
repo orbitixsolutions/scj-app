@@ -8,31 +8,48 @@ export const SELECT_ROLES = [
     label: 'Directivo',
   },
   {
-    value: 'ADMIN',
-    label: 'Administrador',
+    value: 'EDUCATOR',
+    label: 'Educador',
+  },
+]
+
+export const SELECT_EDUCATIONAL_LEVEL = [
+  {
+    label: '7º',
+    value: 'SEVENTH',
   },
   {
-    value: 'TEACHER',
-    label: 'Profesor',
+    label: '8º',
+    value: 'EIGHTH',
+  },
+
+  {
+    label: '9º',
+    value: 'NINTH',
   },
   {
-    value: 'STUDENT',
-    label: 'Estudiante',
+    label: '4º de Bachillerato',
+    value: 'FOURTH_SECONDARY',
   },
   {
-    value: 'DEVELOPER',
-    label: 'Desarrollador',
+    label: '5º de Bachillerato',
+    value: 'FIFTH_SECONDARY',
+  },
+
+  {
+    label: '6º de Bachilletaro',
+    value: 'SIXTH_SECONDARY',
   },
 ]
 
 export const SELECT_INSTITUTES = [
   {
     value: 'LOS_PINOS',
-    label: 'Los Pinos',
+    label: 'Liceo Los Pinos',
   },
   {
     value: 'EXTERIOR_STUDENT',
-    label: 'Estudiante externo',
+    label: 'CJotero',
   },
 ]
 

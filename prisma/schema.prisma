@@ -1,16 +1,17 @@
 generator client {
-    provider = "prisma-client-js"
+    provider        = "prisma-client-js"
+    previewFeatures = ["driverAdapters"]
 }
 
 datasource db {
-    provider = "postgresql"
+    provider = "sqlite"
     url      = env("DATABASE_URL")
 }
 
 enum RolesEnum {
     DIRECTIVE
     ADMIN
-    TEACHER
+    EDUCATOR
     STUDENT
     DEVELOPER
 }
@@ -54,10 +55,10 @@ model Students {
 
     name             String
     lastName         String
-    studyYear        String
     institute        String
-    documentIdentity String
     dateOfBirth      DateTime
+    educationalLevel String
+    instituteName    String
     photo            String?
 
     createdAt DateTime @default(now())
@@ -80,20 +81,31 @@ model InitialAssistances {
 }
 
 model Workshops {
-    id          String   @id @default(uuid())
+    id          String               @id @default(uuid())
     name        String
-    days        String[]
     description String
     photo       String?
+    students    StudentsToWorkshop[]
+    assistances Assistances[]
+    absents     Absents[]
+    workshopsByDay WorkshopsByDay[]
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
     teacher   User   @relation(fields: [teacherId], references: [id], onDelete: Cascade)
     teacherId String
+}
 
-    students    StudentsToWorkshop[]
-    assistances Assistances[]
+model WorkshopsByDay {
+    id         String @id @default(uuid())
+    workshopId String
+
+    day      DayEnum
+    workshop Workshops @relation(fields: [workshopId], references: [id], onDelete: Cascade)
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 }
 
 model StudentsToWorkshop {
@@ -134,4 +146,6 @@ model Absents {
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
+
+    workshop Workshops @relation(fields: [workshopId], references: [id], onDelete: Cascade)
 }

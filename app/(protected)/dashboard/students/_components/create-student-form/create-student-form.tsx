@@ -30,16 +30,21 @@ import { createStudent } from '@/app/(protected)/dashboard/students/_services/cr
 import { updateStudent } from '@/app/(protected)/dashboard/students/_services/update'
 import { useUploadImageToCloud } from '@/services/upload-core/use-upload-to-cloud'
 import { InputDate } from '@/components/ui/input-date'
-import { getCurrentDate, formatDateToString } from '@/helpers/get-current-date'
-import { toast } from 'sonner'
-import { SELECT_INSTITUTES } from '@/constants'
+import {
+  getCurrentDate,
+  formatISODateToString,
+} from '@/helpers/get-current-date'
+import { SELECT_EDUCATIONAL_LEVEL, SELECT_INSTITUTES } from '@/constants'
 import { useData } from '@/providers/data-provider'
+import { toast } from 'sonner'
+import { useCurrentRole } from '@/hooks/use-session'
 
 export function CreateStudentForm(props: CreateStudentFormProps) {
   const { id } = props
 
   const { data } = useData()
   const STUDENT = data.students.find((item) => item.id === id)
+  const ROLE = useCurrentRole()
 
   const [isPending, startTransition] = useTransition()
   const { handleUpload } = useUploadImageToCloud()
@@ -54,9 +59,9 @@ export function CreateStudentForm(props: CreateStudentFormProps) {
     defaultValues: {
       name: '',
       lastName: '',
-      studyYear: '',
       institute: '',
-      documentIdentity: '',
+      educationalLevel: '',
+      instituteName: '',
       dateOfBirth: getCurrentDate(),
     },
   })
@@ -64,16 +69,14 @@ export function CreateStudentForm(props: CreateStudentFormProps) {
   useEffect(() => {
     if (IS_EDITING) {
       if (!STUDENT) return
+      const DOB = new Date(STUDENT.dateOfBirth)
 
       form.setValue('name', STUDENT.name)
       form.setValue('lastName', STUDENT.lastName)
-      form.setValue('studyYear', STUDENT.studyYear)
       form.setValue('institute', STUDENT.institute)
-      form.setValue('documentIdentity', STUDENT.documentIdentity)
-      form.setValue(
-        'dateOfBirth',
-        formatDateToString(new Date(STUDENT.dateOfBirth))
-      )
+      form.setValue('educationalLevel', STUDENT.educationalLevel)
+      form.setValue('instituteName', STUDENT.instituteName)
+      form.setValue('dateOfBirth', formatISODateToString(DOB))
     }
   }, [STUDENT, IS_EDITING, form, id])
 
@@ -111,6 +114,8 @@ export function CreateStudentForm(props: CreateStudentFormProps) {
       toast.error(message)
     })
   })
+
+  if (ROLE === 'STUDENT' || ROLE === 'EDUCATOR') return null
 
   return (
     <DialogForm
@@ -164,14 +169,14 @@ export function CreateStudentForm(props: CreateStudentFormProps) {
 
           <FormField
             control={form.control}
-            name='studyYear'
+            name='instituteName'
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Año de estudio</FormLabel>
+                <FormLabel>Nombre de la institución</FormLabel>
                 <FormControl>
                   <Input
                     {...field}
-                    placeholder='Primaria'
+                    placeholder='Instituto 1'
                     disabled={isPending}
                   />
                 </FormControl>
@@ -185,7 +190,7 @@ export function CreateStudentForm(props: CreateStudentFormProps) {
             name='institute'
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Institución</FormLabel>
+                <FormLabel>Liceos</FormLabel>
                 <FormControl>
                   <Select
                     onValueChange={field.onChange}
@@ -194,7 +199,7 @@ export function CreateStudentForm(props: CreateStudentFormProps) {
                   >
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder='Seleccionar institución' />
+                        <SelectValue placeholder='Seleccionar Liceos' />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
@@ -216,16 +221,32 @@ export function CreateStudentForm(props: CreateStudentFormProps) {
 
           <FormField
             control={form.control}
-            name='documentIdentity'
+            name='educationalLevel'
             render={({ field }) => (
               <FormItem>
-                <FormLabel>CI</FormLabel>
+                <FormLabel>Nivel educativo</FormLabel>
                 <FormControl>
-                  <Input
-                    {...field}
-                    placeholder='10101010'
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
                     disabled={isPending}
-                  />
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder='Seleccionar nivel educativo' />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {SELECT_EDUCATIONAL_LEVEL.map((level) => (
+                        <SelectItem
+                          key={level.value}
+                          value={level.value}
+                        >
+                          {level.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </FormControl>
                 <FormMessage />
               </FormItem>

@@ -1,7 +1,7 @@
 import { currentRole } from '@/lib/auth'
 import { WorkshopActionProps } from '@/app/(protected)/dashboard/(workshops)/workshops/_types'
 import { Prisma } from '@prisma/client'
-import db from '@/lib/db'
+import { db } from '@/lib/db'
 
 type TeacherProps = {
   select: {
@@ -45,7 +45,7 @@ function filterWorkshops(
 export async function getWorkshops(props: WorkshopActionProps) {
   const ROLE = await currentRole()
 
-  if (ROLE === 'STUDENT' || ROLE === 'TEACHER') {
+  if (ROLE === 'STUDENT' || ROLE === 'EDUCATOR') {
     return null
   }
 

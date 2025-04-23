@@ -2,7 +2,7 @@
 
 import { currentRole } from '@/lib/auth'
 import { revalidatePath } from 'next/cache'
-import db from '@/lib/db'
+import { db } from '@/lib/db'
 
 type AbsentsProps = {
   studentId: string
@@ -18,7 +18,7 @@ export async function createAbsent(props: AbsentsProps) {
     return { status: 400, message: 'No tienes permisos.' }
   }
 
-  const CURRENT_DATE = new Date(currentDate ?? '')
+  const CURRENT_DATE = new Date(currentDate)
 
   try {
     await db.absents.create({

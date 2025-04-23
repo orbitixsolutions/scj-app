@@ -21,7 +21,7 @@ export function AssistanceForm(props: AssistanceFormProps) {
     onChange,
   } = useAssistanceForm(props)
 
-  if (!initialStatus) return null
+  if (!initialStatus && !currentStatus) return null
 
   return (
     <div className='flex items-center space-x-2'>
@@ -32,7 +32,7 @@ export function AssistanceForm(props: AssistanceFormProps) {
         disabled={isPending}
       >
         <SelectTrigger
-          className={cn('w-[180px]', ASSISTANCE_COLORS[lastStatus as never])}
+          className={cn('w-[200px]', ASSISTANCE_COLORS[lastStatus as never])}
         >
           <SelectValue placeholder='Seleccione un estado' />
         </SelectTrigger>
@@ -48,16 +48,24 @@ export function AssistanceForm(props: AssistanceFormProps) {
         </SelectContent>
       </Select>
 
-      {currentStatus === 'SPECIAL_CASE_NO_ATTENDED' && (
-        <AssistanceStatus destructive>
-          Según la lista de asistencias este estudiante debió asistir al taller
-          y no lo hizo
+      {currentStatus === 'EXTERNAL_STUDENT' && (
+        <AssistanceStatus>
+          Este estudiante es externo, por lo que sus ausencias no se
+          contabilizan.
         </AssistanceStatus>
       )}
 
-      {currentStatus === 'EXTERNAL_STUDENT' && (
-        <AssistanceStatus>
-          Este estudiante es un alumno exterior y sus asistencias no se cuentan
+      {currentStatus === 'SPECIAL_CASE_NO_ATTENDED' && (
+        <AssistanceStatus variant='destructive'>
+          Según la lista de asistencias, este estudiante tenía que asistir al
+          taller, pero no lo hizo.
+        </AssistanceStatus>
+      )}
+
+      {currentStatus === 'SPECIAL_CASE_ATTENDED_EXCUSED' && (
+        <AssistanceStatus variant='warning'>
+          Según la lista de asistencias, este estudiante no tenia que asistir al
+          taller, pero lo hizo (Tiene excusa).
         </AssistanceStatus>
       )}
     </div>

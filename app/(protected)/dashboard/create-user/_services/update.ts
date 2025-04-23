@@ -3,7 +3,7 @@
 import { z } from 'zod'
 import { currentRole } from '@/lib/auth'
 import { UserSchema } from '@/schemas'
-import db from '@/lib/db'
+import { db } from '@/lib/db'
 import bcrypt from 'bcryptjs'
 
 export async function updateUser(

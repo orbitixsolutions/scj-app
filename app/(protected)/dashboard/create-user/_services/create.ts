@@ -3,7 +3,7 @@
 import * as z from 'zod'
 import { UserSchema } from '@/schemas'
 import { currentRole } from '@/lib/auth'
-import db from '@/lib/db'
+import { db } from '@/lib/db'
 import bcrypt from 'bcryptjs'
 
 export async function createUser(values: z.infer<typeof UserSchema>) {
