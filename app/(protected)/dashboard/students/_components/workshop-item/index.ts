@@ -1,1 +1,1 @@
-export * from './workshop-list'
+export * from './workshop-item'
