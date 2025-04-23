@@ -1,5 +1,5 @@
 import { currentRole, currentUser } from '@/lib/auth'
-import db from '@/lib/db'
+import { db } from '@/lib/db'
 
 export async function getWorkshops() {
   const [ROLE, USER] = await Promise.all([currentRole(), currentUser()])

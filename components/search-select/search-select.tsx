@@ -23,7 +23,7 @@ import { useDebouncedCallback } from 'use-debounce'
 
 const DEBOUNCE_TIME = 500
 
-export default function SearchSelect(props: SearchSelectProps) {
+export function SearchSelect(props: SearchSelectProps) {
   const { queryParam, placeholder, className, items } = props
   const [open, setOpen] = useState(false)
   const [value, setValue] = useState('')

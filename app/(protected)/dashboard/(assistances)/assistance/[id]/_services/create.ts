@@ -2,7 +2,7 @@
 
 import { currentRole } from '@/lib/auth'
 import { revalidatePath } from 'next/cache'
-import db from '@/lib/db'
+import { db } from '@/lib/db'
 
 type AbsentsProps = {
   studentId: string

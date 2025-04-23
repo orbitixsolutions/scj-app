@@ -1,7 +1,31 @@
+import { db } from '@/lib/db'
 import { currentRole } from '@/lib/auth'
-import db from '@/lib/db'
+import { Prisma } from '@prisma/client'
+import { StudentActionProps } from '@/app/(protected)/dashboard/initial-list/_types'
 
-export async function getInitialList() {
+export type Students = Prisma.StudentsGetPayload<{
+  include: { initialAssistances: true }
+}>
+
+function filterStudents(students: Students[], filters: StudentActionProps) {
+  const { firstName, lastName, educational_level } = filters
+
+  return students.filter((student) => {
+    const matcher = [
+      firstName
+        ? student.name.toLowerCase().includes(firstName.toLowerCase())
+        : true,
+      lastName
+        ? student.lastName.toLowerCase().includes(lastName.toLowerCase())
+        : true,
+      educational_level ? student.educationalLevel === educational_level : true,
+    ]
+
+    return matcher.every(Boolean)
+  })
+}
+
+export async function getInitialList(props: StudentActionProps) {
   const ROLE = await currentRole()
 
   if (ROLE === 'STUDENT' || ROLE === 'EDUCATOR') {
@@ -12,9 +36,12 @@ export async function getInitialList() {
     const STUDENTS = await db.students.findMany({
       include: { initialAssistances: true },
       where: { institute: 'LOS_PINOS' },
+      orderBy: [{ name: 'asc' }, { createdAt: 'asc' }],
     })
 
-    return STUDENTS
+    const FILTERED_STUDENTS = filterStudents(STUDENTS, props)
+
+    return FILTERED_STUDENTS
   } catch {
     return null
   }

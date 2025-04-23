@@ -42,7 +42,7 @@ export function useAlertButton(props: AlertButtonProps) {
   const { data } = useData()
   const { initialAssistances: initial, absents } = data
 
-  const INITIAL = initial.find((item) => item.studentId === STUDENT_ID)
+  const INITIAL_LIST = initial.find((item) => item.studentId === STUDENT_ID)
   const ABSENT = absents.find((item) => item.studentId === STUDENT_ID)
   const ABSENT_ID = ABSENT?.id
 
@@ -50,8 +50,8 @@ export function useAlertButton(props: AlertButtonProps) {
   const IS_TODAY = formatISODateToString(CURRENT_DATE) === ABSENT_DATE
 
   const status = filterCurrentStatus(assistances, CURRENT_DATE)
-  const initialStatus = INITIAL?.status
-  const lastStatus = status || 'NOT_DETERMINED'
+  const INITIAL_LIST_STATUS = INITIAL_LIST?.status
+  const LAST_STATUS = status || 'NOT_DETERMINED'
 
   const onSubmit = () => {
     if (!!ABSENT_ID && IS_TODAY) {
@@ -77,25 +77,27 @@ export function useAlertButton(props: AlertButtonProps) {
   }
 
   const compareStatus = (status: StatusEnum) => {
-    const ASSISTED = initialStatus === 'ATTENDED' && status === 'NOT_ATTENDED'
+    const ASSISTED =
+      (INITIAL_LIST_STATUS === 'ATTENDED' && status === 'NOT_ATTENDED') ||
+      (INITIAL_LIST_STATUS === 'ATTENDED' && status === 'ATTENDED_EXCUSED')
 
     if (institute !== 'LOS_PINOS' && ASSISTED) return 'EXTERNAL_STUDENT'
     if (ASSISTED) return 'SPECIAL_CASE_NO_ATTENDED'
 
-    const TRANSITIONS = STATUS_MAP[initialStatus as never]
+    const TRANSITIONS = STATUS_MAP[INITIAL_LIST_STATUS as never]
     return TRANSITIONS || 'EXTERNAL_STUDENT'
   }
 
-  const currentStatus = compareStatus(lastStatus)
+  const currentStatus = compareStatus(LAST_STATUS)
   const disabled = currentStatus !== 'SPECIAL_CASE_NO_ATTENDED'
   const isNotified =
     !!ABSENT_ID && IS_TODAY && currentStatus === 'SPECIAL_CASE_NO_ATTENDED'
 
   return {
     status,
-    lastStatus,
+    lastStatus: LAST_STATUS,
     currentStatus,
-    initialStatus,
+    initialStatus: INITIAL_LIST_STATUS,
     disabled,
     isPending,
     isNotified,

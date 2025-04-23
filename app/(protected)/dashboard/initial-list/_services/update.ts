@@ -2,7 +2,7 @@
 
 import { currentRole } from '@/lib/auth'
 import { StatusEnum } from '@prisma/client'
-import db from '@/lib/db'
+import { db } from '@/lib/db'
 
 export async function updateInitialAssistance(
   data: StatusEnum,

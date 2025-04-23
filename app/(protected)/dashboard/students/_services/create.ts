@@ -3,7 +3,7 @@
 import { z } from 'zod'
 import { currentRole } from '@/lib/auth'
 import { StudentSchema } from '@/schemas'
-import db from '@/lib/db'
+import { db } from '@/lib/db'
 
 export async function createStudent(
   data: z.infer<typeof StudentSchema>,

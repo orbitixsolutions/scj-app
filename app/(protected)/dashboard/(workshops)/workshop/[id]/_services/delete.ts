@@ -1,7 +1,7 @@
 'use server'
 
 import { currentRole } from '@/lib/auth'
-import db from '@/lib/db'
+import { db } from '@/lib/db'
 
 export async function removeStudentFromWorkshop(id: string) {
   const ROLE = await currentRole()
@@ -15,6 +15,10 @@ export async function removeStudentFromWorkshop(id: string) {
       where: {
         id,
       },
+    })
+
+    await db.absents.deleteMany({
+      where: { studentId: id },
     })
 
     return { status: 201, message: 'Alumno removido correctamente.' }

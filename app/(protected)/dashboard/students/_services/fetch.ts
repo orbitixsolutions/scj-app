@@ -1,7 +1,7 @@
 import { currentRole } from '@/lib/auth'
 import { StudentActionProps } from '@/app/(protected)/dashboard/students/_types'
 import { Students } from '@prisma/client'
-import db from '@/lib/db'
+import { db } from '@/lib/db'
 
 function filterStudents(students: Students[], filters: StudentActionProps) {
   const { firstName, lastName, educational_level, liceo } = filters

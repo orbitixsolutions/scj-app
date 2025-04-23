@@ -5,7 +5,7 @@ import {
 import { currentRole } from '@/lib/auth'
 import { Absents, Prisma } from '@prisma/client'
 import { formatISODateToString } from '@/helpers/get-current-date'
-import db from '@/lib/db'
+import { db } from '@/lib/db'
 
 function filterAbsents(absents: Absents[], filters: AbsentProps) {
   const { date } = filters

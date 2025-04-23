@@ -1,7 +1,7 @@
 import { currentRole } from '@/lib/auth'
 import { WorkshopActionProps } from '@/app/(protected)/dashboard/(workshops)/workshops/_types'
 import { Prisma } from '@prisma/client'
-import db from '@/lib/db'
+import { db } from '@/lib/db'
 
 type TeacherProps = {
   select: {

@@ -26,9 +26,11 @@ import { createWorkshop } from '@/app/(protected)/dashboard/(workshops)/workshop
 import { DialogDrop } from '@/components/dialog-drop/dialog-drop'
 import { updateWorkshop } from '@/app/(protected)/dashboard/(workshops)/workshops/_services/update'
 import { toast } from 'sonner'
+import { useData } from '@/providers/data-provider'
 
 export function CreateWorkshopForm(props: CreateWorkshopFormProps) {
   const { id } = props
+  const { data } = useData()
 
   const [isPending, startTransition] = useTransition()
   const { handleUpload } = useUploadImageToCloud()
@@ -50,19 +52,15 @@ export function CreateWorkshopForm(props: CreateWorkshopFormProps) {
 
   useEffect(() => {
     if (IS_EDITING) {
-      startTransition(async () => {
-        const RES = await fetch(`/api/v0/dashboard/workshops/id/${id}`)
-        const DATA = await RES.json()
+      const WORKSHOP = data.workshops?.find((workshop) => workshop.id === id)
+      if (!WORKSHOP) return
 
-        if (DATA.ok) return
-
-        form.setValue('name', DATA.name)
-        form.setValue('days', DATA.days)
-        form.setValue('description', DATA.description)
-        form.setValue('teacherId', DATA.teacherId)
-      })
+      form.setValue('name', WORKSHOP?.name)
+      form.setValue('description', WORKSHOP?.description)
+      form.setValue('teacherId', WORKSHOP?.teacherId)
+      form.setValue('days', WORKSHOP?.workshopsByDay.map(i => i.day))
     }
-  }, [IS_EDITING, form, id])
+  }, [IS_EDITING, data, form, id])
 
   const onSubmit = form.handleSubmit((values) => {
     startTransition(async () => {

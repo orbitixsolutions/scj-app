@@ -3,7 +3,8 @@
 import { z } from 'zod'
 import { currentRole } from '@/lib/auth'
 import { WorkshopSchema } from '@/schemas'
-import db from '@/lib/db'
+import { db } from '@/lib/db'
+import { DayEnum } from '@prisma/client'
 
 export async function createWorkshop(
   values: z.infer<typeof WorkshopSchema>,
@@ -30,12 +31,21 @@ export async function createWorkshop(
         name,
         description,
         teacherId,
-        days,
       },
     })
 
+    for (const day of days) {
+      await db.workshopsByDay.create({
+        data: {
+          day: day as DayEnum,
+          workshopId,
+        },
+      })
+    }
+
     return { status: 201, message: 'Taller creado correctamente.' }
-  } catch {
+  } catch (e) {
+    console.log(e)
     return { status: 400, message: 'Ha ocurrido un error.' }
   }
 }

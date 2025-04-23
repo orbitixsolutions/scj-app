@@ -1,7 +1,7 @@
 import { WorkshopsProps } from '@/app/(protected)/dashboard/(assistances)/assistance/[id]/_types'
 import { NextResponse, type NextRequest } from 'next/server'
 import { formatDateToString } from '@/helpers/get-current-date'
-import db from '@/lib/db'
+import { db } from '@/lib/db'
 
 export const dynamic = 'force-dynamic'
 

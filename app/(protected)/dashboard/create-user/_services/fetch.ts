@@ -1,7 +1,7 @@
 import { currentRole, currentUser } from '@/lib/auth'
 import { UserActionProps } from '@/app/(protected)/dashboard/create-user/_types'
 import { RolesEnum, User } from '@prisma/client'
-import db from '@/lib/db'
+import { db } from '@/lib/db'
 
 function filterUser(users: User[], filters: UserActionProps) {
   const { name, role } = filters

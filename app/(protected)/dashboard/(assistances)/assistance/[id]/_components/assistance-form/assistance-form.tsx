@@ -56,9 +56,16 @@ export function AssistanceForm(props: AssistanceFormProps) {
       )}
 
       {currentStatus === 'SPECIAL_CASE_NO_ATTENDED' && (
-        <AssistanceStatus destructive>
+        <AssistanceStatus variant='destructive'>
           Según la lista de asistencias, este estudiante tenía que asistir al
           taller, pero no lo hizo.
+        </AssistanceStatus>
+      )}
+
+      {currentStatus === 'SPECIAL_CASE_ATTENDED_EXCUSED' && (
+        <AssistanceStatus variant='warning'>
+          Según la lista de asistencias, este estudiante no tenia que asistir al
+          taller, pero lo hizo (Tiene excusa).
         </AssistanceStatus>
       )}
     </div>

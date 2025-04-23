@@ -5,7 +5,7 @@ import {
 import { Prisma } from '@prisma/client'
 import { formatISODateToString } from '@/helpers/get-current-date'
 import { currentRole } from '@/lib/auth'
-import db from '@/lib/db'
+import { db } from '@/lib/db'
 
 function filterAssistances(data: WorkshopsProps, filters: AssistancePageProps) {
   const { lastName, name } = filters.searchParams
