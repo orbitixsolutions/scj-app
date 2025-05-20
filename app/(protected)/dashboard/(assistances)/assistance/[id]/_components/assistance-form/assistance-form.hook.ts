@@ -30,14 +30,17 @@ export function useAssistanceForm(props: AssistanceFormProps) {
   const { id, assistances, institute } = props
   const STUDENT_ID = id
 
+  const searchParams = useSearchParams()
+
   const { id: WORKSHOP_ID } = useParams<{ id: string }>()
   const [isPending, startTransition] = useTransition()
 
-  const params = useSearchParams()
-
-  const searchParams = useMemo(() => new URLSearchParams(params), [params])
+  const queryParams = useMemo(
+    () => new URLSearchParams(searchParams),
+    [searchParams]
+  )
   const CURRENT_DATE =
-    searchParams.get('date')?.toString() ?? formatISODateToString(new Date())
+    queryParams.get('date')?.toString() ?? formatISODateToString(new Date())
 
   const { data } = useData()
   const { initialAssistances: initial } = data

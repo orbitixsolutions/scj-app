@@ -9,10 +9,10 @@ import {
 import { ContentLayout } from '@/components/content-layout'
 import { AssistanceDataTable } from '@/app/(protected)/dashboard/(assistances)/assistance/[id]/_components/assistance-table'
 import { AssistanceMenu } from '@/app/(protected)/dashboard/(assistances)/assistance/[id]/_components/assistance-menu'
-import { assistanceColumns } from '@/app/(protected)/dashboard/(assistances)/assistance/[id]/_components/assistance-table/assistance.column'
 import { ChevronLeft } from 'lucide-react'
 import { Metadata } from 'next'
 import { RefreshButton } from '@/components/refresh-button'
+import { assistanceColumns } from './_components/assistance-table/assistance.column'
 import Link from 'next/link'
 
 export const dynamic = 'force-dynamic'
@@ -34,10 +34,10 @@ export default async function AssistancePage(props: AssistancePageProps) {
   const { params } = props
   const WORKSHOP_ID = params.id
 
-  const [ASSIS_NORMAL_STUDENTS, ASSIS_DATES_STUDENTS, WORKSHOP] =
+  const [ASSIS_NORMAL_STUDENTS, ASSIS_DATE_STUDENTS, WORKSHOP] =
     await Promise.all([
-      getAssistances({ mode: 'normal', page: props }),
-      getAssistances({ mode: 'dates', page: props }),
+      getAssistances({ mode: 'normal', data: props }),
+      getAssistances({ mode: 'dates', data: props }),
       getWorkshop(WORKSHOP_ID),
     ])
 
@@ -60,7 +60,7 @@ export default async function AssistancePage(props: AssistancePageProps) {
 
         <AssistanceDataTable
           columns={assistanceColumns}
-          data={(ASSIS_DATES_STUDENTS as StudentsProps[]) ?? []}
+          data={(ASSIS_DATE_STUDENTS as StudentsProps[]) ?? []}
         />
       </section>
     </ContentLayout>

@@ -5,10 +5,15 @@ export type AssistancePageProps = {
     id: string
   }
   searchParams: {
-    date: string
-    name: string
-    lastName: string
+    date: string | null
+    name: string | null
+    lastName: string | null
   }
+}
+
+export type getStudentsProps = {
+  mode: 'normal' | 'dates'
+  data: AssistancePageProps
 }
 
 export type WorkshopActionType = {

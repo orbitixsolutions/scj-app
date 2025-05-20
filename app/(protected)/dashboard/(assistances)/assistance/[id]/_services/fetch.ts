@@ -1,5 +1,8 @@
+'use server'
+
 import {
   AssistancePageProps,
+  getStudentsProps,
   WorkshopsProps,
 } from '@/app/(protected)/dashboard/(assistances)/assistance/[id]/_types'
 import { Prisma } from '@prisma/client'
@@ -20,7 +23,7 @@ function filterAssistances(data: WorkshopsProps, filters: AssistancePageProps) {
   })
 }
 
-function filterByDate(data: WorkshopsProps, currDate: string) {
+function filterByDate(data: WorkshopsProps, currDate: string | null) {
   const STUDENTS = data.students
 
   return STUDENTS.map(({ student }) => ({
@@ -37,19 +40,13 @@ function filterByDate(data: WorkshopsProps, currDate: string) {
   }))
 }
 
-type getStudentsProps = {
-  mode: 'normal' | 'dates'
-  page: AssistancePageProps
-}
-
 export async function getAssistances(props: getStudentsProps) {
-  const { mode, page } = props
+  const { mode, data } = props
 
-  const CURR_DATE = page.searchParams.date
-  const WORKSHOP_ID = page.params.id
+  const CURR_DATE = data.searchParams.date
+  const WORKSHOP_ID = data.params.id
 
   const ROLE = await currentRole()
-
   if (ROLE === 'USER') return null
 
   try {
@@ -86,7 +83,7 @@ export async function getAssistances(props: getStudentsProps) {
 
     if (!WORKSHOPS) return null
 
-    const ASSIS_NORMAL_STUDENTS = filterAssistances(WORKSHOPS, page)
+    const ASSIS_NORMAL_STUDENTS = filterAssistances(WORKSHOPS, data)
     const ASSIST_DATES_ITEMS = filterByDate(WORKSHOPS, CURR_DATE)
 
     if (mode === 'normal') return ASSIS_NORMAL_STUDENTS

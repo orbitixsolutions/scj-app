@@ -14,18 +14,34 @@ import { StudentsProps } from '@/app/(protected)/dashboard/(assistances)/assista
 import { absentColumns } from '@/app/(protected)/dashboard/(assistances)/assistance/[id]/_components/absent-table/absent.column'
 import { AssistanceFilter } from '@/app/(protected)/dashboard/(assistances)/assistance/[id]/_components/assitance-filter'
 
+function filterStudentsByAbsences(
+  items: StudentsProps[],
+  condition: (value: number) => void
+) {
+  const ITEMS =  items
+  .map((item) => ({
+    ...item,
+    assistances: item.assistances.filter(
+      (assistance) => assistance.status === 'NOT_ATTENDED'
+    ),
+  }))
+  .filter((a) => condition(a.assistances.length))
+
+  return ITEMS
+}
+
 export function AssistanceMenu(props: AssistanceMenuProps) {
   const { data: STUDENTS } = props
 
   return (
     <div className='w-full space-y-4'>
-      <AssistanceDialogs data={STUDENTS} />
+      <AssistanceDialog data={STUDENTS} />
       <AssistanceFilter />
     </div>
   )
 }
 
-function AssistanceDialogs(props: AssistanceMenuProps) {
+function AssistanceDialog(props: AssistanceMenuProps) {
   const { data: STUDENTS } = props
 
   const FIVE_FALTS = filterStudentsByAbsences(
@@ -100,23 +116,3 @@ function AssistanceDialogs(props: AssistanceMenuProps) {
   )
 }
 
-function filterStudentsByAbsences(
-  items: StudentsProps[],
-  condition: (value: number) => void
-) {
-  // Esto devuelve un array de objetos con los estudiantes con asistencias no atendidas.
-
-  // Dependiendo de la condición que se le pase devolverá un array con los estudiantes que
-  // tengan x cantidad de asistencias no atendidas
-
-  const ITEMS =  items
-  .map((item) => ({
-    ...item,
-    assistances: item.assistances.filter(
-      (assistance) => assistance.status === 'NOT_ATTENDED'
-    ),
-  }))
-  .filter((a) => condition(a.assistances.length))
-
-  return ITEMS
-}
